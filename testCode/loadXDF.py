@@ -15,14 +15,14 @@ import numpy as np
 #%% Load data
 
 # Paths
-filepath = '/home/geiger/github/LSLAutoBIDS/starters/raw_xdf/sub-004/ses-001/eeg/'
+filepath = '/home/geiger/github/LSLAutoBIDS/testCode/raw_xdf/sub-004/ses-001/eeg/'
 filename = 'sub-004_ses-001_task-Oddball_run-001_eeg.xdf'
 
 # Get streams
 streams = resolve_streams(filepath + filename)
 id_eeg = match_streaminfos(streams, [{"name": "EEGstream EE225"}])[0]
 id_eeg_markers = match_streaminfos(streams, [{"name": "eegoSports-EE225_markersMarkers"}])[0]
-id_lsl_markers = match_streaminfos(streams, [{"name": "LSL_Markers_Matlab"}])[0]
+id_lsl_markers = match_streaminfos(streams, [{"name": "LSL_Markers_Matlab"}])[0] # name will be different for experiments coded with PsychoPy
 
 #%% mne raw object
 
