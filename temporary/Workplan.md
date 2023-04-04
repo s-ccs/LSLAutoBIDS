@@ -18,8 +18,8 @@ stimulusComputerUsed: true # will automatically copy experimental files & code f
 # copypaths: 
 #    - ~/project_stimulus/projectName/data/et/ => "et"
 #    - ~/project_stimulus/projectName/data/behavioural/ => "misc"
-
 ```
+        
 - LSL Markers (time shifted but more effective) and EEG Markers (some disturbed) - [TODO to read].
 - Check for the blank streams.[May be useful to retrieve the last stream id if we don't have the name]
 - Resources to refer: 
@@ -28,18 +28,38 @@ stimulusComputerUsed: true # will automatically copy experimental files & code f
 
 
 BIDS-MNE does the following:
-    2. Create a participants.json file (column desc male, female, sex, left, right etc) in the final BIDS directory.
-    
-4. Write the description_dataset.json file. Project Independent.
-5. Write the events.json file. [clueless].
-6. Write the eeg.json file. The initial task description don't change. Sample frequency can be adjusted.
-7. events.tsv ???
-8. electrode.tsv and channel.tsv. We use the 1020 electrode setup from the mne python library to generate the electrode location from the .tsv file after generating the raw object file by pyxdf.
-9. Participants information for the .tsv file.
- - Should there be any UI to directly integrate the user information into the code
- - Any format specifications of the information we need to collect.
-10. Take the .xdf to BIDS format by mne python and [mne-bids](https://mne.tools/mne-bids/stable/use.html) and the BIDS structure directory with all the meta data will be generated in the form of tripet files. A text header file (.vhdr) containing meta data, a text marker file (.vmrk) containing information about events in the data,a binary data file (.eeg) containing the voltage values of the EEG.
- - How do we specify the file structure which format to use.
+        4. Write the description_dataset.json file. => `metadata.yml`
+        6. Write the eeg.json file. The initial task description don't change. Sample frequency / number of channels => populate automatically
+        8. electrode.tsv and channel.tsv. We use the extended 10-20 electrode setup from the mne python library to generate the electrode location from the .tsv file after generating the raw object file by pyxdf. => Later: add/rename "EOGs", find sensible defaults.
+
+        5. Write the events.json file. => put a default events.json
+                ```json
+        {
+    "marker_message": {
+        "LongName": "Message of LSL or Trigger",
+        "Description": "What experimental marker/trigger was send"
+    }
+}
+```
+        7. `events.tsv` => create automatically from Marker-Stream
+```
+onset   duration        marker_message
+103.2   "n/a"   "LSL-Message / triggerNumber"
+``` 
+        2. Create a `participants.json` file (column desc male, female, sex, left, right etc) in the final BIDS directory. => fill automatically, skip description of optional fields later https://bids-specification.readthedocs.io/en/stable/03-modality-agnostic-files.html#participants-file
+        9. Participants information for the .tsv file.
+(fields in [optional] are optional)
+        
+```tsv 
+participant_id  age     sex     handedness      [vision_corrected]      [dominant_eye]
+sub-01  34      M       right   ["glasses"]     ["left"]
+sub-02  33      D       left   ["no"]     ["right"]
+```
+        
+
+10. Take the .xdf to BIDS format by mne python and [mne-bids](https://mne.tools/mne-bids/stable/use.html) and the BIDS structure directory with all the meta data will be generated in the form of triplet files. A text header file (.vhdr) containing meta data, a text marker file (.vmrk) containing information about events in the data,a binary data file (.eeg) containing the voltage values of the EEG.
+
+- How do we specify the file structure which format to use. => mne-bids write command option
  - We use the [Brain Vision file format](https://mne.tools/dev/auto_tutorials/io/20_reading_eeg_data.html#brainvision-vhdr-vmrk-eeg).
  - [xdf to BIDS mne-python documentation](https://mne.tools/mne-bids/dev/auto_examples/convert_eeg_to_bids.html)
  - [BIDS datastructure specs](https://bids-standard.github.io/bids-starter-kit/index.html)#
@@ -71,4 +91,5 @@ BIDS-MNE does the following:
     
     
 future:
-    `dataset_description.json` =>ReferencesAndLinks => DaRuS doi
+ -  `dataset_description.json` =>ReferencesAndLinks => DaRuS doi
+ - UI to directly input participant_tsv information
