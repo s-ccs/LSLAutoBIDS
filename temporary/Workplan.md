@@ -1,3 +1,4 @@
+
 # Workflow
 1. Use [pyxdf](https://github.com/xdf-modules/pyxdf) python libary to load the xdf data and get the streams.[ Dont use MNE python here]
 - The  xdf directory structure - Path specified in the projects folders to be specified in the LSL Recorder. It is automatically stored in the subxxx/sesxxx structure.
