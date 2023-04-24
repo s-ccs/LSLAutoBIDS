@@ -1,4 +1,4 @@
-# Workflow
+# Workflow updated
 1. Use mnelab (which uses [pyxdf](https://github.com/xdf-modules/pyxdf)) python libary to load the xdf data and get the streams.[ Dont use MNE python here]
 - The  xdf directory structure - Path specified in the projects folders to be specified in the LSL Recorder. It is automatically stored in the sub-xxx/ses-xxx structure.
 - There can be multiple xdf files per subject (e.g. different tasks, or even stopped recordings, those should be renamed to "_ part-02.vhdr" => check in the recorder what happens if you try to overwrite a file, I think it is automatically renamed `One xdf file for each subject in our case.`
