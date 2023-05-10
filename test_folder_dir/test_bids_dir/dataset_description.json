@@ -1,0 +1,13 @@
+{
+    "general_info": {
+        "Name": "P300 visual oddball task + N170 visual distracter task",
+        "ReferencesAndLinks": [
+            "No bibliographic reference other than the DOI for this dataset"
+        ],
+        "BIDSVersion": "v1.7.0",
+        "License": "CC-BY",
+        "Authors": [
+            "Martin Geiger"
+        ]
+    }
+}

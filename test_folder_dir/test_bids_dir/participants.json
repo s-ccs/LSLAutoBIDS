@@ -1,0 +1,32 @@
+{
+    "pInfoDesc": {
+        "participant_id": {
+            "Description": "Unique participant identifier"
+        },
+        "gender": {
+            "Description": "Sex of participant",
+            "Levels": {
+                "M": "Male",
+                "F": "Female"
+            }
+        },
+        "age": {
+            "Description": "Age of participant",
+            "Units": "Years"
+        },
+        "handedness": {
+            "Description": "Handedness of participant",
+            "Levels": {
+                "R": "Right",
+                "L": "Left"
+            }
+        },
+        "vision": {
+            "Description": "Vision of participant",
+            "Levels": {
+                "N": "Normal",
+                "C": "Corrected"
+            }
+        }
+    }
+}

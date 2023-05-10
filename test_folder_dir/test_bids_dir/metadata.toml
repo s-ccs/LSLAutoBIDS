@@ -1,0 +1,13 @@
+[Authors]
+  - "Benedikt Ehinger"
+  - "Martin"
+[Dataset]
+  Title = "Convert XDF to BIDS"
+  License = "default"
+
+[Sources]
+  EEG = "EEGstream EE225"
+  marker = ["LSL_Markers","eegoSports-EE225_markersMarkers"]
+
+[Computers]
+  stimulusComputerUsed = true

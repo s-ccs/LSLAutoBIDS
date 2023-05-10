@@ -4,7 +4,7 @@
 - There can be multiple xdf files per subject (e.g. different tasks, or even stopped recordings, those should be renamed to "_ part-02.vhdr" => check in the recorder what happens if you try to overwrite a file, I think it is automatically renamed `One xdf file for each subject in our case.`
 - Optional for now, let's focus on the conversion: `Check if new xdf file added to the folder`
 - Stream names : EEGstream EE225 (fixed),eegoSports-EE225_markersMarkers(fixed) and LSL_Markers_<xxx>(variable-check with regex).
-        -> We need a `metadata.toml`
+- We need a `metadata.toml`
 ```yml
 authors: "Benedikt Ehinger"
 title: "Awesome test study"
@@ -28,12 +28,12 @@ stimulusComputerUsed: true # will automatically copy experimental files & code f
 
 
 BIDS-MNE does the following:
-        4. Write the description_dataset.json file. => `metadata.yml`
-        6. Write the eeg.json file. The initial task description don't change. Sample frequency / number of channels => populate automatically
-        8. electrode.tsv and channel.tsv. We use the extended 10-20 electrode setup from the mne python library to generate the electrode location from the .tsv file after generating the raw object file by pyxdf. => Later: add/rename "EOGs", find sensible defaults.
+- Write the description_dataset.json file. => `metadata.yml`
+- Write the eeg.json file. The initial task description don't change. Sample frequency / number of channels => populate automatically
+- electrode.tsv and channel.tsv. We use the extended 10-20 electrode setup from the mne python library to generate the electrode location from the .tsv file after generating the raw object file by pyxdf. => Later: add/rename "EOGs", find sensible defaults.
 
-        5. Write the events.json file. => put a default events.json
-                ```json
+- Write the events.json file. => put a default events.json
+```json
         {
     "marker_message": {
         "LongName": "Message of LSL or Trigger",
@@ -41,7 +41,7 @@ BIDS-MNE does the following:
     }
 }
 ```
-        7. `events.tsv` => create automatically from Marker-Stream
+- `events.tsv` => create automatically from Marker-Stream
 ```
 onset   duration        marker_message
 103.2   "n/a"   "LSL-Message / triggerNumber"
