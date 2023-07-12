@@ -3,7 +3,8 @@ python==3.11.2
 mne==1.3.1
 mne_bids==0.12
 bids_validator
-
+datalad==0.9.3
+datalad-dataverse==1.0.1
 
 
 
