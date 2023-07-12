@@ -6,6 +6,7 @@
   Title = "Convert XDF to BIDS"
   Dataset Description = fwsghf
   License = "default"
+  taskName = 'task-Duration'
 
 [Sources]
   EEG = "EEGstream EE225"
