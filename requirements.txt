@@ -5,6 +5,9 @@ mne_bids==0.12
 bids_validator
 datalad==0.9.3
 datalad-dataverse==1.0.1
+pyDataverse==0.3.1
+requests>=2.12.0
+jsonschema>=3.2.0
 
 
 
