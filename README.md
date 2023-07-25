@@ -1,46 +1,28 @@
-# LSLAutoBIDS
-Tools to convert LSL + friends automatically to BIDS, and upload it to a Dataverse
 
-The testcode folder has some sample .xdf and files in BIDS format for testing purpose.
+<h1 align="center">
+  LSLAutoBIDS
+</h1>
+<p align="center"> Tools to convert LSL + friends automatically to BIDS, and upload it to a Dataverse </p>
 
-## Install dependencies
 
-python -m pip install -r requirements.txt
+## 🚀 Getting Started
 
-For datalad-dataverse
+Get started with LSLAutoBIDS by installing the package and its dependencies.
 
 ```
-pip install datalad
+# Using PyPI
+python -m pip install lslautobids
+```
 
-pip install datalad-dataverse
 
-datalad create -d ./data/datalad-dataset --force
-
-cd ./data/datalad-dataset
-
-datalad status
-
-datalad save -m "Initial commit"
-
-datalad add-sibling-dataverse https://darus.uni-stuttgart.de/ doi:10.18419/darus-3520
-
-datalad push --to dataverse
-
-git remote -v () copy the url from here
-
-datalad clone 'datalad-annex::?type=external&externaltype=dataverse&encryption=none&exporttree=no&url=https%3A//darus.uni-stuttgart.de/&doi=doi:10.18419/darus-3520' myclone
-
-datalad siblings -d "myclone" enable -s dataverse-storage
-
-datalad get my-file
+## Install dependencies
+```
+python -m pip install -r requirements.txt
 ```
 
 ## Run the package
 
 python -m scripts.main -p sampleproject
-
-
-
 
 
 ## Directory Structure

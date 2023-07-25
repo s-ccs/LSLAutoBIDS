@@ -3,7 +3,7 @@ from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
 from mne_bids import write_raw_bids, BIDSPath
 import os
-from . import PROJECT_NAME,BIDS_ROOT
+from . import PROJECT_NAME,BIDS_ROOT,PROJECTS_STIM_ROOT
 
 
 class BIDS:
@@ -29,6 +29,71 @@ class BIDS:
         return stream_names,streams
 
 
+    def copy_source_files_to_bids(xdf_file,subject_id,session_id):
+
+        # Get the file name without the extension
+        file_name = xdf_file.split('/')[-1]
+        file_name_without_ext, ext = os.path.splitext(file_name)
+        
+        # Copy the raw file
+        new_filename = file_name_without_ext + '_raw' + ext
+        
+        # Destination path for the raw file
+        dest_dir = BIDS_ROOT + PROJECT_NAME+ '/sourcedata/' + subject_id + '/' + session_id + '/eeg'
+
+        #check if the directory exists
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+        dest_file = os.path.join(dest_dir, new_filename)
+        
+        # Create a symbolic link with the new filename pointing to the source file
+        try:
+            os.symlink(xdf_file, dest_file) 
+        except FileExistsError:
+            pass
+
+
+        # Copy the behavioral file 
+        
+        behavioural_path = os.path.join(PROJECTS_STIM_ROOT,PROJECT_NAME,subject_id,session_id)
+        # get the destination path
+        dest_dir = BIDS_ROOT + PROJECT_NAME+ '/' + subject_id +'/'+ session_id + '/beh'
+        #check if the directory exists
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+    
+        for file in os.listdir(behavioural_path):
+            # remove the _eeg from the file_name_without_ext
+            file_name_without_eeg = file_name_without_ext[:-4]
+            new_filename = file_name_without_eeg + '_' + file
+            dest_file = os.path.join(dest_dir, new_filename)
+            try:
+                # Create a symbolic link with the new filename pointing to the source file
+                os.symlink(os.path.join(behavioural_path,file), dest_file)
+            except FileExistsError:
+                pass
+        1
+        # Copy the experiments file
+
+        experiments_path = os.path.join(PROJECTS_STIM_ROOT,PROJECT_NAME,'experiment')
+        # get the destination path
+        dest_dir = BIDS_ROOT + PROJECT_NAME+ '/' + subject_id +'/'+ session_id + '/other'
+        #check if the directory exists
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+    
+        for file in os.listdir(experiments_path):
+            # remove the _eeg from the file_name_without_ext
+            file_name_without_eeg = file_name_without_ext[:-4]
+            new_filename = file_name_without_eeg + '_' + file
+            dest_file = os.path.join(dest_dir, new_filename)
+            try:
+                # Create a symbolic link with the new filename pointing to the source file
+                os.symlink(os.path.join(experiments_path,file), dest_file)
+            except FileExistsError:
+                pass
+
+
     def create_raw_xdf(self, xdf_path,streams):
         """
         Create a raw object from an XDF file containing specific streams.
@@ -47,6 +112,10 @@ class BIDS:
         return raw
 
     def convert_to_bids(self, xdf_file,subject_id,session_id):
+        
+        print("Converting to BIDS........") 
+
+        self.copy_source_files_to_bids(xdf_file,subject_id,session_id)
         
         print("Converting to BIDS........")
 

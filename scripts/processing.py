@@ -3,7 +3,7 @@ import time
 import warnings
 import sys
 from scripts import bids
-from . import BIDS_ROOT, PROJECT_NAME
+from . import BIDS_ROOT, PROJECT_NAME, PROJECTS_STIM_ROOT
 
 
 bd = bids.BIDS()
@@ -58,6 +58,7 @@ def proceesing_new_files(file_status,project_path):
         print(xdf_path)
         print(subject_id[-3:])
         bd.convert_to_bids(xdf_path,subject_id,session_id)
+
 
 def check_for_new_files(function_path):
 
