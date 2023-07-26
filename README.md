@@ -68,3 +68,4 @@ python -m scripts.main -p sampleproject
 
 ## Resources- useful
  - https://earthly.dev/blog/python-makefile/
+ - https://github.com/AUSSDA/dataverse2021_automation-with-pydataverse/tree/master

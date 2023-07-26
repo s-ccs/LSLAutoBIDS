@@ -1,0 +1,68 @@
+{
+    "datasetVersion": {
+        "metadataBlocks": {
+            "citation": {
+                "fields": [{
+                        "typeName": "title",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "LSL AutoBIDS Test"
+                    },
+                    {
+                        "typeName": "author",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                            "authorName": {
+                                "typeName": "author",
+                                "multiple": false,
+                                "typeClass": "primitive",
+                                "value": "Benedict Ehinger, Manpa Barman"
+                            }
+                        }]
+                    },
+                    {
+                        "typeName": "datasetContact",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                            "datasetContactName": {
+                                "typeName": "datasetContactName",
+                                "multiple": false,
+                                "typeClass": "primitive",
+                                "value": "bene@gmail.com, manpa@gmail.com"
+                            },
+                            "datasetContactEmail": {
+                                "typeName": "datasetContactEmail",
+                                "multiple": false,
+                                "typeClass": "primitive",
+                                "value": "ContactEmail1@mailinator.com"
+                            }
+                        }]
+                    },
+                    {
+                        "typeName": "dsDescription",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                            "dsDescriptionValue": {
+                                "typeName": "dsDescriptionValue",
+                                "multiple": false,
+                                "typeClass": "primitive",
+                                "value": "This is a test dataset for the AutoBIDSLSL uploader"
+                            }
+                        }]
+                    },
+                    {
+                        "typeName": "subject",
+                        "multiple": true,
+                        "typeClass": "controlledVocabulary",
+                        "value": [
+                            "Cognitive Science"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
