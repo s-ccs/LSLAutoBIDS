@@ -1,21 +1,19 @@
  
 #import datalad_dataverse as dd
-# TODO get the following data from the json file in dataverse_dataset_create.py
-#ds = 'Computational Cognitive Science'
-#ds_pid = 'doi:10.18419/darus-3520'
-#url = 'https://darus.uni-stuttgart.de/'
-
 
 import subprocess
 import os
+import json
+from .folder_config import BIDS_ROOT
 
-def add_sibling_dataverse_in_folder(folder_path):
+
+def add_sibling_dataverse_in_folder(folder_path,BASE_URL,doi_id,NAME):
     try:
         # Change to the specified folder
         os.chdir(folder_path)
 
         # Define the bash command as a list of strings
-        command = ['datalad', 'add-sibling-dataverse', 'https://darus.uni-stuttgart.de/', 'doi:10.18419/darus-3520']
+        command = ['datalad', 'add-sibling-dataverse', BASE_URL, doi_id]
 
         # Call the bash command using subprocess.run()
         subprocess.run(command, check=True)
@@ -27,6 +25,3 @@ def add_sibling_dataverse_in_folder(folder_path):
     except Exception as ex:
         print(f"An unexpected error occurred: {ex}")
 
-if __name__ == "__main__":
-    folder_path = "./test_data"
-    add_sibling_dataverse_in_folder(folder_path)

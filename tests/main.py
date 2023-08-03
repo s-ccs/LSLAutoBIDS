@@ -11,7 +11,7 @@ import json
 import sys
 import contextlib
 
-# Retrieve the Task Name variable under [Datasets] from the pyproject.toml file
+# Retrieve the Task Name variable under [Datasets] from the project.toml file
 
 
 

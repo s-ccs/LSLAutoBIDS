@@ -2,63 +2,71 @@
     "datasetVersion": {
         "metadataBlocks": {
             "citation": {
-                "fields": [{
+                "fields": [
+                    {
                         "typeName": "title",
                         "multiple": false,
                         "typeClass": "primitive",
-                        "value": "LSL AutoBIDS Test"
+                        "value": "Convert XDF to BIDS"
                     },
                     {
                         "typeName": "author",
                         "multiple": true,
                         "typeClass": "compound",
-                        "value": [{
-                            "authorName": {
-                                "typeName": "author",
-                                "multiple": false,
-                                "typeClass": "primitive",
-                                "value": "Benedict Ehinger, Manpa Barman"
+                        "value": [
+                            {
+                                "authorName": {
+                                    "typeName": "author",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Benedikt Ehinger, Manpa Barman"
+                                }
                             }
-                        }]
+                        ]
                     },
                     {
                         "typeName": "datasetContact",
                         "multiple": true,
                         "typeClass": "compound",
-                        "value": [{
-                            "datasetContactName": {
-                                "typeName": "datasetContactName",
-                                "multiple": false,
-                                "typeClass": "primitive",
-                                "value": "bene@gmail.com, manpa@gmail.com"
-                            },
-                            "datasetContactEmail": {
-                                "typeName": "datasetContactEmail",
-                                "multiple": false,
-                                "typeClass": "primitive",
-                                "value": "ContactEmail1@mailinator.com"
+                        "value": [
+                            {
+                                "datasetContactName": {
+                                    "typeName": "datasetContactName",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Benedikt Ehinger, Manpa Barman"
+                                },
+                                "datasetContactEmail": {
+                                    "typeName": "datasetContactEmail",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "st184660@stud.uni-stuttgart.de"
+                                }
                             }
-                        }]
+                        ]
                     },
                     {
                         "typeName": "dsDescription",
                         "multiple": true,
                         "typeClass": "compound",
-                        "value": [{
-                            "dsDescriptionValue": {
-                                "typeName": "dsDescriptionValue",
-                                "multiple": false,
-                                "typeClass": "primitive",
-                                "value": "This is a test dataset for the AutoBIDSLSL uploader"
+                        "value": [
+                            {
+                                "dsDescriptionValue": {
+                                    "typeName": "dsDescriptionValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "This is a test project to set up the pipeline to convert XDF to BIDS."
+                                }
                             }
-                        }]
+                        ]
                     },
                     {
                         "typeName": "subject",
                         "multiple": true,
                         "typeClass": "controlledVocabulary",
                         "value": [
-                            "Cognitive Science"
+                            "Medicine, Health and Life Sciences",
+                            "Engineering"
                         ]
                     }
                 ]

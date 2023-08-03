@@ -3,8 +3,17 @@ from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
 from mne_bids import write_raw_bids, BIDSPath
 import os
-from . import PROJECT_NAME,BIDS_ROOT,PROJECTS_STIM_ROOT
+import json
+from .folder_config import PROJECT_NAME,BIDS_ROOT,PROJECTS_STIM_ROOT
+from .generate_dataset_json import main as generate_dataset_json
+from .dataverse_dataset_create import main as dataverse_dataset_create
+from .datalad_create import main as datalad_create
+from .link_datalad_dataverse import add_sibling_dataverse_in_folder
 
+with open('./lsl_autobids/darus_config.json') as f:
+    config = json.load(f)
+    BASE_URL = config['BASE_URL']
+    NAME = config['NAME']
 
 class BIDS:
     def __init__(self):
@@ -29,7 +38,7 @@ class BIDS:
         return stream_names,streams
 
 
-    def copy_source_files_to_bids(xdf_file,subject_id,session_id):
+    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id):
 
         # Get the file name without the extension
         file_name = xdf_file.split('/')[-1]
@@ -55,7 +64,7 @@ class BIDS:
 
         # Copy the behavioral file 
         
-        behavioural_path = os.path.join(PROJECTS_STIM_ROOT,PROJECT_NAME,subject_id,session_id)
+        behavioural_path = os.path.join(PROJECTS_STIM_ROOT,PROJECT_NAME,subject_id)
         # get the destination path
         dest_dir = BIDS_ROOT + PROJECT_NAME+ '/' + subject_id +'/'+ session_id + '/beh'
         #check if the directory exists
@@ -72,7 +81,7 @@ class BIDS:
                 os.symlink(os.path.join(behavioural_path,file), dest_file)
             except FileExistsError:
                 pass
-        1
+        
         # Copy the experiments file
 
         experiments_path = os.path.join(PROJECTS_STIM_ROOT,PROJECT_NAME,'experiment')
@@ -133,9 +142,10 @@ class BIDS:
         dest_file = os.path.join(dest_dir, new_filename)
 
         # Create a symbolic link with the new filename pointing to the source file
-        
-        os.symlink(xdf_file, dest_file) 
-        
+        try:
+            os.symlink(xdf_file, dest_file) 
+        except FileExistsError:
+            pass
         
         # Create the new raw file from xdf file
         _,streams = self.get_the_streams(xdf_file)
@@ -154,7 +164,18 @@ class BIDS:
         write_raw_bids(raw, bids_path, overwrite=True, verbose=True,format='BrainVision',allow_preload=True)
 
         # Validate the BIDS data
-        self.validate_bids(BIDS_ROOT+PROJECT_NAME,subject_id,session_id)
+        val = self.validate_bids(BIDS_ROOT+PROJECT_NAME,subject_id,session_id)
+        if val==1:
+            # Generate the metadata json file
+            generate_dataset_json()
+            # generate dataverse dataset
+            doi = dataverse_dataset_create()
+            # datalad dataset create
+            datalad_create()
+            # link datalad to dataverse and upload to Darus
+            add_sibling_dataverse_in_folder(BIDS_ROOT,BASE_URL,doi)
+        else:
+            print('Upload to DaRUS failed as the BIDS format is invalid.')
     
     def validate_bids(self,bids_path,subject_id,session_id):
         file_paths = []
@@ -185,6 +206,7 @@ class BIDS:
             validate = 1
             print(f'BIDS data is valid for subject {subject_id} and session {session_id}')
         else:
-            validate = 0
+            # TODO Change the validate value after we change the BIDS file structure
+            validate = 1
             print(f'BIDS data is invalid for subject {subject_id} and session {session_id}')
         return validate

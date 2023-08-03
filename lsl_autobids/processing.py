@@ -2,11 +2,9 @@ import os
 import time
 import warnings
 import sys
-from scripts import bids
-from . import BIDS_ROOT, PROJECT_NAME, PROJECTS_STIM_ROOT
-
-
-bd = bids.BIDS()
+from .bids import BIDS
+from .folder_config import BIDS_ROOT, PROJECT_NAME
+bd = BIDS()
 
 def proceesing_new_files(file_status,project_path):
     """
