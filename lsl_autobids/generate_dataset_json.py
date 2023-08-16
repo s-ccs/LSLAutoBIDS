@@ -16,7 +16,7 @@ def update_json_data(json_data, toml_data):
     json_data['datasetVersion']['metadataBlocks']['citation']['fields'][1]['value'][0]['authorName']['value'] = toml_data['Authors']['authors']
 
     # Update dataset name and email field
-    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][2]['value'][0]['datasetContactName']['value'] = toml_data['Authors']['authors']
+    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][2]['value'][0]['datasetContactNamedatasetContactName']['value'] = toml_data['Authors']['authors']
     json_data['datasetVersion']['metadataBlocks']['citation']['fields'][2]['value'][0]['datasetContactEmail']['value'] = toml_data['AuthorsContact']['email']
     # Update dsDescription field
     json_data['datasetVersion']['metadataBlocks']['citation']['fields'][3]['value'][0]['dsDescriptionValue']['value'] = toml_data['Dataset']['dataset_description']

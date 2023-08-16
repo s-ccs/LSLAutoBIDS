@@ -9,18 +9,23 @@
 
 Get started with LSLAutoBIDS by installing the package and its dependencies.
 
+## 🔰 About the package
+This package automates the conversion of xdf files to BIDS format. It also uploads the data to a dataverse. We are using the dataverse at the University of Stuttgart. The package is written in python and uses the pyxdf library to convert the xdf files to BIDS and the pyDataverse library to upload the data to the dataverse.
+
+
+## Install the package
+
+### Using PyPI
 ```
-# Using PyPI
 python -m pip install lslautobids
 ```
-
 
 ## Install dependencies
 ```
 python -m pip install -r requirements.txt
 ```
 
-## Run the package
+## Run the package [TODO]
 
 python -m scripts.main -p sampleproject
 
@@ -29,43 +34,89 @@ python -m scripts.main -p sampleproject
 
 ```
 .
-├── README.md        <- The top-level README with documentation and instructions for installing the project.
-├── data             <- Data files for conversion and saving the bids data
-│   ├── bids         <- BIDS converted data
-│   │   ├── <projectname> <- project name of the currently converted data
-│   │   │   ├── sub-01 <- subject number
-│   │   │   │   ├── ses-01 <- session name
-│   │   │   │   │   ├── eeg <- eeg data. Within this folder we have the bids files
-│   │   │   ├── sourcedata <- store the raw xdf files
-│   │   │   │   │   ├── sub-01 <- subject number
-│   │   │   │   │   ├── ses-01 <- session name
-│   │   │   │   │   │   ├── eeg <- eeg data . Within this folder we have the raw xdf file
-│   └── projects     <- folder containing the raw xdf files
-│   │   ├── <projectname> <- project name of the currently converted data
-│   │   │   ├── sub-01 <- subject number
-│   │   │   │   ├── ses-01 <- session name
-│   │   │   │   │   ├── eeg <- eeg data. Within this folder we have the raw xdf file.
-│   └── project_stimulus <- folder containing the experimental files
-│   │   ├── <projectname> <- project name of the currently converted data
-│   │   │   ├── sub-01 <- store the stimulus files for the subject
-│   │   │   ├── experiment <- store the experiment scripts for the subject.
-├── docs             <- Files containing documentation about the project
-├── scripts          <- Source code for use in this project.
-│   ├── __init__.py    <- Makes lslautobids a Python module
-│   ├── main.py        <- main script to exceute the conversion
-│   ├── upload.py      <- Functions for uploading to Dataverse
-│   ├── processing.py <- Functions for processing the data with new files
-│   └── bids.py       <- Functions relating to bids functionality
-│    └── darus_config.py       <- Functions relating to bids functionality
-├── tests            <- Unit tests
-├── .gitignore       <- Files and folders to be ignored by git
-├── requirements.txt <- The requirements file for reproducing the analysis environment.
-├── setup.py         <- makes project pip installable (pip install -e .) so src can be imported
-└── LICENSE          <- License file
+├── data
+│   ├── bids
+│   │   └── sampleproject
+│   │       ├── dataset_description.json 
+│   │       ├── participants.json 
+│   │       ├── participants.tsv 
+│   │       ├── README 
+│   │       ├── sourcedata
+│   │       │   └── sub-004
+│   │       │       └── ses-001
+│   │       │           └── eeg
+│   │       │               └── sub-004_ses-001_task-Duration_run-001_eeg_raw.xdf
+│   │       └── sub-004
+│   │           └── ses-001
+│   │               ├── beh
+│   │               │   ├── sub-004_ses-001_task-Duration_run-001_experimentalParameters.csv 
+│   │               │   ├── sub-004_ses-001_task-Duration_run-001_eyetrackingdata.edf 
+│   │               │   └── sub-004_ses-001_task-Duration_run-001_results.tsv 
+│   │               ├── eeg
+│   │               │   ├── sub-004_ses-001_task-sampleproject_channels.tsv 
+│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.eeg 
+│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.json 
+│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.vhdr 
+│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.vmrk 
+│   │               │   └── sub-004_ses-001_task-sampleproject_events.tsv 
+│   │               ├── other
+│   │               │   ├── sub-004_ses-001_task-Duration_run-001_showStimulus.m 
+│   │               │   └── sub-004_ses-001_task-Duration_run-001_showStimulus.py 
+│   │               └── sub-004_ses-001_scans.tsv 
+│   ├── projects
+│   │   └── sampleproject
+│   │       ├── last_run_log.txt
+│   │       ├── project.toml
+│   │       └── sub-004
+│   │           └── ses-001
+│   │               └── eeg
+│   │                   └── sub-004_ses-001_task-Duration_run-001_eeg.xdf
+│   └── project_stimulus
+│       └── sampleproject
+│           ├── experiment
+│           │   ├── showStimulus.m
+│           │   └── showStimulus.py
+│           └── sub-004
+│               ├── experimentalParameters.csv
+│               ├── eyetrackingdata.edf
+│               └── results.tsv
+├── docs
+│   └── about.md
+├── empty_log_file_temp.py [TEMPORARY]
+├── LICENSE
+├── lsl_autobids
+│   ├── bids.py
+│   ├── darus_config.json
+│   ├── datalad_create.py
+│   ├── dataset.json
+│   ├── dataverse_dataset_create.py
+│   ├── folder_config.py
+│   ├── generate_dataset_json.py
+│   ├── __init__.py
+│   ├── link_datalad_dataverse.py
+│   ├── main.py
+│   ├── processing.py
+├── README.md
+├── requirements.txt
+├── setup.py
+├── tests
+└── TODO.md
 ```
 
 
 
+1. The [`data`](./data/) directory has one  <PROJECT_NAME> folder for each project. Each project folder has the following structure:
+    - [`bids`](./data/bids/sampleproject/) folder contains the converted bids data files.
+    - [`projects`](./data/projects/sampleproject/) folder contains the raw xdf files.
+    - [`project_stimulus`](./data/project_stimulus/sampleproject/) folder contains the experimental files.
+More details about the directory structure can be found in the [´docs/bids_data_structure´](./docs/bids_data_structure.md) file.
+2. The [`docs`](./docs/) directory contains the documentation of the project.
+    -  [about.md](./docs/about.md) contains the description and organization of the project.
+    -  [bids_data_structure.md](./docs/bids_data_structure.md) contains the description of the directory structure of the data directory.
+
+
 ## Resources- useful
  - https://earthly.dev/blog/python-makefile/
- - https://github.com/AUSSDA/dataverse2021_automation-with-pydataverse/tree/master
+ - https://github.com/AUSSDA// 
+ - dataverse2021_automation-with-pydataverse/tree/master
+ - https://psychoinformatics-de.github.io/rdm-course/02-structuring-data/index.html

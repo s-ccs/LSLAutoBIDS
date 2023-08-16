@@ -7,7 +7,7 @@ import json
 from .folder_config import BIDS_ROOT
 
 
-def add_sibling_dataverse_in_folder(folder_path,BASE_URL,doi_id,NAME):
+def add_sibling_dataverse_in_folder(folder_path,BASE_URL,doi_id):
     try:
         # Change to the specified folder
         os.chdir(folder_path)
