@@ -2,8 +2,9 @@ import os
 import time
 import warnings
 import sys
-from .bids import BIDS
-from .folder_config import BIDS_ROOT, PROJECT_NAME
+from bids import BIDS
+from folder_config import BIDS_ROOT
+from main import PROJECT_NAME
 bd = BIDS()
 
 def proceesing_new_files(file_status,project_path):
@@ -30,7 +31,7 @@ def proceesing_new_files(file_status,project_path):
                         warnings.warn("Operation aborted. File will not be overwritten. Please check the file again!", UserWarning)
                         sys.exit()
                     elif user_response.lower() == 'y':
-                        print('Operation resumed. File will be overwritten in DaRUS with the new file....')
+                        print('Operation resumed. File will be overwritten in Dataverse with the new file....')
                         break
                     else:
                         print('Invalid response. Please enter "y" for yes or "n" for no.')
@@ -108,7 +109,7 @@ def check_for_new_files(function_path):
 def check_for_new_data(project_path):
 
     """
-    This function checks for new data by comparing the current state of the BIDS_ROOT directory with the last checked
+    This function checks for new data by comparing the current state of the PROJECT ROOT directory with the last checked
     state. If new files are found, further processing are done.
     
     """

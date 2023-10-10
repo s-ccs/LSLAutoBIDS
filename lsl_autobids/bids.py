@@ -4,13 +4,14 @@ from bids_validator import BIDSValidator
 from mne_bids import write_raw_bids, BIDSPath
 import os
 import json
-from .folder_config import PROJECT_NAME,BIDS_ROOT,PROJECTS_STIM_ROOT
-from .generate_dataset_json import main as generate_dataset_json
-from .dataverse_dataset_create import main as dataverse_dataset_create
-from .datalad_create import main as datalad_create
-from .link_datalad_dataverse import add_sibling_dataverse_in_folder
+from folder_config import BIDS_ROOT,PROJECTS_STIM_ROOT
+from main import PROJECT_NAME
+# from generate_dataset_json import main as generate_dataset_json
+# from dataverse_dataset_create import main as dataverse_dataset_create
+# from datalad_create import main as datalad_create
+# from link_datalad_dataverse import add_sibling_dataverse_in_folder
 
-with open('./lsl_autobids/darus_config.json') as f:
+with open('darus_config.json') as f:
     config = json.load(f)
     BASE_URL = config['BASE_URL']
     NAME = config['NAME']
@@ -163,19 +164,19 @@ class BIDS:
         # Write the raw data to BIDS in BrainVision format
         write_raw_bids(raw, bids_path, overwrite=True, verbose=True,format='BrainVision',allow_preload=True)
 
-        # Validate the BIDS data
-        val = self.validate_bids(BIDS_ROOT+PROJECT_NAME,subject_id,session_id)
-        if val==1:
-            # Generate the metadata json file
-            generate_dataset_json()
-            # generate dataverse dataset
-            doi = dataverse_dataset_create()
-            # datalad dataset create
-            datalad_create()
-            # link datalad to dataverse and upload to Darus
-            add_sibling_dataverse_in_folder(BIDS_ROOT,BASE_URL,doi)
-        else:
-            print('Upload to DaRUS failed as the BIDS format is invalid.')
+        # # Validate the BIDS data
+        # val = self.validate_bids(BIDS_ROOT+PROJECT_NAME,subject_id,session_id)
+        # if val==1:
+        #     # Generate the metadata json file
+        #     generate_dataset_json()
+        #     # generate dataverse dataset
+        #     doi = dataverse_dataset_create()
+        #     # datalad dataset create
+        #     datalad_create()
+        #     # link datalad to dataverse and upload to Darus
+        #     add_sibling_dataverse_in_folder(BIDS_ROOT,BASE_URL,doi)
+        # else:
+        #     print('Upload to DaRUS failed as the BIDS format is invalid.')
     
     def validate_bids(self,bids_path,subject_id,session_id):
         file_paths = []
