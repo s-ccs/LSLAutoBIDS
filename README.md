@@ -15,15 +15,52 @@ This package automates the conversion of xdf files to BIDS format. It also uploa
 
 ## Install the package
 
-### Using PyPI
+### Clone the github repository
 ```
-python -m pip install lslautobids
-```
+git clone -b working --single-branch https://github.com/s-ccs/LSLAutoBIDS.git
 
+```
 ## Install dependencies
 ```
 python -m pip install -r requirements.txt
 ```
+
+If you get an error while installing the datalad library, try installing the datalad library using the following command:
+```
+conda install -c conda-forge datalad
+```
+
+## Dataset
+
+The dataset is stored in the [data](./data/) directory. The data directory has three subdirectories:
+
+1. The raw recorded data needs to be stored in the [`data/projects/<PROJECT_NAME>`](./data/projects/) directory i.e it will typically contain the xdf files.
+2. The experimental files need to be stored in the [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directory.
+This folder contains two subfolders:
+    - [`experiment`](./data/project_stimulus/sampleproject/experiment/) folder contains the experimental files.
+    - [`sub-<SUBJECT_ID>`](./data/project_stimulus/sampleproject/sub-004/) folder contains the experimental files for each subject.
+3. The converted BIDS data needs to be stored in the [`data/bids/<PROJECT_NAME>`](./data/bids/) directory.
+
+The [`data/projects/<PROJECT_NAME>`](./data/projects/) directory has one  <PROJECT_NAME> folder for each project. Check [docs/data_organization.md](./docs/data_organization.md) for more details about the naming convention of the data.
+
+Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not created by the package. The user needs to create these directories and store the data in them. For convenience there are some sample data in the [sample_data](./sample_data/) folder.
+
+## Configuration
+
+1. Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
+
+```
+python config_info.py -p <PROJECT_NAME>
+
+```
+2. Edit the configuration file to add the project details for the project.
+
+## Run the scripts
+
+
+
+
+
 
 ## Run the package [TODO]
 

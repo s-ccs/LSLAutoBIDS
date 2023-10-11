@@ -1,6 +1,6 @@
 import argparse
 import os
-#from processing import check_for_new_data
+from processing import check_for_new_data
 #from folder_config import *
 import yaml
 
@@ -35,7 +35,6 @@ def list_directories(path):
 
 def main():
 
-    # TODO : Where do I keep the root location. Currently in folder_config.py
     # Argument parser
     argparser = argparse.ArgumentParser(description='Get the project name')
     argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
@@ -55,6 +54,8 @@ def main():
     # get the project name and check if the project exists
     project_name = args.project_name
     check_for_project(project_name,PROJECTS,PROJECT_ROOT)
+
+    # processing the data
 
 
 if __name__ == "__main__":
