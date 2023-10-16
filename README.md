@@ -57,7 +57,15 @@ python config_info.py -p <PROJECT_NAME>
 
 ## Run the scripts
 
+The processing will run in two stages:
+1. Stage 1 : Preprocessing the new files which needs to be converted into BIDS.
+In this stage information about the final files which needs to be processed are stored.
 
+#TODO : Write a xdf file format checker to check if the file is in the correct format.
+
+2. Stage 2 : Convert all the processed files into BIDS format by a cron job.
+
+```
 
 
 
