@@ -33,7 +33,7 @@ toml_content = """
 """
 
 # Define the path to the folder where you want to save the TOML file
-folder_path = './data/projects/'+project_name+'/'
+folder_path = './data/projects/'+ project_name +'/'
 
 # Define the file name for the TOML file
 file_name = 'project.toml'
@@ -51,3 +51,5 @@ with open(file_path, 'w') as toml_file:
     toml_file.write(toml_content)
 
 print(f'Template TOML file saved at: {file_path}')
+
+

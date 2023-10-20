@@ -11,5 +11,9 @@ def empty_text_file(file_path):
 
 
 # Example usage
-file_path = './data/projects/sampleproject/last_run_log.txt'  # Replace with the actual file path
-empty_text_file(file_path)
+log_file_path = './data/projects/sampleproject/last_run_log.txt'  # Replace with the actual file path
+empty_text_file(log_file_path)
+
+process_file_path = 'processed_files.txt'  
+empty_text_file(process_file_path)
+

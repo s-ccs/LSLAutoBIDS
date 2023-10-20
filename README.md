@@ -45,34 +45,63 @@ The [`data/projects/<PROJECT_NAME>`](./data/projects/) directory has one  <PROJE
 
 Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not created by the package. The user needs to create these directories and store the data in them. For convenience there are some sample data in the [sample_data](./sample_data/) folder.
 
-## Configuration
+## Configuration 
 
-1. Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
+This configuration is required to run the scripts. 
+
+1. Project Configuration : This is to be done for each new project.
+- Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
 
 ```
-python config_info.py -p <PROJECT_NAME>
+python gen_project_config.py -p <PROJECT_NAME>
 
 ```
-2. Edit the configuration file to add the project details for the project.
+- Edit the configuration file to add the project details for the project.
+
+2. Dataverse Credentials Configuration : This is to be done only once, for all the projects if the dataverse is the same.
+- Run the command below to create a configuration file template in ./lsl_autobids/ folder.
+
+```
+python gen_dv_config.py 
+
+```
+- Edit the file ./lsl_autobids/dataverse_config.json to add the dataverse details.
+
+3. Dataverse Dataset Configuration : This is to be done for each new project. It stores the data like PID, dataset id for an already created dataset.
+- Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
+
+```
+python gen_dataset_config.py -p <PROJECT_NAME>
+
+```
+
 
 ## Run the scripts
 
 The processing will run in two stages:
-1. Stage 1 : Preprocessing the new files which needs to be converted into BIDS.
+
+
+**Stage 1 :** 
+
+Preprocessing the new files which needs to be converted into BIDS.
 In this stage information about the final files which needs to be processed are stored.
+
+```
+python lsl_autobids/main.py -p <PROJECT_NAME> -c config.yaml
+
+```
+*This part will check for the new files which will be converted to BIDS and uploaded to the dataverse and store it to be processed*
 
 #TODO : Write a xdf file format checker to check if the file is in the correct format.
 
-2. Stage 2 : Convert all the processed files into BIDS format by a cron job.
+**Stage 2 :**
+
+ Convert all the processed files into BIDS format and upload it to dataverse by a cron job.
 
 ```
+python lsl_autobids/convert_to_bids_and_upload.py
 
 
-
-
-## Run the package [TODO]
-
-python -m scripts.main -p sampleproject
 
 
 ## Directory Structure

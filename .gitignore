@@ -1,7 +1,17 @@
 data/
 tests/
 TODO.md
-lsl_autobids/darus_config.json
+dataverse_config.yaml
+pyxdf
+pydataverse
+pydataverse.egg-info
+jsonschema
+
+
+# To be added later
+setup.py
+pyproject.toml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -30,6 +40,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

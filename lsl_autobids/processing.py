@@ -39,26 +39,25 @@ def proceesing_new_files(file_status,project_path,project_name,bids_root):
                     continue  
             processed_files.append(file_name_without_ext + ext)
     # Make a text file to keep track of the processed files
-    processed_files_file_path = os.path.join(project_path, "processed_files.txt")
+    processed_files_file_path = "processed_files.txt"
     with open(processed_files_file_path, 'a') as f:
         for file_name in processed_files:
-            # get the subjevt_id and session_id from the file name
+            # get the subject_id and session_id from the file name
             subject_id = file_name.split('_')[0]
             session_id = file_name.split('_')[1]
-            # Make the subject directory
-            directory = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
-            if not os.path.exists(directory):
-                os.makedirs(directory)
+            # # Make the subject directory
+            # full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
+            # if not os.path.exists(full_path):
+            #     os.makedirs(full_path)
             #get the xdf path  from the project path and the file name
             xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
             f.write(xdf_path + '\n')
-
-    # Retrieve the list of processed files from processed_files.txt
-    processed_files = []
+    
     with open(processed_files_file_path, 'r') as f:
-        for line in f:
-            processed_files.append(line.strip())
-    print(processed_files)   
+        lines = f.readlines()
+        print("Number of files processed: ", len(lines))
+
+   
 
 def check_for_new_files(function_path):
 

@@ -55,7 +55,6 @@ def main():
     config_file = args.config_file
     config = parse_yaml_file(config_file)
     project_root = config['PROJECT_ROOT']
-    PROJECTS_STIM_ROOT = config['PROJECTS_STIM_ROOT']
     bids_root = config['BIDS_ROOT']
     projects = list_directories(project_root)
     
