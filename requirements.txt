@@ -1,14 +1,15 @@
-pyxdf==1.16.4
-python==3.11.2
-mne==1.3.1
-mne_bids==0.12
+pyxdf
+mne
+mne-bids
 bids_validator
-datalad==0.9.3
 datalad-dataverse==1.0.1
 pyDataverse==0.3.1
 requests>=2.12.0
 jsonschema>=3.2.0
 toml
+pyyaml
+mnelab
+pybv
 
 
 
