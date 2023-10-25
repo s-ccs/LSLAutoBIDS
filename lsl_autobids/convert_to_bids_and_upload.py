@@ -253,12 +253,12 @@ def main():
             generate_json_file(project_root, project_name)
             print('Generating dataverse dataset........')
             
-            doi,status = create_dataverse(BASE_URL, API_TOKEN, NAME, project_path)
+            doi, status = create_dataverse(BASE_URL, API_TOKEN, NAME, project_path)
 
-            create_and_add_files_to_dataset(bids_root+project_name,status)
+            #create_and_add_files_to_dataset(bids_root+project_name,status)
 
-            print('Linking dataverse dataset with datalad')
-            add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
+            #print('Linking dataverse dataset with datalad')
+            #add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
 
 
 if __name__ == "__main__":
