@@ -87,14 +87,18 @@ def check_for_new_files(function_path):
                 last_run_time = 0.0
     except FileNotFoundError:
         last_run_time = 0.0
+
     
-    # Check for new files
+    # Check for new files except the log file
     new_files = []
     for dirpath, _, filenames in os.walk(function_path):
+        if dirpath == function_path:
+            continue
         for filename in filenames:
             file_path = os.path.join(dirpath, filename)
             if os.path.getmtime(file_path) > last_run_time:
                 new_files.append(file_path)
+
     
     # Save the current time as the last run time in the log file
     current_time = time.time()
@@ -117,11 +121,12 @@ def check_for_new_data(project_path, project_name, bids_root):
     print("Checking for new data....")
 
     # Keep a log of the files changes in a text file
-    #last_checked_file_path = './last_time_checked.txt'
+    # last_checked_file_path = './last_time_checked.txt'
 
     file_status = check_for_new_files(project_path)
     if file_status == 'No new files found':
         print('No new files detected.')
+        print("Check the processed.txt file for the list of processed files to convert to BIDS format.")
         input("Press Enter to exit...")
         sys.exit()
     else:
