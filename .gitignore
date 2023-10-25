@@ -6,7 +6,7 @@ pyxdf
 pydataverse
 pydataverse.egg-info
 jsonschema
-
+processed_files.txt
 
 # To be added later
 setup.py
