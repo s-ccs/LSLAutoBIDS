@@ -2,7 +2,7 @@ import datalad.api as dl
 
 
 def create_and_add_files_to_dataset(dataset_path,flag):
-    if flag==1:
+    if flag==0:
         # Create a new dataset
         print('Creating a new datalad dataset........')
         dl.create(dataset_path, force=True)
