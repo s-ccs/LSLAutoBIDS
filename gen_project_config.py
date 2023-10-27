@@ -1,13 +1,32 @@
 import os
 import argparse
+import yaml
+
+def parse_yaml_file(yaml_file):
+    with open(yaml_file, 'r') as file:
+        try:
+            data = yaml.safe_load(file)
+            return data
+        except yaml.YAMLError as e:
+            print(f"Error parsing YAML file: {e}")
+            return None
+
 
 argparser = argparse.ArgumentParser(description='Get the project name')
 argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
 args = argparser.parse_args()
 
-
 # get the project name and check if the project exists
 project_name = args.project_name
+
+# get the config file and parse it
+ #get the config file and parse it
+config_file = 'data_config.yaml'
+config = parse_yaml_file(config_file)
+project_root = config['PROJECT_ROOT']
+bids_root = config['BIDS_ROOT']
+project_stim_root = config['PROJECTS_STIM_ROOT']
+
 
 # Define the content for the TOML template
 toml_content = """
@@ -34,7 +53,7 @@ toml_content = """
 """
 
 # Define the path to the folder where you want to save the TOML file
-folder_path = './data/projects/'+ project_name +'/'
+folder_path = project_root + project_name +'/'
 
 # Define the file name for the TOML file
 file_name = 'lsl_autobids_project.toml'
@@ -52,5 +71,5 @@ with open(file_path, 'w') as toml_file:
     toml_file.write(toml_content)
 
 print(f'Template TOML file saved at: {file_path}')
-
+print('\nPlease edit the TOML file to customize the project metadata.')
 

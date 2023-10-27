@@ -31,11 +31,25 @@ python -m pip install -r requirements.txt
 ```
 conda install -c conda-forge datalad
 ```
-If you donot have git and git-annex installed in your Operating System, you can give the installation instructions in the [datalad handbook.]()https://handbook.datalad.org/en/latest/intro/installation.html.
+If you donot have git and git-annex installed in your Operating System, you can give the installation instructions in the [datalad handbook.](https://handbook.datalad.org/en/latest/intro/installation.html.)
 
 ## Dataset
 
 The dataset is stored in the [data](./data/) directory. The data directory has three subdirectories:
+
+> [!NOTE]  
+> This directory root locations can be changed in the [data_config.yaml](data_config.yaml). However, wherever you store the data, the projects and project_stimulus directories expect a structure of organizing each project and subject data in a specific way as described in [data_organization](docs/data_organization.md).
+
+If you use the recommended directory structure, the data directory will look like this and you can follow the following instructions to store the data and if not you can skip this part and directly go to the [configuration](#configuration) section.
+
+```
+data
+├── bids
+├── project_stimulus
+├── projects
+
+```
+Each directory will have a project name directory inside it and each project directory will have a subdirectory for each subject. The data for each subject will be stored in the subject directory.
 
 1. The raw recorded data needs to be stored in the [`data/projects/<PROJECT_NAME>`](./data/projects/) directory i.e it will typically contain the xdf files.
 2. The experimental files need to be stored in the [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directory.
@@ -46,7 +60,9 @@ This folder contains two subfolders:
 
 The [`data/projects/<PROJECT_NAME>`](./data/projects/) directory has one  <PROJECT_NAME> folder for each project. Check [docs/data_organization.md](./docs/data_organization.md) for more details about the naming convention of the data.
 
-Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not created by the package. The user needs to create these directories and store the data in them. For convenience there are some sample data in the [sample_data](./sample_data/) folder.
+Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not created by the package. The user needs to create these directories and store the data in them. 
+
+TODO: For convenience there are some sample data in the [sample_data](./sample_data/) folder.
 
 ## Configuration 
 
@@ -106,7 +122,22 @@ python lsl_autobids/convert_to_bids_and_upload.py
 
 ```
 
+# Directory Structure
 
+```
+.
+├── data                          # Data directory
+│   ├── bids                      # BIDS data directory
+│   ├── project_stimulus          # Experimental files directory
+│   ├── projects                  # Raw data directory
+├── docs                          # Documentation directory
+├── lsl_autobids                  # Package directory
+│   ├── __init__.py
+│   ├──  main.py                  # Main script to run the package
+│   ├──  processing.py            # Script to process the data
+│   ├── convert_to_bids_and_upload.py # Script to convert to BIDS and upload to dataverse
+
+│   
 ## Resources- useful
  - https://earthly.dev/blog/python-makefile/
  - https://github.com/AUSSDA// 
