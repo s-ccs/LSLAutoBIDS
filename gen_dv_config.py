@@ -1,5 +1,3 @@
-# Write a python script to generate the dataverse.json file with the help of gen_dv_config.py
-
 import yaml
 
 # Create a dictionary representing the template data with comments
