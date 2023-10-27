@@ -28,7 +28,8 @@ This folder contains the experimental and behavioral files which we also store i
         └── experiment
             └── experimental_files
         └── subject_id
-            └── behavioral_files
+            └── session_id
+                └── behavioral_files
 
 - **projectname** - any descriptive name for the project
 - **experiment** - contains the experimental files for the project. Eg: showStimulus.m, showStimulus.py
@@ -53,7 +54,7 @@ This folder contains the converted BIDS data files. Since we are storing the ent
                 └── beh
                     └── datafiles for beh
                 └── other
-                    └── datafiles for other
+                    └── datafiles for other (This needs to stored in zip format)
         └── sourcedata
             └── raw xdf files
         └── dataset_description.json
