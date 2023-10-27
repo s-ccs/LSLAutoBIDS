@@ -5,6 +5,7 @@ argparser = argparse.ArgumentParser(description='Get the project name')
 argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
 args = argparser.parse_args()
 
+
 # get the project name and check if the project exists
 project_name = args.project_name
 
@@ -36,7 +37,7 @@ toml_content = """
 folder_path = './data/projects/'+ project_name +'/'
 
 # Define the file name for the TOML file
-file_name = 'project.toml'
+file_name = 'lsl_autobids_project.toml'
 
 # Combine the folder path and file name to create the full file path
 file_path = os.path.join(folder_path, file_name)
