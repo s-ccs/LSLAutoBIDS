@@ -1,1 +1,0 @@
-./data/projects/sampleproject/sub-004/ses-001/eeg/sub-004_ses-001_task-Duration_run-001_eeg.xdf
