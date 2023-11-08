@@ -1,11 +1,22 @@
 import json
 import toml
 import os
+import yaml
 
 
 def read_toml_file(toml_file):
     with open(toml_file, 'r') as file:
         return toml.load(file)
+    
+
+def parse_yaml_file(yaml_file):
+    with open(yaml_file, 'r') as file:
+        try:
+            data = yaml.safe_load(file)
+            return data
+        except yaml.YAMLError as e:
+            print(f"Error parsing YAML file: {e}")
+            return None
 
 def update_json_data(json_data, toml_data):
     # Update title field
@@ -26,7 +37,7 @@ def update_json_data(json_data, toml_data):
 
 def generate_json_file(project_root, project_name):
     # Load data from dataset.json
-    with open('./lsl_autobids/dataset.json', 'r') as json_file:
+    with open(os.path.join(project_root, project_name, 'dataset.json'), 'r') as json_file:
         json_data = json.load(json_file)
     
     # Load data from projects.toml
