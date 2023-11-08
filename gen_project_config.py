@@ -62,14 +62,16 @@ folder_path = project_root + project_name +'/'
 
 # Define the file name for the TOML file
 file_name = 'lsl_autobids_project.toml'
+path = folder_path + file_name
+home_dir = os.path.expanduser("~")
 
 # Combine the folder path and file name to create the full file path
-file_path = os.path.join(folder_path, file_name)
+file_path = os.path.join(home_dir, path)
 
 # Check if the folder exists, and if not, create it
-if not os.path.exists(folder_path):
+if not os.path.exists(os.path.join(home_dir, folder_path)):
     print(f'Creating folder: {folder_path}')
-    os.makedirs(folder_path)
+    os.makedirs(os.path.join(home_dir, folder_path))
 
 # Write the TOML content to the file
 with open(file_path, 'w') as toml_file:
