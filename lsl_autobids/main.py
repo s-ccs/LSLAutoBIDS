@@ -1,7 +1,6 @@
 import argparse
 import os
 from processing import check_for_new_data
-#from folder_config import *
 import yaml
 
 
@@ -19,7 +18,7 @@ def check_for_project(project_name,project_root,projects,bids_root):
     Checks if the project exists in the PROJECTS list
     """
     if project_name in projects:
-        project_path = os.path.join(project_root,project_name)
+        project_path = os.path.join(os.path.expanduser("~"),project_root,project_name)
         if not os.path.exists(project_path):
             print('Project not found')
             exit() 
@@ -56,7 +55,7 @@ def main():
     config = parse_yaml_file(config_file)
     project_root = config['PROJECT_ROOT']
     bids_root = config['BIDS_ROOT']
-    projects = list_directories(project_root)
+    projects = list_directories(os.path.join(os.path.expanduser("~"),project_root))
     
 
     # get the project name and check if the project exists
