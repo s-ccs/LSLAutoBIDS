@@ -47,12 +47,12 @@ def main():
     # Argument parser
     argparser = argparse.ArgumentParser(description='Get the project name')
     argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
-    argparser.add_argument('-c','--config_file', type=str, help='Enter the path to the config file')
+    #argparser.add_argument('-c','--config_file', type=str, help='Enter the path to the config file')
     args = argparser.parse_args()
     
 
     #get the config file and parse it
-    config_file = args.config_file
+    config_file = 'data_config.yaml'
     config = parse_yaml_file(config_file)
     project_root = config['PROJECT_ROOT']
     bids_root = config['BIDS_ROOT']
