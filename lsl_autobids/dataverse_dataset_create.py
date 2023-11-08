@@ -2,11 +2,14 @@
 from pyDataverse.api import NativeApi
 from pyDataverse.models import Dataset
 from pyDataverse.utils import read_file
-import yaml
+import toml
 import json
+import tomllib
 
-def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path):
-    ds_filename = './lsl_autobids/dataset.json'
+
+
+def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project_name):
+    ds_filename = project_root + "/" + project_name + "/" +'dataset.json'
     flag=0
     
     # get the title of the dataset from the json file
@@ -32,10 +35,11 @@ def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path):
     resp1 = api.get_children(NAME,'dataverse',['datasets'])
     pids_resp1 = [id['pid'] for id in resp1]
 
-    # open the yaml file to get the dataset_id
-    with open(project_path + '/dataset_data.yaml','r') as yaml_file:
-        data = yaml.safe_load(yaml_file)
-        pid = data['pid']
+    # open the toml file to get the dataset_id
+    toml_path = project_root + "/" + project_name + "/" + "project.toml"
+    with open(toml_path, 'rb') as file:
+        data = tomllib.load(file)
+        pid = data['Dataverse']['pid']
 
         if pid in pids_resp1:
             flag=1
@@ -48,14 +52,28 @@ def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path):
             ds_pid = resp.json()['data']['persistentId']
             dataset_id = resp.json()['data']['id']
             print(f"Dataset created with pid: {ds_pid}")
-            # change the dataset_id in the yaml file
-            data['pid'] = ds_pid
-            data['dataset_id'] = dataset_id
-            data['dataset_title'] = ds_title
 
-            # write the updated yaml file
-            with open(project_path + '/dataset_data.yaml','w+') as yaml_file:
-                yaml.dump(data,yaml_file)
+
+            # Modify field
+            data['Dataverse']['dataset_title']=ds_title 
+            data['Dataverse']['pid']=ds_pid
+            data['Dataverse']['dataset_id']=dataset_id
+
+            # To use the dump function, you need to open the file in 'write' mode
+            # It did not work if I just specify file location like in load
+            f = open(toml_path,'w')
+            toml.dump(data, f)
+            f.close()
+
+
+            # # change the dataset_id in the yaml file
+            # data['pid'] = ds_pid
+            # data['dataset_id'] = dataset_id
+            # data['dataset_title'] = ds_title
+
+            # # write the updated yaml file
+            # with open(project_path + '/dataset_data.yaml','w+') as yaml_file:
+            #     yaml.dump(data,yaml_file)
             return ds_pid,flag
             
 
