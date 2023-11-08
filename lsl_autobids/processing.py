@@ -38,24 +38,65 @@ def proceesing_new_files(file_status,project_path,project_name,bids_root):
                 if user_response.lower() == 'y':
                     continue  
             processed_files.append(file_name_without_ext + ext)
-    # Make a text file to keep track of the processed files
-    processed_files_file_path = "processed_files.txt"
-    with open(processed_files_file_path, 'a') as f:
-        for file_name in processed_files:
-            # get the subject_id and session_id from the file name
-            subject_id = file_name.split('_')[0]
-            session_id = file_name.split('_')[1]
-            # # Make the subject directory
-            # full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
-            # if not os.path.exists(full_path):
-            #     os.makedirs(full_path)
-            #get the xdf path  from the project path and the file name
-            xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
-            f.write(xdf_path + '\n')
+
+    print('The processed files are {processed_files}')
+    # Generate a user prompt asking if we want to proceed to convert and upload
+    ask_convert_message = "Do you want to proceed for BIDS Conversion?"
+    while True:
+        user_response = input(ask_convert_message)
+        
+        if user_response.lower() == 'n':
+            warnings.warn("Operation aborted. Files will not be converted.", UserWarning)
+            sys.exit()
+        elif user_response.lower() == 'y':
+            print('Operation resumed. Files will be converted to BIDS.')
+            break
+        else:
+            print('Invalid response. Please enter "y" for yes or "n" for no.')
+   
+
+    for file in processed_files:
+        # get the subject id and the session id
+        subject_id = file.split('_')[0]
+        session_id = file.split('_')[1]
+        # Make the subject directory
+        full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
+        if not os.path.exists(full_path):
+            os.makedirs(full_path)
+        #get the xdf path  from the project path and the file name
+        xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
+        print(xdf_path)
+        
+
+
+
+        
+
+
+
+
+
+
+
+
+    # # Make a text file to keep track of the processed files
+    # processed_files_file_path = "processed_files.txt"
+    # with open(processed_files_file_path, 'a') as f:
+    #     for file_name in processed_files:
+    #         # get the subject_id and session_id from the file name
+    #         subject_id = file_name.split('_')[0]
+    #         session_id = file_name.split('_')[1]
+    #         # # Make the subject directory
+    #         # full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
+    #         # if not os.path.exists(full_path):
+    #         #     os.makedirs(full_path)
+    #         #get the xdf path  from the project path and the file name
+    #         xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
+    #         f.write(xdf_path + '\n')
     
-    with open(processed_files_file_path, 'r') as f:
-        lines = f.readlines()
-        print("Number of files processed: ", len(lines))
+    # with open(processed_files_file_path, 'r') as f:
+    #     lines = f.readlines()
+    #     print("Number of files processed: ", len(lines))
 
    
 
