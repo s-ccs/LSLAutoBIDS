@@ -9,6 +9,7 @@ from generate_dataset_json import generate_json_file
 from dataverse_dataset_create import create_dataverse
 from datalad_create import create_and_add_files_to_dataset
 from link_datalad_dataverse import add_sibling_dataverse_in_folder
+import toml
 
 
 
@@ -35,7 +36,7 @@ class BIDS:
         return stream_names,streams
 
 
-    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,project_name,bids_root,projects_stim_root):
+    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,project_name,bids_root,projects_stim_root,stim):
         
 
         ### COPY THE SOURCE FILES TO BIDS ###
@@ -61,57 +62,60 @@ class BIDS:
         except FileExistsError:
             pass
 
-        ### COPY THE BEHAVIOURAL FILES TO BIDS ###
-
-        # Copy the behavioral file - unique for all subjects
+      
+        if stim:
+            ### COPY THE BEHAVIOURAL FILES TO BIDS ###
+            # Copy the behavioral file - unique for all subjects
+            print('Copying the behavioural files to BIDS........')
         
-        # get the source path
-        behavioural_path = os.path.join(projects_stim_root,project_name,subject_id,session_id,'eeg')
-        # get the destination path
-        dest_dir = bids_root + project_name+ '/' + subject_id +'/'+ session_id + '/beh'
-        #check if the directory exists
-        if not os.path.exists(dest_dir):
-            os.makedirs(dest_dir)
-    
-        for file in os.listdir(behavioural_path):
-            # remove the _eeg from the file_name_without_ext
-            file_name_without_eeg = file_name_without_ext[:-4]
-            new_filename = file_name_without_eeg + '_' + file
-            dest_file = os.path.join(dest_dir, new_filename)
-            try:
-                # Create a symbolic link with the new filename pointing to the source file
-                os.symlink(os.path.join(behavioural_path,file), dest_file)
-            except FileExistsError:
-                pass
-        
-        ### COPY THE EXPERIMENT FILES TO BIDS ###
-
-        # do the following steps only if others.zip doesnot exist
-    
-        # Check if 'others.zip' exists
-        zip_file_path = os.path.join(bids_root, project_name, 'others.zip')
-
-        if not os.path.exists(zip_file_path):
-            experiments_path = os.path.join(projects_stim_root,project_name,'experiment')
+            # get the source path
+            behavioural_path = os.path.join(projects_stim_root,project_name,subject_id,session_id,'eeg')
             # get the destination path
-            dest_dir = bids_root + project_name+ '/others'
+            dest_dir = bids_root + project_name+ '/' + subject_id +'/'+ session_id + '/beh'
             #check if the directory exists
             if not os.path.exists(dest_dir):
                 os.makedirs(dest_dir)
+        
+            for file in os.listdir(behavioural_path):
+                # remove the _eeg from the file_name_without_ext
+                file_name_without_eeg = file_name_without_ext[:-4]
+                new_filename = file_name_without_eeg + '_' + file
+                dest_file = os.path.join(dest_dir, new_filename)
+                try:
+                    # Create a symbolic link with the new filename pointing to the source file
+                    os.symlink(os.path.join(behavioural_path,file), dest_file)
+                except FileExistsError:
+                    pass
+            
+            ### COPY THE EXPERIMENT FILES TO BIDS ###
 
-            for file in os.listdir(experiments_path):
-                src_file = os.path.join(experiments_path, file)
-                dest_file = os.path.join(dest_dir, file)
-                shutil.copy(src_file, dest_file)
-            # Compress the 'other' directory into a ZIP file
-            shutil.make_archive(dest_dir, 'zip', dest_dir)
+            # do the following steps only if others.zip doesnot exist
+            print('Copying the experiment files to BIDS........')
+        
+            # Check if 'others.zip' exists
+            zip_file_path = os.path.join(bids_root, project_name, 'others.zip')
 
-            #Remove the original 'other' directory
-            shutil.rmtree(dest_dir)
-        else:
-            print('Experiment files for the project already exist and hence not copied')
+            if not os.path.exists(zip_file_path):
+                experiments_path = os.path.join(projects_stim_root,project_name,'experiment')
+                # get the destination path
+                dest_dir = bids_root + project_name+ '/others'
+                #check if the directory exists
+                if not os.path.exists(dest_dir):
+                    os.makedirs(dest_dir)
 
+                for file in os.listdir(experiments_path):
+                    src_file = os.path.join(experiments_path, file)
+                    dest_file = os.path.join(dest_dir, file)
+                    shutil.copy(src_file, dest_file)
+                # Compress the 'other' directory into a ZIP file
+                shutil.make_archive(dest_dir, 'zip', dest_dir)
 
+                #Remove the original 'other' directory
+                shutil.rmtree(dest_dir)
+            else:
+                print('Experiment files for the project already exist and hence not copied')
+
+        print("Skipped copying the behvaioural and experiment files to BIDS.")
 
     def create_raw_xdf(self, xdf_path,streams):
         """
@@ -130,10 +134,10 @@ class BIDS:
         raw = read_raw_xdf(xdf_path,stream_ids=[stream_id])
         return raw
 
-    def convert_to_bids(self, xdf_path,subject_id,session_id,bids_root,project_name,project_stim_root):
+    def convert_to_bids(self, xdf_path,subject_id,session_id,bids_root,project_name,project_stim_root,stim):
         print("Converting to BIDS........") 
 
-        self.copy_source_files_to_bids(xdf_path,subject_id,session_id, project_name,bids_root,project_stim_root)
+        self.copy_source_files_to_bids(xdf_path,subject_id,session_id, project_name,bids_root,project_stim_root,stim)
 
         
         # Create the new raw file from xdf file
@@ -236,6 +240,7 @@ def main():
         bids_root = data["BIDS_ROOT"]
 
 
+
     bids = BIDS()
     for line in processed_files:
         project_name = line.split(os.path.sep)[3]
@@ -244,21 +249,34 @@ def main():
         filename = line.split(os.path.sep)[-1]
         project_path = os.path.join(project_root,project_name)
         xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',filename)
+
+        with open(project_root+"/"+ project_name + "/" + "project.toml", 'r') as file:
+            data = toml.load(file)
+            stim = data["Computers"]["stimulusComputerUsed"]     
         
-        val = bids.convert_to_bids(xdf_path,subject_id,session_id,bids_root,project_name,project_stim_root)
+        val = bids.convert_to_bids(xdf_path,subject_id,session_id,bids_root,project_name,project_stim_root,stim)
 
         if val==1:
-            print('Uploading to dataverse........')
-            print('Generating metadatafiles........')
-            generate_json_file(project_root, project_name)
-            print('Generating dataverse dataset........')
-            
-            doi, status = create_dataverse(BASE_URL, API_TOKEN, NAME, project_path)
+                            
+                print('Generating metadatafiles........')   
+                generate_json_file(project_root, project_name)
+                print('Generating dataverse dataset........')
+                
+                doi, status = create_dataverse(BASE_URL, API_TOKEN, NAME, project_path,project_root,project_name)
 
-            #create_and_add_files_to_dataset(bids_root+project_name,status)
+                create_and_add_files_to_dataset(bids_root+project_name,status)
 
-            #print('Linking dataverse dataset with datalad')
-            #add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
+                user_input = input("Do you want to upload the files to Dataverse? (y/n): ")
+
+                if user_input.lower() == "y":
+                    print('Uploading to dataverse........')
+
+                    #print('Linking dataverse dataset with datalad')
+                    #add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
+                elif user_input.lower() == "n":
+                    print("Program aborted.")
+                else:
+                    print("Invalid Input.")
 
 
 if __name__ == "__main__":
