@@ -2,12 +2,10 @@ import os
 import time
 import warnings
 import sys
-from bids import BIDS
-from folder_config import BIDS_ROOT
-from main import PROJECT_NAME
-bd = BIDS()
+#from bids import BIDS
+#bd = BIDS()
 
-def proceesing_new_files(file_status,project_path):
+def proceesing_new_files(file_status,project_path,project_name,bids_root):
     """
     Processes the new files with the ".xdf" extension, adding the file names (without "_old") to a list.
     
@@ -31,7 +29,7 @@ def proceesing_new_files(file_status,project_path):
                         warnings.warn("Operation aborted. File will not be overwritten. Please check the file again!", UserWarning)
                         sys.exit()
                     elif user_response.lower() == 'y':
-                        print('Operation resumed. File will be overwritten in Dataverse with the new file....')
+                        print('Operation resumed. File will be overwritten with the new file....')
                         break
                     else:
                         print('Invalid response. Please enter "y" for yes or "n" for no.')
@@ -40,31 +38,74 @@ def proceesing_new_files(file_status,project_path):
                 if user_response.lower() == 'y':
                     continue  
             processed_files.append(file_name_without_ext + ext)
-        
-        
-    # Loop over the processed files
-    for file_name in processed_files:
-        # get the subject_id and session_id from the file name
-        subject_id = file_name.split('_')[0]
-        session_id = file_name.split('_')[1]
-        # Make the subject directory
-        directory = BIDS_ROOT + PROJECT_NAME + '/' + subject_id + '/' + session_id + '/eeg'
-        if not os.path.exists(directory):
-            os.makedirs(directory)
 
-        # get the xdf path  from the project path and the file name
+    print('The processed files are {processed_files}')
+    # Generate a user prompt asking if we want to proceed to convert and upload
+    ask_convert_message = "Do you want to proceed for BIDS Conversion?"
+    while True:
+        user_response = input(ask_convert_message)
+        
+        if user_response.lower() == 'n':
+            warnings.warn("Operation aborted. Files will not be converted.", UserWarning)
+            sys.exit()
+        elif user_response.lower() == 'y':
+            print('Operation resumed. Files will be converted to BIDS.')
+            break
+        else:
+            print('Invalid response. Please enter "y" for yes or "n" for no.')
+   
+
+    for file in processed_files:
+        # get the subject id and the session id
+        subject_id = file.split('_')[0]
+        session_id = file.split('_')[1]
+        # Make the subject directory
+        full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
+        if not os.path.exists(full_path):
+            os.makedirs(full_path)
+        #get the xdf path  from the project path and the file name
         xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
         print(xdf_path)
-        print(subject_id[-3:])
-        bd.convert_to_bids(xdf_path,subject_id,session_id)
+        
 
+
+
+        
+
+
+
+
+
+
+
+
+    # # Make a text file to keep track of the processed files
+    # processed_files_file_path = "processed_files.txt"
+    # with open(processed_files_file_path, 'a') as f:
+    #     for file_name in processed_files:
+    #         # get the subject_id and session_id from the file name
+    #         subject_id = file_name.split('_')[0]
+    #         session_id = file_name.split('_')[1]
+    #         # # Make the subject directory
+    #         # full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
+    #         # if not os.path.exists(full_path):
+    #         #     os.makedirs(full_path)
+    #         #get the xdf path  from the project path and the file name
+    #         xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
+    #         f.write(xdf_path + '\n')
+    
+    # with open(processed_files_file_path, 'r') as f:
+    #     lines = f.readlines()
+    #     print("Number of files processed: ", len(lines))
+
+   
 
 def check_for_new_files(function_path):
 
     # TODO - Alternative way of checking for new data
     # 1. Use Watchdog to monitor the project directory for new files
     # 2. Use the time.time() function to get the current time to then check for new files.
-    # Used log filwe so that we can track the last time the script was run.
+    # Used log file so that we can track the last time the script was run.
     """
     Checks for new files in a deep folder structure since the last run.
     
@@ -87,14 +128,18 @@ def check_for_new_files(function_path):
                 last_run_time = 0.0
     except FileNotFoundError:
         last_run_time = 0.0
+
     
-    # Check for new files
+    # Check for new files except the log file
     new_files = []
     for dirpath, _, filenames in os.walk(function_path):
+        if dirpath == function_path:
+            continue
         for filename in filenames:
             file_path = os.path.join(dirpath, filename)
             if os.path.getmtime(file_path) > last_run_time:
                 new_files.append(file_path)
+
     
     # Save the current time as the last run time in the log file
     current_time = time.time()
@@ -106,7 +151,7 @@ def check_for_new_files(function_path):
     else:
         return 'No new files found'
     
-def check_for_new_data(project_path):
+def check_for_new_data(project_path, project_name, bids_root):
 
     """
     This function checks for new data by comparing the current state of the PROJECT ROOT directory with the last checked
@@ -117,11 +162,16 @@ def check_for_new_data(project_path):
     print("Checking for new data....")
 
     # Keep a log of the files changes in a text file
-    #last_checked_file_path = './last_time_checked.txt'
+    # last_checked_file_path = './last_time_checked.txt'
 
     file_status = check_for_new_files(project_path)
     if file_status == 'No new files found':
         print('No new files detected.')
+        print("Check the processed.txt file for the list of processed files to convert to BIDS format.")
+        input("Press Enter to exit...")
+        sys.exit()
     else:
         print('New files detected....')
-        proceesing_new_files(file_status,project_path)
+        proceesing_new_files(file_status,project_path, project_name, bids_root)
+
+

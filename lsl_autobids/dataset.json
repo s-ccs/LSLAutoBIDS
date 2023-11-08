@@ -19,7 +19,7 @@
                                     "typeName": "author",
                                     "multiple": false,
                                     "typeClass": "primitive",
-                                    "value": "Benedikt Ehinger, Manpa Barman"
+                                    "value": "Manpa Barman, Benedikt Ehinger"
                                 }
                             }
                         ]
@@ -34,13 +34,13 @@
                                     "typeName": "datasetContactName",
                                     "multiple": false,
                                     "typeClass": "primitive",
-                                    "value": "Benedikt Ehinger, Manpa Barman"
+                                    "value": "Manpa Barman, Benedikt Ehinger"
                                 },
                                 "datasetContactEmail": {
                                     "typeName": "datasetContactEmail",
                                     "multiple": false,
                                     "typeClass": "primitive",
-                                    "value": "st184660@stud.uni-stuttgart.de"
+                                    "value": "manpa.barman97@gmail.com"
                                 }
                             }
                         ]

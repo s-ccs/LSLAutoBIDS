@@ -15,106 +15,105 @@ This package automates the conversion of xdf files to BIDS format. It also uploa
 
 ## Install the package
 
-### Using PyPI
+### Clone the github repository
 ```
-python -m pip install lslautobids
-```
+git clone -b working --single-branch https://github.com/s-ccs/LSLAutoBIDS.git
 
+```
 ## Install dependencies
+
+It is advised to install the requirements in a seperate conda environment.s
 ```
 python -m pip install -r requirements.txt
 ```
 
-## Run the package [TODO]
+ Install the datalad library using the following command:
+```
+conda install -c conda-forge datalad
+```
+If you donot have git and git-annex installed in your Operating System, you can give the installation instructions in the [datalad handbook.](https://handbook.datalad.org/en/latest/intro/installation.html.)
 
-python -m scripts.main -p sampleproject
+## Dataset
+
+The dataset is stored in the [data](./data/) directory. The data directory has three subdirectories:
+
+> [!NOTE]  
+> This project root locations can be changed manually in the [data_config.yaml](data_config.yaml). However, wherever you store the data, the projects under the projects and the project_stimulus directories expect a structure of organizing each project and subject data as described in [data_organization](docs/data_organization.md).
+
+If you use the recommended directory structure, the data directory will look like the following and you can follow the following instructions to store the data and if not you can skip this part and directly go to the [configuration](#configuration) section.
+
+```
+data
+├── bids
+├── project_stimulus
+├── projects
+
+```
+Here './data/projects/', './data/project_stimulus/', './data/bids/' are the root project directories. Each of this root directories will have a project name directory inside it and each project directory will have a subdirectory for each subject. The data for each subject will be stored in the subject directory.
+
+1. The raw recorded data needs to be stored in the [`data/projects/<PROJECT_NAME>`](./data/projects/) directory i.e it will typically contain the xdf files.
+2. The experimental files need to be stored in the [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directory.
+This folder contains two subfolders:
+    - [`experiment`](./data/project_stimulus/sampleproject/experiment/) folder contains the experimental files.
+    - [`sub-<SUBJECT_ID>`](./data/project_stimulus/sampleproject/sub-004/) folder contains the experimental files for each subject.
+3. The converted BIDS data needs to be stored in the [`data/bids/<PROJECT_NAME>`](./data/bids/) directory.
+
+The [`data/projects/<PROJECT_NAME>`](./data/projects/) directory has one  <PROJECT_NAME> folder for each project. Check [docs/data_organization.md](./docs/data_organization.md) for more details about the naming convention of the data.
+
+Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not self generated. The user needs to create these directories and store the data in them. 
+
+TODO: For convenience there are some sample data in the [sample_data](./sample_data/) folder.
+
+## Configuration 
+
+This configuration is required to run the scripts. 
+
+1. __Project Configuration__ : This is to be done once for each new project. This store the project details like project name, project id, project description etc.
+- Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
+
+```
+python gen_project_config.py -p <PROJECT_NAME>
+
+```
+- Edit the configuration file in the projects folder to add the project details for the project.
+
+2. __Dataverse Credentials Configuration__ : This is to be done only once, for all the projects if the dataverse is the same.
+- Run the command below to create a configuration file template in folder.
+
+```
+python gen_dv_config.py 
+
+```
+- Edit the file [dataverse_config.yaml](dataverse_config.yaml) to add the dataverse details. Here the dataverse url, api token and the parent dataverse needs to be added. 
 
 
-## Directory Structure
+## Run the BIDS convertor
+
+The conversion involves checking for new files to be converted, converting the files to BIDS and uploading the data to the dataverse. 
+
+Run the following command to convert and upload the raw files.
+
+```
+python lsl_autobids/main.py -p <PROJECT_NAME> 
+
+```
+
+# Directory Structure
 
 ```
 .
-├── data
-│   ├── bids
-│   │   └── sampleproject
-│   │       ├── dataset_description.json 
-│   │       ├── participants.json 
-│   │       ├── participants.tsv 
-│   │       ├── README 
-│   │       ├── sourcedata
-│   │       │   └── sub-004
-│   │       │       └── ses-001
-│   │       │           └── eeg
-│   │       │               └── sub-004_ses-001_task-Duration_run-001_eeg_raw.xdf
-│   │       └── sub-004
-│   │           └── ses-001
-│   │               ├── beh
-│   │               │   ├── sub-004_ses-001_task-Duration_run-001_experimentalParameters.csv 
-│   │               │   ├── sub-004_ses-001_task-Duration_run-001_eyetrackingdata.edf 
-│   │               │   └── sub-004_ses-001_task-Duration_run-001_results.tsv 
-│   │               ├── eeg
-│   │               │   ├── sub-004_ses-001_task-sampleproject_channels.tsv 
-│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.eeg 
-│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.json 
-│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.vhdr 
-│   │               │   ├── sub-004_ses-001_task-sampleproject_eeg.vmrk 
-│   │               │   └── sub-004_ses-001_task-sampleproject_events.tsv 
-│   │               ├── other
-│   │               │   ├── sub-004_ses-001_task-Duration_run-001_showStimulus.m 
-│   │               │   └── sub-004_ses-001_task-Duration_run-001_showStimulus.py 
-│   │               └── sub-004_ses-001_scans.tsv 
-│   ├── projects
-│   │   └── sampleproject
-│   │       ├── last_run_log.txt
-│   │       ├── project.toml
-│   │       └── sub-004
-│   │           └── ses-001
-│   │               └── eeg
-│   │                   └── sub-004_ses-001_task-Duration_run-001_eeg.xdf
-│   └── project_stimulus
-│       └── sampleproject
-│           ├── experiment
-│           │   ├── showStimulus.m
-│           │   └── showStimulus.py
-│           └── sub-004
-│               ├── experimentalParameters.csv
-│               ├── eyetrackingdata.edf
-│               └── results.tsv
-├── docs
-│   └── about.md
-├── empty_log_file_temp.py [TEMPORARY]
-├── LICENSE
-├── lsl_autobids
-│   ├── bids.py
-│   ├── darus_config.json
-│   ├── datalad_create.py
-│   ├── dataset.json
-│   ├── dataverse_dataset_create.py
-│   ├── folder_config.py
-│   ├── generate_dataset_json.py
+├── data                          # Data directory
+│   ├── bids                      # BIDS data directory
+│   ├── project_stimulus          # Experimental files directory
+│   ├── projects                  # Raw data directory
+├── docs                          # Documentation directory
+├── lsl_autobids                  # Package directory
 │   ├── __init__.py
-│   ├── link_datalad_dataverse.py
-│   ├── main.py
-│   ├── processing.py
-├── README.md
-├── requirements.txt
-├── setup.py
-├── tests
-└── TODO.md
-```
+│   ├──  main.py                  # Main script to run the package
+│   ├──  processing.py            # Script to process the data
+│   ├── convert_to_bids_and_upload.py # Script to convert to BIDS and upload to dataverse
 
-
-
-1. The [`data`](./data/) directory has one  <PROJECT_NAME> folder for each project. Each project folder has the following structure:
-    - [`bids`](./data/bids/sampleproject/) folder contains the converted bids data files.
-    - [`projects`](./data/projects/sampleproject/) folder contains the raw xdf files.
-    - [`project_stimulus`](./data/project_stimulus/sampleproject/) folder contains the experimental files.
-More details about the directory structure can be found in the [´docs/bids_data_structure´](./docs/bids_data_structure.md) file.
-2. The [`docs`](./docs/) directory contains the documentation of the project.
-    -  [about.md](./docs/about.md) contains the description and organization of the project.
-    -  [bids_data_structure.md](./docs/bids_data_structure.md) contains the description of the directory structure of the data directory.
-
-
+│   
 ## Resources- useful
  - https://earthly.dev/blog/python-makefile/
  - https://github.com/AUSSDA// 
