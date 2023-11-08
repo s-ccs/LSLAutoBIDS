@@ -38,9 +38,9 @@ If you donot have git and git-annex installed in your Operating System, you can 
 The dataset is stored in the [data](./data/) directory. The data directory has three subdirectories:
 
 > [!NOTE]  
-> This directory root locations can be changed in the [data_config.yaml](data_config.yaml). However, wherever you store the data, the projects and project_stimulus directories expect a structure of organizing each project and subject data in a specific way as described in [data_organization](docs/data_organization.md).
+> This project root locations can be changed manually in the [data_config.yaml](data_config.yaml). However, wherever you store the data, the projects under the projects and the project_stimulus directories expect a structure of organizing each project and subject data as described in [data_organization](docs/data_organization.md).
 
-If you use the recommended directory structure, the data directory will look like this and you can follow the following instructions to store the data and if not you can skip this part and directly go to the [configuration](#configuration) section.
+If you use the recommended directory structure, the data directory will look like the following and you can follow the following instructions to store the data and if not you can skip this part and directly go to the [configuration](#configuration) section.
 
 ```
 data
@@ -49,7 +49,7 @@ data
 ├── projects
 
 ```
-Each directory will have a project name directory inside it and each project directory will have a subdirectory for each subject. The data for each subject will be stored in the subject directory.
+Here './data/projects/', './data/project_stimulus/', './data/bids/' are the root project directories. Each of this root directories will have a project name directory inside it and each project directory will have a subdirectory for each subject. The data for each subject will be stored in the subject directory.
 
 1. The raw recorded data needs to be stored in the [`data/projects/<PROJECT_NAME>`](./data/projects/) directory i.e it will typically contain the xdf files.
 2. The experimental files need to be stored in the [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directory.
@@ -60,7 +60,7 @@ This folder contains two subfolders:
 
 The [`data/projects/<PROJECT_NAME>`](./data/projects/) directory has one  <PROJECT_NAME> folder for each project. Check [docs/data_organization.md](./docs/data_organization.md) for more details about the naming convention of the data.
 
-Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not created by the package. The user needs to create these directories and store the data in them. 
+Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not self generated. The user needs to create these directories and store the data in them. 
 
 TODO: For convenience there are some sample data in the [sample_data](./sample_data/) folder.
 
@@ -68,57 +68,33 @@ TODO: For convenience there are some sample data in the [sample_data](./sample_d
 
 This configuration is required to run the scripts. 
 
-1. Project Configuration : This is to be done for each new project.
+1. __Project Configuration__ : This is to be done once for each new project. This store the project details like project name, project id, project description etc.
 - Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
 
 ```
 python gen_project_config.py -p <PROJECT_NAME>
 
 ```
-- Edit the configuration file [here](./data/projects/sampleproject/project.toml) to add the project details for the project.
+- Edit the configuration file in the projects folder to add the project details for the project.
 
-2. Dataverse Credentials Configuration : This is to be done only once, for all the projects if the dataverse is the same.
-- Run the command below to create a configuration file template in ./lsl_autobids/ folder.
+2. __Dataverse Credentials Configuration__ : This is to be done only once, for all the projects if the dataverse is the same.
+- Run the command below to create a configuration file template in folder.
 
 ```
 python gen_dv_config.py 
 
 ```
-- Edit the file [here](dataverse_config.yaml) to add the dataverse details.
-
-3. Dataverse Dataset Configuration : This is to be done for each new project. It stores the data like PID, dataset id for an already created dataset.
-- Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
-
-```
-python gen_dataset_config.py -p <PROJECT_NAME>
-
-```
+- Edit the file [dataverse_config.yaml](dataverse_config.yaml) to add the dataverse details. Here the dataverse url, api token and the parent dataverse needs to be added. 
 
 
-## Run the scripts
+## Run the BIDS convertor
 
-The processing will run in two stages:
+The conversion involves checking for new files to be converted, converting the files to BIDS and uploading the data to the dataverse. 
 
-
-**Stage 1 :** 
-
-Preprocessing the new files which needs to be converted into BIDS.
-In this stage information about the final files which needs to be processed are stored.
+Run the following command to convert and upload the raw files.
 
 ```
-python lsl_autobids/main.py -p <PROJECT_NAME> -c data_config.yaml
-
-```
-*This part will check for the new files which will be converted to BIDS and uploaded to the dataverse and store it to be processed*
-
-#TODO : Write a xdf file format checker to check if the file is in the correct format.
-
-**Stage 2 :**
-
- Convert all the processed files into BIDS format and upload it to dataverse by a cron job.
-
-```
-python lsl_autobids/convert_to_bids_and_upload.py
+python lsl_autobids/main.py -p <PROJECT_NAME> 
 
 ```
 
