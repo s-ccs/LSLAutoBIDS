@@ -50,6 +50,11 @@ toml_content = """
 
 [Subject]
   subject = ["Medicine, Health and Life Sciences","Engineering"]
+
+[Dataverse]
+  dataset_id = 123456
+  dataset_title = 'Convert XDF to BIDS'
+  pid = 'doi:10.18234'
 """
 
 # Define the path to the folder where you want to save the TOML file
@@ -71,5 +76,5 @@ with open(file_path, 'w') as toml_file:
     toml_file.write(toml_content)
 
 print(f'Template TOML file saved at: {file_path}')
-print('\nPlease edit the TOML file to customize the project metadata.')
+print('\n Please edit the TOML file to customize the project metadata.')
 
