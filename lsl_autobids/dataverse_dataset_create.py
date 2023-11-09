@@ -5,11 +5,12 @@ from pyDataverse.utils import read_file
 import toml
 import json
 import tomllib
+import os
 
 
 
 def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project_name):
-    ds_filename = project_root + "/" + project_name + "/" +'dataset.json'
+    ds_filename = os.path.join(project_root, project_name,'dataset.json')
     flag=0
     
     # get the title of the dataset from the json file
@@ -64,8 +65,7 @@ def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project
             f = open(toml_path,'w')
             toml.dump(data, f)
             f.close()
-
-
+            
             # # change the dataset_id in the yaml file
             # data['pid'] = ds_pid
             # data['dataset_id'] = dataset_id
