@@ -13,12 +13,12 @@ def parse_yaml_file(yaml_file):
             print(f"Error parsing YAML file: {e}")
             return None
 
-def check_for_project(project_name,project_root,projects,bids_root):
+def check_for_project(project_name,project_root,projects,bids_root,project_stim_root):
     """
     Checks if the project exists in the PROJECTS list
     """
     if project_name in projects:
-        project_path = os.path.join(os.path.expanduser("~"),project_root,project_name)
+        project_path = os.path.join(project_root,project_name)
         if not os.path.exists(project_path):
             print('Project not found')
             exit() 
@@ -27,7 +27,7 @@ def check_for_project(project_name,project_root,projects,bids_root):
         user_input = input("Do you want to check for the data in the project? (y/n): ")
 
         if user_input.lower() == "y":
-            check_for_new_data(project_path,project_name, bids_root)
+            check_for_new_data(project_root,project_name, bids_root,project_stim_root)
         elif user_input.lower() == "n":
             print("Program aborted.")
         else:
@@ -53,14 +53,15 @@ def main():
     #get the config file and parse it
     config_file = 'data_config.yaml'
     config = parse_yaml_file(config_file)
-    project_root = config['PROJECT_ROOT']
-    bids_root = config['BIDS_ROOT']
-    projects = list_directories(os.path.join(os.path.expanduser("~"),project_root))
+    project_root = os.path.join(os.path.expanduser("~"),config['PROJECT_ROOT'])
+    bids_root = os.path.join(os.path.expanduser("~"),config['BIDS_ROOT'])
+    project_stim_root = os.path.join(os.path.expanduser("~"),config['PROJECTS_STIM_ROOT'])
+    projects = list_directories(project_root)
     
 
     # get the project name and check if the project exists
     project_name = args.project_name
-    check_for_project(project_name,project_root, projects, bids_root)
+    check_for_project(project_name,project_root, projects, bids_root,project_stim_root)
 
 
 
