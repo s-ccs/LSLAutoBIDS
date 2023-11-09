@@ -3,13 +3,14 @@ from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
 from mne_bids import write_raw_bids, BIDSPath
 import os
-import yaml
 import shutil
 from generate_dataset_json import generate_json_file
 from dataverse_dataset_create import create_dataverse
 from datalad_create import create_and_add_files_to_dataset
 from link_datalad_dataverse import add_sibling_dataverse_in_folder
 import toml
+import yaml
+import sys
 
 
 
@@ -41,7 +42,7 @@ class BIDS:
 
         ### COPY THE SOURCE FILES TO BIDS ###
         # Get the source file name without the extension
-        file_name = filename = xdf_file.split(os.path.sep)[-1]
+        file_name = xdf_file.split(os.path.sep)[-1]
         file_name_without_ext, ext = os.path.splitext(file_name)
     
         
@@ -49,7 +50,7 @@ class BIDS:
         new_filename = file_name_without_ext + '_raw' + ext
         
         # Destination path for the raw file
-        dest_dir = bids_root + project_name + '/sourcedata/' + subject_id + '/' + session_id + '/eeg'
+        dest_dir = os.path.join(bids_root , project_name , 'sourcedata' , subject_id , session_id , 'eeg')
 
         #check if the directory exists
         if not os.path.exists(dest_dir):
@@ -71,7 +72,7 @@ class BIDS:
             # get the source path
             behavioural_path = os.path.join(projects_stim_root,project_name,subject_id,session_id,'eeg')
             # get the destination path
-            dest_dir = bids_root + project_name+ '/' + subject_id +'/'+ session_id + '/beh'
+            dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
             #check if the directory exists
             if not os.path.exists(dest_dir):
                 os.makedirs(dest_dir)
@@ -98,7 +99,7 @@ class BIDS:
             if not os.path.exists(zip_file_path):
                 experiments_path = os.path.join(projects_stim_root,project_name,'experiment')
                 # get the destination path
-                dest_dir = bids_root + project_name+ '/others'
+                dest_dir = os.path.join(bids_root , project_name, 'others')
                 #check if the directory exists
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
@@ -210,20 +211,21 @@ class BIDS:
     
 # Convert the XDF file to BIDS
 
-def main():
+def bids_process_and_upload(processed_files, bids_root, project_root, project_name, project_stim_root):
+    
 
     # argparser = argparse.ArgumentParser(description='Get the project name')
     # argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
     
     # project_name = argparser.parse_args().project_name
-    processed_files_file_path = 'processed_files.txt'
+    # processed_files_file_path = 'processed_files.txt'
 
 
-    # Retrieve the list of processed files from processed_files.txt
-    processed_files = []
-    with open(processed_files_file_path, 'r') as f:
-        for line in f:
-            processed_files.append(line.strip())
+    # # Retrieve the list of processed files from processed_files.txt
+    # processed_files = []
+    # with open(processed_files_file_path, 'r') as f:
+    #     for line in f:
+    #         processed_files.append(line.strip())
 
     # Get the contents of the dataverse_config.yaml file
     with open("dataverse_config.yaml", "r") as yaml_file:
@@ -231,26 +233,18 @@ def main():
         BASE_URL = data["BASE_URL"]
         API_TOKEN = data["API_TOKEN"]
         NAME = data["PARENT_DATAVERSE_NAME"]
-    
-    # Get the contents of data_config.yaml file
-    with open("data_config.yaml", "r") as yaml_file:
-        data = yaml.safe_load(yaml_file)
-        project_stim_root= data["PROJECTS_STIM_ROOT"]
-        project_root = data["PROJECT_ROOT"]
-        bids_root = data["BIDS_ROOT"]
-
 
 
     bids = BIDS()
     for line in processed_files:
-        project_name = line.split(os.path.sep)[3]
-        subject_id = line.split(os.path.sep)[4]
-        session_id = line.split(os.path.sep)[5]
+        subject_id = file.split('_')[0]
+        session_id = file.split('_')[1]
         filename = line.split(os.path.sep)[-1]
         project_path = os.path.join(project_root,project_name)
-        xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',filename)
+        xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
+        toml_path = os.path.join(project_root,project_name,'project.toml')
 
-        with open(project_root+"/"+ project_name + "/" + "project.toml", 'r') as file:
+        with open(toml_path, 'r') as file:
             data = toml.load(file)
             stim = data["Computers"]["stimulusComputerUsed"]     
         
@@ -277,8 +271,11 @@ def main():
                     print("Program aborted.")
                 else:
                     print("Invalid Input.")
+        else:
+            print("Program is aborted as all BIDS files are not validated")
+            file = os.path.join(project_path,"last_run_log.txt")
+            with open(file, 'w') as file:
+                file.truncate(0)
+            sys.exit()
 
-
-if __name__ == "__main__":
-    main()
 
