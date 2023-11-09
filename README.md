@@ -17,7 +17,7 @@ This package automates the conversion of xdf files to BIDS format. It also uploa
 
 ### Clone the github repository
 ```
-git clone -b working --single-branch https://github.com/s-ccs/LSLAutoBIDS.git
+git clone https://github.com/s-ccs/LSLAutoBIDS.git
 
 ```
 ## Install dependencies
