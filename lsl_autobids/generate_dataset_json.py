@@ -47,7 +47,7 @@ def generate_json_file(project_root, project_name):
     updated_json_data = update_json_data(json_data, toml_data)
 
     # Save the updated JSON data back to dataset.json
-    with open('./lsl_autobids/dataset.json', 'w') as json_file:
+    with open(os.path.join(project_root, project_name, 'dataset.json'), 'w') as json_file:
         json.dump(updated_json_data, json_file, indent=4)
 
     print("Generated dataset.json file.")

@@ -2,10 +2,9 @@ import os
 import time
 import warnings
 import sys
-#from bids import BIDS
-#bd = BIDS()
+from convert_to_bids_and_upload import  bids_process_and_upload
 
-def proceesing_new_files(file_status,project_path,project_name,bids_root):
+def proceesing_new_files(file_status,project_root,project_name,bids_root, project_stim_root):
     """
     Processes the new files with the ".xdf" extension, adding the file names (without "_old") to a list.
     
@@ -38,8 +37,10 @@ def proceesing_new_files(file_status,project_path,project_name,bids_root):
                 if user_response.lower() == 'y':
                     continue  
             processed_files.append(file_name_without_ext + ext)
+    print("The processed files are: \n")
+    print(processed_files)
 
-    print('The processed files are {processed_files}')
+    project_path = os.path.join(project_root,project_name)
     # Generate a user prompt asking if we want to proceed to convert and upload
     ask_convert_message = "Do you want to proceed for BIDS Conversion?"
     while True:
@@ -47,6 +48,9 @@ def proceesing_new_files(file_status,project_path,project_name,bids_root):
         
         if user_response.lower() == 'n':
             warnings.warn("Operation aborted. Files will not be converted.", UserWarning)
+            file = os.path.join(project_path,"last_run_log.txt")
+            with open(file, 'w') as file:
+                file.truncate(0)
             sys.exit()
         elif user_response.lower() == 'y':
             print('Operation resumed. Files will be converted to BIDS.')
@@ -54,29 +58,20 @@ def proceesing_new_files(file_status,project_path,project_name,bids_root):
         else:
             print('Invalid response. Please enter "y" for yes or "n" for no.')
    
+    bids_process_and_upload(processed_files, bids_root, project_root, project_name, project_stim_root)
 
-    for file in processed_files:
-        # get the subject id and the session id
-        subject_id = file.split('_')[0]
-        session_id = file.split('_')[1]
-        # Make the subject directory
-        full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
-        if not os.path.exists(full_path):
-            os.makedirs(full_path)
-        #get the xdf path  from the project path and the file name
-        xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
-        print(xdf_path)
+    # for file in processed_files:
+    #     # get the subject id and the session id
+    #     subject_id = file.split('_')[0]
+    #     session_id = file.split('_')[1]
+    #     # Make the subject directory
+    #     full_path = os.path.join(bids_root, project_name , subject_id , session_id ,'eeg')
+    #     if not os.path.exists(full_path):
+    #         os.makedirs(full_path)
+    #     #get the xdf path  from the project path and the file name
+    #     xdf_path = os.path.join(project_path, subject_id, session_id,"eeg",file_name)
+    #     # convert the xdf file to BIDS
         
-
-
-
-        
-
-
-
-
-
-
 
 
     # # Make a text file to keep track of the processed files
@@ -151,7 +146,7 @@ def check_for_new_files(function_path):
     else:
         return 'No new files found'
     
-def check_for_new_data(project_path, project_name, bids_root):
+def check_for_new_data(project_root, project_name, bids_root, project_stim_root):
 
     """
     This function checks for new data by comparing the current state of the PROJECT ROOT directory with the last checked
@@ -163,15 +158,15 @@ def check_for_new_data(project_path, project_name, bids_root):
 
     # Keep a log of the files changes in a text file
     # last_checked_file_path = './last_time_checked.txt'
+    project_path = os.path.join(project_root,project_name)
 
     file_status = check_for_new_files(project_path)
     if file_status == 'No new files found':
         print('No new files detected.')
-        print("Check the processed.txt file for the list of processed files to convert to BIDS format.")
         input("Press Enter to exit...")
         sys.exit()
     else:
         print('New files detected....')
-        proceesing_new_files(file_status,project_path, project_name, bids_root)
+        proceesing_new_files(file_status,project_root, project_name, bids_root,project_stim_root)
 
 
