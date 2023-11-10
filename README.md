@@ -22,7 +22,15 @@ git clone https://github.com/s-ccs/LSLAutoBIDS.git
 ```
 ## Install dependencies
 
-It is advised to install the requirements in a seperate conda environment.s
+It is advised to install the requirements in a seperate conda environments.
+
+> [!NOTE]  
+> If you are using conda, you can create a new conda environment using the following command and activate it.
+```
+conda create -n <ENV_NAME> python=3.8
+conda activate <ENV_NAME>
+```
+Install the requirements using the following command inside the conda environment.
 ```
 python -m pip install -r requirements.txt
 ```
@@ -34,39 +42,44 @@ conda install -c conda-forge datalad
 If you donot have git and git-annex installed in your Operating System, you can give the installation instructions in the [datalad handbook.](https://handbook.datalad.org/en/latest/intro/installation.html.)
 
 ## Dataset
-
-The dataset is stored in the [data](./data/) directory. The data directory has three subdirectories:
+Dataset refers to the recorded eeg data in the xdf format.
 
 > [!NOTE]  
-> This project root locations can be changed manually in the [data_config.yaml](data_config.yaml). However, wherever you store the data, the projects under the projects and the project_stimulus directories expect a structure of organizing each project and subject data as described in [data_organization](docs/data_organization.md).
+> This dataset root locations can be changed manually in the [data_root_config.yaml](data_root_config.yaml). However, wherever you store the data, the projects directories expect a structure of organizing each project and subject data as described in [data_organization](docs/data_organization.md) and it is REQUIRED for the conversion scripts to run successfully.
 
-If you use the recommended directory structure, the data directory will look like the following and you can follow the following instructions to store the data and if not you can skip this part and directly go to the [configuration](#configuration) section.
+For convenience, we have provided a recommended directory structure for storing the data. The following part of the section describes the recommended directory structure for storing the data. You can directory skip to the [configuration](#configuration) section if you are not following the recommended directory structure.
 
+> [!IMPORTANT]
+> The recommended directory structure is not self generated. The user needs to create the directories and store the recorded and stimulus data in them.
+
+The dataset (both recorded and converted) is stored in the parent `data` directory inside the `LSLAutoBIDS` directory. The `data` directory has three subdirectories:
 ```
 data
-├── bids
-├── project_stimulus
-├── projects
+├── bids                  # Converted BIDS data
+├── project_stimulus      # Experimental files
+├── projects              # Raw data
 
 ```
-Here './data/projects/', './data/project_stimulus/', './data/bids/' are the root project directories. Each of this root directories will have a project name directory inside it and each project directory will have a subdirectory for each subject. The data for each subject will be stored in the subject directory.
+This `data` directory can be in the current project or home directory as per choice.
 
-1. The raw recorded data needs to be stored in the [`data/projects/<PROJECT_NAME>`](./data/projects/) directory i.e it will typically contain the xdf files.
-2. The experimental files need to be stored in the [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directory.
+Here `./data/projects/`, `./data/project_stimulus/`, `./data/bids/` are the root project directories. Each of this root directories will have a project name directory inside it and each project directory will have a subdirectory for each subject. The data for each subject will be stored in the subject directory.
+
+1. The raw recorded data needs to be stored in the `data/projects/<PROJECT_NAME>` directory i.e it will typically contain the xdf files.
+2. The experimental files need to be stored in the `data/project_stimulus/<PROJECT_NAME>` directory.
 This folder contains two subfolders:
-    - [`experiment`](./data/project_stimulus/sampleproject/experiment/) folder contains the experimental files.
-    - [`sub-<SUBJECT_ID>`](./data/project_stimulus/sampleproject/sub-004/) folder contains the experimental files for each subject.
-3. The converted BIDS data needs to be stored in the [`data/bids/<PROJECT_NAME>`](./data/bids/) directory.
+    - `experiment` folder contains the experimental files.
+    - `sub-<SUBJECT_ID>`folder contains the experimental files for each subject.
+3. The converted BIDS data needs to be stored in the `data/bids/<PROJECT_NAME>` directory.
 
-The [`data/projects/<PROJECT_NAME>`](./data/projects/) directory has one  <PROJECT_NAME> folder for each project. Check [docs/data_organization.md](./docs/data_organization.md) for more details about the naming convention of the data.
+The `data/projects/<PROJECT_NAME>` directory has one  <PROJECT_NAME> folder for each project. Check [docs/data_organization.md](./docs/data_organization.md) for more details about the naming convention of the data.
 
-Note: The [`data/projects/<PROJECT_NAME>`](./data/projects/) and [`data/project_stimulus/<PROJECT_NAME>`](./data/project_stimulus/) directories are not self generated. The user needs to create these directories and store the data in them. 
+Note: The `data/projects/<PROJECT_NAME>` and `data/project_stimulus/<PROJECT_NAME>`directories are not self generated. The user needs to create these directories and store the data in them. 
 
 TODO: For convenience there are some sample data in the [sample_data](./sample_data/) folder.
 
 ## Configuration 
 
-This configuration is required to run the scripts. 
+This configuration is required to run the scripts. This scripts are to run from inside the `LSLAutoBIDS` directory.
 
 1. __Project Configuration__ : This is to be done once for each new project. This store the project details like project name, project id, project description etc.
 - Run the command below to create a configuration file template in ./data/projects/<PROJECT_NAME>/ folder.
