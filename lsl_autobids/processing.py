@@ -112,7 +112,7 @@ def check_for_new_files(function_path):
     """
     # Get the path of the log file
     log_file_path = os.path.join(function_path, "last_run_log.txt")
-    
+    print(function_path)
     # Retrieve the last run time from the log file
     try:
         with open(log_file_path, 'r') as f:

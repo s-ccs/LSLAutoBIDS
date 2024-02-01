@@ -37,7 +37,7 @@ def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project
     pids_resp1 = [id['pid'] for id in resp1]
 
     # open the toml file to get the dataset_id
-    toml_path = project_root + "/" + project_name + "/" + "project.toml"
+    toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
     with open(toml_path, 'rb') as file:
         data = tomllib.load(file)
         pid = data['Dataverse']['pid']

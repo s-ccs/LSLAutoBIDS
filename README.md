@@ -37,9 +37,9 @@ python -m pip install -r requirements.txt
 
  Install the datalad library using the following command:
 ```
-conda install -c conda-forge datalad
+conda install -c conda-forge datalad=0.18.4
 ```
-If you donot have git and git-annex installed in your Operating System, you can give the installation instructions in the [datalad handbook.](https://handbook.datalad.org/en/latest/intro/installation.html.)
+If you donot have git and git-annex installed in your Operating System, you can install it seperately using the [datalad-installer](https://github.com/datalad/datalad-installer).
 
 ## Dataset
 Dataset refers to the recorded eeg data in the xdf format.
@@ -75,7 +75,7 @@ The `data/projects/<PROJECT_NAME>` directory has one  <PROJECT_NAME> folder for 
 
 Note: The `data/projects/<PROJECT_NAME>` and `data/project_stimulus/<PROJECT_NAME>`directories are not self generated. The user needs to create these directories and store the data in them. 
 
-TODO: For convenience there are some sample data in the [sample_data](./sample_data/) folder.
+TODO: For convenience there are some sample data in the [sample](./sample/) folder. You can copy the sample data to the `data` directory and run the scripts to see how the scripts work.
 
 ## Configuration 
 
@@ -88,7 +88,7 @@ This configuration is required to run the scripts. This scripts are to run from 
 python gen_project_config.py -p <PROJECT_NAME>
 
 ```
-- Edit the configuration file in the projects folder to add the project details for the project.
+- Edit the configuration file in the projects/<PROJECT_NAME> folder to add the project details for the project.
 
 2. __Dataverse Credentials Configuration__ : This is to be done only once, for all the projects if the dataverse is the same.
 - Run the command below to create a configuration file template in folder.

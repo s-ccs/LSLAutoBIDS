@@ -70,7 +70,7 @@ class BIDS:
             print('Copying the behavioural files to BIDS........')
         
             # get the source path
-            behavioural_path = os.path.join(projects_stim_root,project_name,subject_id,session_id,'eeg')
+            behavioural_path = os.path.join(projects_stim_root,project_name,subject_id,session_id)
             # get the destination path
             dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
             #check if the directory exists
@@ -159,7 +159,7 @@ class BIDS:
 
         print("Conversion to BIDS complete.")
 
-        print(' Validating the BIDS data........')
+        # print(' Validating the BIDS data........')
         # Validate the BIDS data
         val = self.validate_bids(bids_root+project_name,subject_id,session_id)
         return val
@@ -236,13 +236,13 @@ def bids_process_and_upload(processed_files, bids_root, project_root, project_na
 
 
     bids = BIDS()
-    for line in processed_files:
+    for file in processed_files:
         subject_id = file.split('_')[0]
         session_id = file.split('_')[1]
-        filename = line.split(os.path.sep)[-1]
+        filename = file.split(os.path.sep)[-1]
         project_path = os.path.join(project_root,project_name)
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
-        toml_path = os.path.join(project_root,project_name,'project.toml')
+        toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
 
         with open(toml_path, 'r') as file:
             data = toml.load(file)
@@ -265,8 +265,8 @@ def bids_process_and_upload(processed_files, bids_root, project_root, project_na
                 if user_input.lower() == "y":
                     print('Uploading to dataverse........')
 
-                    #print('Linking dataverse dataset with datalad')
-                    #add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
+                    print('Linking dataverse dataset with datalad')
+                    add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
                 elif user_input.lower() == "n":
                     print("Program aborted.")
                 else:

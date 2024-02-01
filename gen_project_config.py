@@ -21,7 +21,7 @@ project_name = args.project_name
 
 # get the config file and parse it
  #get the config file and parse it
-config_file = 'data_config.yaml'
+config_file = 'data_root_config.yaml'
 config = parse_yaml_file(config_file)
 project_root = config['PROJECT_ROOT']
 bids_root = config['BIDS_ROOT']
@@ -33,6 +33,7 @@ toml_content = """
 # This is the project configuration file - This configuration can be customized for each project
 [Authors]
   authors = "John Doe, Lina Doe"
+  affiliation = "University of Stuttgart, Germany"
 [AuthorsContact]
   email = "john@gmail.com"
 [Dataset]
@@ -61,12 +62,11 @@ toml_content = """
 folder_path = project_root + project_name +'/'
 
 # Define the file name for the TOML file
-file_name = 'lsl_autobids_project.toml'
-path = folder_path + file_name
+file_name = project_name + '_config.toml'
 home_dir = os.path.expanduser("~")
 
 # Combine the folder path and file name to create the full file path
-file_path = os.path.join(home_dir, path)
+file_path = os.path.join(home_dir, folder_path,file_name)
 
 # Check if the folder exists, and if not, create it
 if not os.path.exists(os.path.join(home_dir, folder_path)):
