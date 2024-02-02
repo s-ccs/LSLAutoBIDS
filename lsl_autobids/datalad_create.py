@@ -1,4 +1,5 @@
 import datalad.api as dl
+import os
 
 
 def create_and_add_files_to_dataset(dataset_path,flag):
@@ -7,6 +8,8 @@ def create_and_add_files_to_dataset(dataset_path,flag):
         print('Creating a new datalad dataset........')
         dl.create(dataset_path, force=True)
     # Commit changes
+    # Change to dataset path
+    os.chdir(dataset_path)
     print('Committing current changes........')
-    dl.save(dataset_path, message="First BIDS upload test")
+    dl.save('.', message="First BIDS upload test")
 

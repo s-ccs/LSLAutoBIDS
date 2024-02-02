@@ -187,11 +187,18 @@ class BIDS:
             
                 #ignore the files starting with . (hidden files)
                 if file.startswith('.'):
+                    continue
+                #ignore the .git directory altogether
+                if '.git' in file_path:
+                    continue
+
+                if os.path.basename(root).startswith('.'):
                     continue               
                 if root == root_directory:
 
                     # Validate BIDS for files in the root directory
                     res = BIDSValidator().is_bids(file)
+            
                 else:
                     # Modify file path to be relative to the root directory
                     relative_path = os.path.relpath(file_path, root_directory)
