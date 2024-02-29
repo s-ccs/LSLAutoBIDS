@@ -1,7 +1,9 @@
 import argparse
 import os
-from processing import check_for_new_data
+# from processing import check_for_new_data
 import yaml
+import tomllib
+import toml
 
 
 def parse_yaml_file(yaml_file):
@@ -51,7 +53,7 @@ def main():
     
 
     #get the config file and parse it
-    config_file = 'data_root_config.yaml'
+    config_file = 'config/data_root_config.yaml'
     config = parse_yaml_file(config_file)
     project_root = os.path.join(os.path.expanduser("~"),config['PROJECT_ROOT'])
     bids_root = os.path.join(os.path.expanduser("~"),config['BIDS_ROOT'])
@@ -61,6 +63,14 @@ def main():
 
     # get the project name and check if the project exists
     project_name = args.project_name
+    project_toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
+    with open(project_toml_path, 'rb') as file:
+        data = tomllib.load(file)
+        data['Dataset']['title'] = project_name
+        f = open(project_toml_path,'w')
+        toml.dump(data, f)
+        f.close()
+
     check_for_project(project_name,project_root, projects, bids_root,project_stim_root)
 
 

@@ -11,5 +11,5 @@ def create_and_add_files_to_dataset(dataset_path,flag):
     # Change to dataset path
     os.chdir(dataset_path)
     print('Committing current changes........')
-    dl.save('.', message="First BIDS upload test")
+    dl.save(path = '.', message="First BIDS upload test")
 
