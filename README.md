@@ -27,7 +27,7 @@ It is advised to install the requirements in a seperate conda environments.
 > [!NOTE]  
 > If you are using conda, you can create a new conda environment using the following command and activate it.
 ```
-conda create -n <ENV_NAME> python=3.8
+conda create -n <ENV_NAME> 
 conda activate <ENV_NAME>
 ```
 Install the requirements using the following command inside the conda environment.
@@ -37,7 +37,7 @@ python -m pip install -r requirements.txt
 
  Install the datalad library using the following command:
 ```
-conda install -c conda-forge datalad=0.18.4
+conda install -c conda-forge datalad
 ```
 If you donot have git and git-annex installed in your Operating System, you can install it seperately using the [datalad-installer](https://github.com/datalad/datalad-installer).
 
@@ -77,6 +77,8 @@ Note: The `data/projects/<PROJECT_NAME>` and `data/project_stimulus/<PROJECT_NAM
 
 TODO: For convenience there are some sample data in the [sample](./sample/) folder. You can copy the sample data to the `data` directory and run the scripts to see how the scripts work.
 
+
+
 ## Configuration 
 
 This configuration is required to run the scripts. This scripts are to run from inside the `LSLAutoBIDS` directory.
@@ -94,9 +96,10 @@ python gen_project_config.py -p <PROJECT_NAME>
 - Run the command below to create a configuration file template in folder.
 
 ```
-python gen_dv_config.py 
+python gen_dv_config.py -p config_path
 
 ```
+The p
 - Edit the file [dataverse_config.yaml](dataverse_config.yaml) to add the dataverse details. Here the dataverse url, api token and the parent dataverse needs to be added. 
 
 

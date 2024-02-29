@@ -8,6 +8,7 @@ from generate_dataset_json import generate_json_file
 from dataverse_dataset_create import create_dataverse
 from datalad_create import create_and_add_files_to_dataset
 from link_datalad_dataverse import add_sibling_dataverse_in_folder
+from upload_to_dataverse import push_files_to_dataverse
 import toml
 import yaml
 import sys
@@ -274,6 +275,11 @@ def bids_process_and_upload(processed_files, bids_root, project_root, project_na
 
                     print('Linking dataverse dataset with datalad')
                     add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
+
+                    print('Pushing files to dataverse........')
+                    # Push the files to dataverse
+                    push_files_to_dataverse(); 
+
                 elif user_input.lower() == "n":
                     print("Program aborted.")
                 else:
