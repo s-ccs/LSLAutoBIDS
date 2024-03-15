@@ -29,7 +29,9 @@ args = argparser.parse_args()
 # Specify the filename for the YAML file
 config_path =args.configpath 
 
+
 # Check if the config file exists, if yes, then ask the user permission to view the fields of the yaml file and ask if they want to overwrite the file
+## HANDLE THE CASE NO SITUATION and ask repetedly until the user gives a valid input
 try:
     with open(config_path, "r") as template_file:
         print(f"The file '{config_path}' already exists.")
@@ -43,7 +45,7 @@ try:
         print("Do you want to overwrite the file? (yes/no): ")
         overwrite = input()
         if overwrite.lower() == "yes":
-            print("The file will be overwritten.")
+            print("The file is overwritten.")
         else:
             print("The file will not be overwritten.")
             exit()

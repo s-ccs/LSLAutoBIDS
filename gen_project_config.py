@@ -21,7 +21,7 @@ project_name = args.project_name
 
 # get the config file and parse it
  #get the config file and parse it
-config_file = 'data_root_config.yaml'
+config_file = os.path.join('config','config.yaml')
 config = parse_yaml_file(config_file)
 project_root = config['PROJECT_ROOT']
 bids_root = config['BIDS_ROOT']
@@ -55,11 +55,11 @@ toml_content = """
 [Dataverse]
   dataset_id = 123456
   dataset_title = 'Convert XDF to BIDS'
-  pid = 'doi:10.18234'
+  pid = ' '
 """
 
 # Define the path to the folder where you want to save the TOML file
-folder_path = project_root + project_name +'/'
+folder_path = os.path.join(project_root, project_name)
 
 # Define the file name for the TOML file
 file_name = project_name + '_config.toml'
