@@ -60,7 +60,11 @@ class BIDS:
         
         # Create a symbolic link with the new filename pointing to the source file
         try:
-            os.symlink(xdf_file, dest_file) 
+            # os.symlink(xdf_file, dest_file) 
+            # Hardlink
+            # os.link(xdf_file, dest_file)
+            # Directly copy the file
+            shutil.copy(xdf_file, dest_file)
         except FileExistsError:
             pass
 
@@ -85,7 +89,11 @@ class BIDS:
                 dest_file = os.path.join(dest_dir, new_filename)
                 try:
                     # Create a symbolic link with the new filename pointing to the source file
-                    os.symlink(os.path.join(behavioural_path,file), dest_file)
+                    # os.symlink(os.path.join(behavioural_path,file), dest_file)
+                    #  os.link(os.path.join(behavioural_path, file), dest_file)
+                    
+                    # Directly copy the file
+                     shutil.copy(os.path.join(behavioural_path, file), dest_file)
                 except FileExistsError:
                     pass
             
@@ -156,7 +164,7 @@ class BIDS:
                             extension='.vhdr')
         
         # Write the raw data to BIDS in BrainVision format
-        write_raw_bids(raw, bids_path, overwrite=True, verbose=True,format='BrainVision',allow_preload=True)
+        write_raw_bids(raw, bids_path, overwrite=True, verbose=True,format='BrainVision',symlink = False, allow_preload=True)
 
         print("Conversion to BIDS complete.")
 
@@ -236,7 +244,7 @@ def bids_process_and_upload(processed_files, bids_root, project_root, project_na
     #         processed_files.append(line.strip())
 
     # Get the contents of the dataverse_config.yaml file
-    with open("dataverse_config.yaml", "r") as yaml_file:
+    with open("./config/config.yaml", "r") as yaml_file:
         data = yaml.safe_load(yaml_file)
         BASE_URL = data["BASE_URL"]
         API_TOKEN = data["API_TOKEN"]
