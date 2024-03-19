@@ -53,7 +53,10 @@ def main():
     
 
     #get the config file and parse it
-    config_file = './config/config.yaml'
+    with open('./config_info.yaml') as f:
+        data = yaml.safe_load(f)
+    config_file = data['CONFIG_PATH']
+
     config = parse_yaml_file(config_file)
     project_root = os.path.join(os.path.expanduser("~"),config['PROJECT_ROOT'])
     bids_root = os.path.join(os.path.expanduser("~"),config['BIDS_ROOT'])
