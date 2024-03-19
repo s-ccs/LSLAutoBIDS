@@ -1,11 +1,23 @@
 import yaml
 import os
 import argparse
+
+
+def parse_yaml_file(yaml_file):
+    with open(yaml_file, 'r') as file:
+        try:
+            data = yaml.safe_load(file)
+            return data
+        except yaml.YAMLError as e:
+            print(f"Error parsing YAML file: {e}")
+            return None
+
 """ 
 This is the configuration file for the dataverse project.
 Description about the fields:
 BIDS_ROOT: Set up the BIDS output path - it is referenced from the home directory of your PC. 
-For example, if your home directory is /home/username and you have a data/bids directory where you have the BIDS data in the home directory then the BIDS_ROOT path will be 'data/bids/'
+For example, if your home directory is /home/username and you have a data/bids directory where you have the 
+BIDS data in the home directory then the BIDS_ROOT path will be 'data/bids/'
 PROJECT_ROOT: This is the actual path to the directory containing xdf files
 PROJECTS_STIM_ROOT: This is the actual path to the directory containing the stimulus files
 BASE_URL: The base URL for the dataverse service.
@@ -23,11 +35,19 @@ template_data = {
 }
 
 argparser = argparse.ArgumentParser(description='Get the config path')
-argparser.add_argument('-p','--configpath', default=os.path.join(os.path.expanduser("~"),'dataverse_projects_config'),type=str, help='Enter the config path')
+argparser.add_argument('-p','--configpath', default=os.path.join(os.path.expanduser("~"),'autobids_config.yaml'),type=str, help='Enter the config path')
 args = argparser.parse_args()
 
 # Specify the filename for the YAML file
 config_path =args.configpath 
+
+# Save the configuration path to the config_info.yaml file
+with open('./config_info.yaml') as f:
+    data = yaml.safe_load(f)
+
+data['CONFIG_PATH'] = config_path
+with open('./config_info.yaml', 'w') as f:
+    yaml.dump(data, f)
 
 
 # Check if the config file exists, if yes, then ask the user permission to view the fields of the yaml file and ask if they want to overwrite the file
@@ -35,20 +55,32 @@ config_path =args.configpath
 try:
     with open(config_path, "r") as template_file:
         print(f"The file '{config_path}' already exists.")
-        print("Do you want to view the fields of the file? (yes/no): ")
-        view = input()
-        if view.lower() == "yes":
-            print("The fields of the file are:")
-            print(template_file.read())
-        else:
-            print("The fields of the file will not be displayed.")
-        print("Do you want to overwrite the file? (yes/no): ")
-        overwrite = input()
-        if overwrite.lower() == "yes":
-            print("The file is overwritten.")
-        else:
-            print("The file will not be overwritten.")
-            exit()
+        while True:
+            print("Do you want to view the fields of the file? (yes/no): ")
+            view = input()
+            if view.lower() == "yes" or view.lower() == "y":
+                print("The fields of the file are:")
+                print(template_file.read())
+                break
+            elif view.lower() == "no" or view.lower() == "n":
+                print("The fields of the file will not be displayed.")
+                break
+            else:
+                print("Invalid input. Please enter a valid input.")
+        while True:
+            print("Do you want to overwrite the file? (yes/no): ")
+            overwrite = input()
+            if overwrite.lower() == "yes" or overwrite.lower() == "y":
+                print("The file will be overwritten.")
+                with open(config_path, "w") as template_file:
+                    yaml.dump(template_data, template_file)
+                print(f"Template YAML file '{config_path}' has been overwritten with the default template.")
+                break
+            elif overwrite.lower() == "no" or overwrite.lower() == "n":
+                print("The file will not be overwritten.")
+                break
+            else:
+                print("Invalid input. Please enter a valid input.")
 except FileNotFoundError:
     # Write the template data to the YAML file
     with open(config_path, "w") as template_file:
