@@ -104,10 +104,14 @@ This will be mostly same for all the projects, thus creating only once per syste
 - Run the command below to create a configuration file template in `/projects/<PROJECT_NAME>/` folder (according to the selected root directories).
 
 ```
-python gen_project_config.py -p <PROJECT_NAME>
+python gen_project_config.py -p <PROJECT_NAME> -s yes
 
 ```
-- Edit the configuration file in the `projects/<PROJECT_NAME>` folder to add the project details for the project.
+
+Flags:
+1. -p : Project name (required)
+2. -s : toml_file standalone (optional)
+- Edit the configuration file in the `projects/<PROJECT_NAME>` folder to add the project details for the project if not used the standalone version.
 
 ## Run the BIDS convertor
 
