@@ -2,34 +2,12 @@
 import argparse
 import os
 from processing import check_for_new_data
-import yaml
 import tomllib
 import toml
+from globals import project_root
 
 
-def parse_yaml_file(yaml_file):
-    """
-    Parse a YAML file and return the data
-
-    Parameters
-    ----------
-    yaml_file : str
-        Path to the root config YAML file
-
-    Returns
-    -------
-    dict
-        Data from the YAML file
-    """
-    with open(yaml_file, 'r') as file:
-        try:
-            data = yaml.safe_load(file)
-            return data
-        except yaml.YAMLError as e:
-            print(f"Error parsing YAML file: {e}")
-            return None
-        
-
+    
 def get_user_input_for_data_check():
     """
     Get the user input for checking the data in the project folder
@@ -43,8 +21,6 @@ def get_user_input_for_data_check():
     str
         User input
     """
-
-
     user_input = input("Do you want to check for the data in the project folder? (y/n): ")
     valid_letters = set("yYnN")
     attempts = 3
@@ -63,7 +39,7 @@ def get_user_input_for_data_check():
                 exit()
 
 
-def check_for_project(project_name,project_root,projects,bids_root,project_stim_root):
+def check_for_project(project_name,projects):
     """
     Checks if the project exists in the projects folder
 
@@ -71,19 +47,14 @@ def check_for_project(project_name,project_root,projects,bids_root,project_stim_
     ----------
     project_name : str
         name of the project
-    project_root : str
-        root directory of the projects
     projects : list
         list of projects in the project_root
-    bids_root : str
-        root directory of the BIDS data
-    project_stim_root : str
-        root directory of the stimulus data
     
     Returns
     -------
     None
     """
+
     if project_name in projects:
         project_path = os.path.join(project_root,project_name)
         if not os.path.exists(project_path):
@@ -95,8 +66,7 @@ def check_for_project(project_name,project_root,projects,bids_root,project_stim_
         user_input = get_user_input_for_data_check()
 
         if user_input=="y" or user_input=="Y":
-            check_for_new_data(project_root,project_name, bids_root,project_stim_root)
-            
+            check_for_new_data(project_name)
         elif user_input == "n" or user_input == "N":
             print("Program aborted. Closing...")
             exit()
@@ -129,24 +99,16 @@ def main():
     argparser = argparse.ArgumentParser(description='Get the project name')
     argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
     args = argparser.parse_args()
-    
-    # Get the config file path from the autobids_config.yaml file and parse the file
-    config_file = os.path.join(os.path.expanduser("~"),'.config/lslautobids/autobids_config.yaml')
-    config = parse_yaml_file(config_file)
 
     # get the root directories for further processing
-    project_root = os.path.join(os.path.expanduser("~"),config['PROJECT_ROOT'])
-    bids_root = os.path.join(os.path.expanduser("~"),config['BIDS_ROOT'])
-    project_stim_root = os.path.join(os.path.expanduser("~"),config['PROJECTS_STIM_ROOT'])
     projects = list_directories(project_root)
     
-
     # get the project name and check if the project exists
     project_name = args.project_name
-    project_exist =check_for_project(project_name,project_root, projects, bids_root,project_stim_root)
+    project_exist = check_for_project(project_name, projects)
 
     if project_exist:
-        project_toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
+        project_toml_path = os.path.join(project_root, project_name, project_name+'_config.toml')
         with open(project_toml_path, 'rb') as file:
             data = tomllib.load(file)
             data['Dataset']['title'] = project_name
