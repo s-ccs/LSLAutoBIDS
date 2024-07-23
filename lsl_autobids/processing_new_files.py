@@ -1,15 +1,26 @@
+# imports
 import os
 import time
 import warnings
 import sys
 from convert_to_bids_and_upload import  bids_process_and_upload
+from globals import project_root
 
-def proceesing_new_files(file_status,project_root,project_name,bids_root, project_stim_root):
+def proceesing_new_files(file_status, project_name):
     """
     Processes the new files with the ".xdf" extension, adding the file names (without "_old") to a list.
     
-    Parameters:
-        file_status (list): A list of file paths.
+    Parameters
+    ----------
+    file_status : list
+        A list of new files found since the last run
+    project_name : str
+        The name of the project
+
+    Returns
+    -------
+    None
+        
     """
     print("Processing new files.........")
     processed_files = []
@@ -41,7 +52,7 @@ def proceesing_new_files(file_status,project_root,project_name,bids_root, projec
     print(processed_files)
 
     project_path = os.path.join(project_root,project_name)
-    # Generate a user prompt asking if we want to proceed to convert and upload
+    # User prompt asking if we want to proceed to convert and upload
     ask_convert_message = "Do you want to proceed for BIDS Conversion?"
     while True:
         user_response = input(ask_convert_message)
@@ -58,57 +69,24 @@ def proceesing_new_files(file_status,project_root,project_name,bids_root, projec
         else:
             print('Invalid response. Please enter "y" for yes or "n" for no.')
    
-    bids_process_and_upload(processed_files, bids_root, project_root, project_name, project_stim_root)
+    bids_process_and_upload(processed_files, project_name)
 
-    # for file in processed_files:
-    #     # get the subject id and the session id
-    #     subject_id = file.split('_')[0]
-    #     session_id = file.split('_')[1]
-    #     # Make the subject directory
-    #     full_path = os.path.join(bids_root, project_name , subject_id , session_id ,'eeg')
-    #     if not os.path.exists(full_path):
-    #         os.makedirs(full_path)
-    #     #get the xdf path  from the project path and the file name
-    #     xdf_path = os.path.join(project_path, subject_id, session_id,"eeg",file_name)
-    #     # convert the xdf file to BIDS
-        
-
-
-    # # Make a text file to keep track of the processed files
-    # processed_files_file_path = "processed_files.txt"
-    # with open(processed_files_file_path, 'a') as f:
-    #     for file_name in processed_files:
-    #         # get the subject_id and session_id from the file name
-    #         subject_id = file_name.split('_')[0]
-    #         session_id = file_name.split('_')[1]
-    #         # # Make the subject directory
-    #         # full_path = bids_root + project_name + '/' + subject_id + '/' + session_id + '/eeg'
-    #         # if not os.path.exists(full_path):
-    #         #     os.makedirs(full_path)
-    #         #get the xdf path  from the project path and the file name
-    #         xdf_path = os.path.join(project_path +'/' + subject_id+'/'+session_id+'/eeg',file_name)
-    #         f.write(xdf_path + '\n')
     
-    # with open(processed_files_file_path, 'r') as f:
-    #     lines = f.readlines()
-    #     print("Number of files processed: ", len(lines))
-
-   
 
 def check_for_new_files(function_path):
 
-    # TODO - Alternative way of checking for new data
-    # 1. Use Watchdog to monitor the project directory for new files
-    # 2. Use the time.time() function to get the current time to then check for new files.
-    # Used log file so that we can track the last time the script was run.
     """
     Checks for new files in a deep folder structure since the last run.
     
     Parameters:
-        function_path (str): The path to the function directory.
-    
-    Returns:
-        list: A list of new file paths.
+    -----------
+    function_path : str
+        The path to the directory to check for new files
+
+    Returns:    
+    --------
+    list
+        A list of new files found since the last run
     """
     # Get the path of the log file
     log_file_path = os.path.join(function_path, "last_run_log.txt")
@@ -146,11 +124,20 @@ def check_for_new_files(function_path):
     else:
         return 'No new files found'
     
-def check_for_new_data(project_root, project_name, bids_root, project_stim_root):
+def check_for_new_data(project_name):
 
     """
-    This function checks for new data by comparing the current state of the PROJECT ROOT directory with the last checked
-    state. If new files are found, further processing are done.
+    This function checks for new data by comparing the current state of the PROJECT ROOT 
+    directory with the last checked state. If new files are found, further processing are done.
+    
+    Parameters
+    ----------
+    project_name : str
+        The name of the project
+    
+    Returns
+    -------
+    None
     
     """
     # Code to check for new data
@@ -167,6 +154,6 @@ def check_for_new_data(project_root, project_name, bids_root, project_stim_root)
         sys.exit()
     else:
         print('New files detected....')
-        proceesing_new_files(file_status,project_root, project_name, bids_root,project_stim_root)
+        proceesing_new_files(file_status, project_name)
 
 

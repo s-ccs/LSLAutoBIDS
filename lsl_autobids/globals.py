@@ -30,3 +30,6 @@ config = parse_yaml_file(config_file)
 project_root = os.path.join(os.path.expanduser("~"),config['PROJECT_ROOT'])
 bids_root = os.path.join(os.path.expanduser("~"),config['BIDS_ROOT'])
 project_stim_root = os.path.join(os.path.expanduser("~"),config['PROJECT_STIM_ROOT'])
+api_key = config['API_KEY']
+dataverse_base_url = config['BASE_URL']
+parent_dataverse_name = config['PARENT_DATAVERSE_NAME']
