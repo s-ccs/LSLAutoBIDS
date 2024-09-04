@@ -294,7 +294,7 @@ def bids_process_and_upload(processed_files,project_name):
 
                     print('Pushing files to dataverse........')
                     # Push the files to dataverse
-                    push_files_to_dataverse(); 
+                    push_files_to_dataverse(project_name); 
 
                 elif user_input.lower() == "n":
                     print("Program aborted.")
