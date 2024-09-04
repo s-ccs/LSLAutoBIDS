@@ -113,11 +113,6 @@ def check_for_new_files(function_path):
             if os.path.getmtime(file_path) > last_run_time:
                 new_files.append(file_path)
 
-    
-    # Save the current time as the last run time in the log file
-    current_time = time.time()
-    with open(log_file_path, 'w') as f:
-        f.write(str(current_time))
         
     if new_files:
         return new_files
