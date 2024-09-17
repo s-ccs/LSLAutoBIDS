@@ -1,7 +1,7 @@
 data/
 tests/
 TODO.md
-dataverse_config.yaml
+config/
 pyxdf
 pydataverse
 pydataverse.egg-info
@@ -9,7 +9,8 @@ jsonschema
 processed_files.txt
 test.py
 .DS_Store
-
+empty_log_process_temp.py
+fill_config.py
 # To be added later
 setup.py
 pyproject.toml

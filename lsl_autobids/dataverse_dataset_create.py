@@ -6,10 +6,11 @@ import toml
 import json
 import tomllib
 import os
+from globals import project_root, api_key,dataverse_base_url,parent_dataverse_name
 
 
 
-def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project_name):
+def create_dataverse(project_name):
     ds_filename = os.path.join(project_root, project_name,'dataset.json')
     flag=0
     
@@ -19,7 +20,7 @@ def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project
 
 
     # Create the api object
-    api = NativeApi(BASE_URL, API_TOKEN)
+    api = NativeApi(dataverse_base_url, api_key)
     ds = Dataset()
     ds.from_json(read_file(ds_filename))
 
@@ -29,11 +30,11 @@ def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project
         print('The dataset json file is validated.')
 
     # Get the metadata for the parent dataverse
-    resp = api.get_dataverse(NAME)
+    resp = api.get_dataverse(parent_dataverse_name)
     print(resp.json()["data"])
 
     # Get all the children
-    resp1 = api.get_children(NAME,'dataverse',['datasets'])
+    resp1 = api.get_children(parent_dataverse_name,'dataverse',['datasets'])
     pids_resp1 = [id['pid'] for id in resp1]
 
     # open the toml file to get the dataset_id
@@ -48,7 +49,7 @@ def create_dataverse(BASE_URL, API_TOKEN, NAME,project_path,project_root,project
             return pid,flag
         else:
             print('Creating the dataset........')
-            resp = api.create_dataset(NAME, ds.json())
+            resp = api.create_dataset(parent_dataverse_name, ds.json())
             print(resp.json()['data'])
             ds_pid = resp.json()['data']['persistentId']
             dataset_id = resp.json()['data']['id']

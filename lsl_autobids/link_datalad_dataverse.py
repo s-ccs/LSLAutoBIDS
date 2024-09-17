@@ -3,16 +3,17 @@
 
 import subprocess
 import os
+from globals import dataverse_base_url
+import toml
 
 
-def add_sibling_dataverse_in_folder(folder_path,BASE_URL,doi_id,API_TOKEN):
+def add_sibling_dataverse_in_folder(doi_id):
     try:
         # Change to the specified folder
         #os.chdir(folder_path)
 
         # Define the bash command as a list of strings
-        command = ['datalad', 'add-sibling-dataverse', BASE_URL, doi_id]
-
+        command = ['datalad', 'add-sibling-dataverse', dataverse_base_url,doi_id]
         # Call the bash command using subprocess.run()
         subprocess.run(command, check=True)
         print("Sibling Dataverse added successfully!")

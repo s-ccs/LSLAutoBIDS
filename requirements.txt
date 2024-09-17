@@ -12,7 +12,7 @@ toml
 pyyaml
 mnelab
 pybv
-
+pytest
 
 
 

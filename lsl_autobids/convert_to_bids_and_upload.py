@@ -1,3 +1,4 @@
+#import libraries
 from pyxdf import match_streaminfos, resolve_streams
 from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
@@ -6,8 +7,10 @@ import os
 import shutil
 from generate_dataset_json import generate_json_file
 from dataverse_dataset_create import create_dataverse
-from datalad_create import create_and_add_files_to_dataset
+from datalad_create import create_and_add_files_to_datalad_dataset
 from link_datalad_dataverse import add_sibling_dataverse_in_folder
+from upload_to_dataverse import push_files_to_dataverse
+from globals import project_root,project_stim_root, bids_root
 import toml
 import yaml
 import sys
@@ -24,7 +27,9 @@ class BIDS:
         Retrieve the stream names and information from an XDF file.
 
         Parameters:
-        xdf_path (str): The path to the XDF file.
+        ----------
+        xdf_path (str)
+            The path to the XDF file
 
         Returns:
         tuple: A tuple containing the stream names and the stream information.
@@ -37,15 +42,26 @@ class BIDS:
         return stream_names,streams
 
 
-    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,project_name,bids_root,projects_stim_root,stim):
+    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,project_name,stim):
         
+        """
+        Copy the source files to the BIDS directory.
 
-        ### COPY THE SOURCE FILES TO BIDS ###
+        Parameters:
+        ----------
+        xdf_file (str): The path to the XDF file.
+        subject_id (str): The subject ID.
+        session_id (str): The session ID.
+        project_name (str): The project name.
+        stim (bool): The stimulus computer used for the project.
+        """
+        
+        ### COPY THE SOURCE FILES TO BIDS (recorded xdf file) ###
+        
         # Get the source file name without the extension
         file_name = xdf_file.split(os.path.sep)[-1]
         file_name_without_ext, ext = os.path.splitext(file_name)
     
-        
         # Copy the raw file
         new_filename = file_name_without_ext + '_raw' + ext
         
@@ -59,19 +75,18 @@ class BIDS:
         
         # Create a symbolic link with the new filename pointing to the source file
         try:
-            #os.symlink(xdf_file, dest_file)
-            shutil.copy(xdf_file,dest_file) 
+            # copy the file
+            shutil.copy(xdf_file, dest_file)
         except FileExistsError:
             pass
 
       
         if stim:
             ### COPY THE BEHAVIOURAL FILES TO BIDS ###
-            # Copy the behavioral file - unique for all subjects
             print('Copying the behavioural files to BIDS........')
         
             # get the source path
-            behavioural_path = os.path.join(projects_stim_root,project_name,'data',subject_id,session_id, 'beh')
+            behavioural_path = os.path.join(project_stim_root,project_name,'data', subject_id,session_id)
             # get the destination path
             dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
             #check if the directory exists
@@ -84,24 +99,21 @@ class BIDS:
                 new_filename = file_name_without_eeg + '_' + file
                 dest_file = os.path.join(dest_dir, new_filename)
                 try:
-                    # Create a symbolic link with the new filename pointing to the source file
-                    #os.symlink(os.path.join(behavioural_path,file), dest_file)
-                    shutil.copy(os.path.join(behavioural_path,file), dest_file)
+                    # Directly copy the file
+                     shutil.copy(os.path.join(behavioural_path, file), dest_file)
                 except FileExistsError:
                     pass
             
             ### COPY THE EXPERIMENT FILES TO BIDS ###
-
-            # do the following steps only if others.zip doesnot exist
             print('Copying the experiment files to BIDS........')
         
-            # Check if 'others.zip' exists
             zip_file_path = os.path.join(bids_root, project_name, 'others.zip')
 
             if not os.path.exists(zip_file_path):
-                experiments_path = os.path.join(projects_stim_root,project_name,'experiment')
+                experiments_path = os.path.join(project_stim_root,project_name,'experiment')
                 # get the destination path
                 dest_dir = os.path.join(bids_root , project_name, 'others')
+                
                 #check if the directory exists
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
@@ -110,6 +122,7 @@ class BIDS:
                     src_file = os.path.join(experiments_path, file)
                     dest_file = os.path.join(dest_dir, file)
                     shutil.copy(src_file, dest_file)
+
                 # Compress the 'other' directory into a ZIP file
                 shutil.make_archive(dest_dir, 'zip', dest_dir)
 
@@ -118,7 +131,8 @@ class BIDS:
             else:
                 print('Experiment files for the project already exist and hence not copied')
 
-        print("Skipped copying the behvaioural and experiment files to BIDS.")
+        else:
+            print("Skipped copying the behvaioural and experiment files to BIDS.")
 
     def create_raw_xdf(self, xdf_path,streams):
         """
@@ -135,12 +149,33 @@ class BIDS:
         # Get the stream id of the EEG stream
         stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
         raw = read_raw_xdf(xdf_path,stream_ids=[stream_id])
+        raw.set_channel_types({'heog_u':'eog',
+                                'heog_d':'eog',
+                                'veog_r':'eog',
+                                'veog_l':'eog',
+                                'bipoc':'misc'})
+
+
         return raw
 
-    def convert_to_bids(self, xdf_path,subject_id,session_id,bids_root,project_name,project_stim_root,stim):
+    def convert_to_bids(self, xdf_path,subject_id,session_id,project_name,stim):
+
+        """
+        Convert an XDF file to BIDS format.
+
+        Parameters:
+        ----------
+        xdf_path (str): The path to the XDF file.
+        subject_id (str): The subject ID.
+        session_id (str): The session ID.
+        project_name (str): The project name.
+        stim (bool): The stimulus computer used for the project.
+
+        """
         print("Converting to BIDS........") 
 
-        self.copy_source_files_to_bids(xdf_path,subject_id,session_id, project_name,bids_root,project_stim_root,stim)
+        # Copy the experiment and behavioural files to BIDS
+        self.copy_source_files_to_bids(xdf_path,subject_id,session_id, project_name,stim)
 
         
         # Create the new raw file from xdf file
@@ -154,14 +189,15 @@ class BIDS:
                             root=bids_root+project_name, 
                             datatype='eeg', 
                             suffix='eeg', 
-                            extension='.vhdr')
+                            extension='.edf')
         
-        # Write the raw data to BIDS in BrainVision format
-        write_raw_bids(raw, bids_path, overwrite=True, verbose=True, format='EDF', symlink = False, allow_preload=True)
+        # Write the raw data to BIDS in EDF format
+        # BrainVision format weird memory issues
+        write_raw_bids(raw, bids_path, overwrite=True, verbose=True,format='EDF',symlink = False, allow_preload=True)
 
         print("Conversion to BIDS complete.")
 
-        # print(' Validating the BIDS data........')
+        print(' Validating the BIDS data........')
         # Validate the BIDS data
         val = self.validate_bids(bids_root+project_name,subject_id,session_id)
         return val
@@ -220,28 +256,7 @@ class BIDS:
     
 # Convert the XDF file to BIDS
 
-def bids_process_and_upload(processed_files, bids_root, project_root, project_name, project_stim_root):
-    
-
-    # argparser = argparse.ArgumentParser(description='Get the project name')
-    # argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
-    
-    # project_name = argparser.parse_args().project_name
-    # processed_files_file_path = 'processed_files.txt'
-
-
-    # # Retrieve the list of processed files from processed_files.txt
-    # processed_files = []
-    # with open(processed_files_file_path, 'r') as f:
-    #     for line in f:
-    #         processed_files.append(line.strip())
-
-    # Get the contents of the dataverse_config.yaml file
-    with open("dataverse_config.yaml", "r") as yaml_file:
-        data = yaml.safe_load(yaml_file)
-        BASE_URL = data["BASE_URL"]
-        API_TOKEN = data["API_TOKEN"]
-        NAME = data["PARENT_DATAVERSE_NAME"]
+def bids_process_and_upload(processed_files,project_name):
 
 
     bids = BIDS()
@@ -251,23 +266,23 @@ def bids_process_and_upload(processed_files, bids_root, project_root, project_na
         filename = file.split(os.path.sep)[-1]
         project_path = os.path.join(project_root,project_name)
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
-        toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
+        toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
         with open(toml_path, 'r') as file:
             data = toml.load(file)
             stim = data["Computers"]["stimulusComputerUsed"]     
         
-        val = bids.convert_to_bids(xdf_path,subject_id,session_id,bids_root,project_name,project_stim_root,stim)
+        val = bids.convert_to_bids(xdf_path,subject_id,session_id,project_name,stim)
 
         if val==1:
                             
                 print('Generating metadatafiles........')   
-                generate_json_file(project_root, project_name)
+                generate_json_file(project_name)
                 print('Generating dataverse dataset........')
                 
-                doi, status = create_dataverse(BASE_URL, API_TOKEN, NAME, project_path,project_root,project_name)
+                doi, status = create_dataverse(project_name)
 
-                create_and_add_files_to_dataset(bids_root+project_name,status)
+                create_and_add_files_to_datalad_dataset(bids_root+project_name,status)
 
                 user_input = input("Do you want to upload the files to Dataverse? (y/n): ")
 
@@ -275,7 +290,12 @@ def bids_process_and_upload(processed_files, bids_root, project_root, project_na
                     print('Uploading to dataverse........')
 
                     print('Linking dataverse dataset with datalad')
-                    add_sibling_dataverse_in_folder(bids_root+project_name,BASE_URL,doi,API_TOKEN)
+                    add_sibling_dataverse_in_folder(doi)
+
+                    print('Pushing files to dataverse........')
+                    # Push the files to dataverse
+                    push_files_to_dataverse(project_name); 
+
                 elif user_input.lower() == "n":
                     print("Program aborted.")
                 else:

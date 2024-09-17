@@ -2,6 +2,7 @@ import json
 import toml
 import os
 import yaml
+from globals import project_root
 
 def read_toml_file(toml_file):
     with open(toml_file, 'r') as file:
@@ -34,7 +35,7 @@ def update_json_data(json_data, toml_data):
     json_data['datasetVersion']['metadataBlocks']['citation']['fields'][4]['value'] = toml_data['Subject']['subject']
     return json_data
 
-def generate_json_file(project_root, project_name):
+def generate_json_file(project_name):
     json_file_path = os.path.join(project_root, project_name, 'dataset.json')
 
     try:
