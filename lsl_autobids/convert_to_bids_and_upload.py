@@ -59,7 +59,8 @@ class BIDS:
         
         # Create a symbolic link with the new filename pointing to the source file
         try:
-            os.symlink(xdf_file, dest_file) 
+            #os.symlink(xdf_file, dest_file)
+            shutil.copy(xdf_file,dest_file) 
         except FileExistsError:
             pass
 
@@ -70,7 +71,7 @@ class BIDS:
             print('Copying the behavioural files to BIDS........')
         
             # get the source path
-            behavioural_path = os.path.join(projects_stim_root,project_name,subject_id,session_id)
+            behavioural_path = os.path.join(projects_stim_root,project_name,'data',subject_id,session_id, 'beh')
             # get the destination path
             dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
             #check if the directory exists
@@ -84,7 +85,8 @@ class BIDS:
                 dest_file = os.path.join(dest_dir, new_filename)
                 try:
                     # Create a symbolic link with the new filename pointing to the source file
-                    os.symlink(os.path.join(behavioural_path,file), dest_file)
+                    #os.symlink(os.path.join(behavioural_path,file), dest_file)
+                    shutil.copy(os.path.join(behavioural_path,file), dest_file)
                 except FileExistsError:
                     pass
             
@@ -155,7 +157,7 @@ class BIDS:
                             extension='.vhdr')
         
         # Write the raw data to BIDS in BrainVision format
-        write_raw_bids(raw, bids_path, overwrite=True, verbose=True,format='BrainVision',allow_preload=True)
+        write_raw_bids(raw, bids_path, overwrite=True, verbose=True, format='EDF', symlink = False, allow_preload=True)
 
         print("Conversion to BIDS complete.")
 

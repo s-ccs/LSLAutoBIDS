@@ -37,7 +37,7 @@ python -m pip install -r requirements.txt
 
  Install the datalad library using the following command:
 ```
-conda install -c conda-forge datalad=0.18.4
+conda install -c conda-forge datalad
 ```
 If you donot have git and git-annex installed in your Operating System, you can install it seperately using the [datalad-installer](https://github.com/datalad/datalad-installer).
 
