@@ -1,7 +1,7 @@
 #import packages
 import argparse
 import os
-from lsl_autobids.processing_new_files import check_for_new_data
+from processing_new_files import check_for_new_data
 import tomllib
 import toml
 from globals import project_root

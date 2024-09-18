@@ -1,14 +1,17 @@
-"""
-Information of the configuration file:  
-The configuration file is a YAML file that contains the following fields:
-    BIDS_ROOT: Set up the BIDS output path - it is referenced from the home directory of your PC. 
-    For example, if your home directory is /home/username and you have a data/bids directory where you have the 
-    BIDS data in the home directory then the BIDS_ROOT path will be 'data/bids/'
-    PROJECT_ROOT: This is the actual path to the directory containing xdf files
-    PROJECTS_STIM_ROOT: This is the actual path to the directory containing the stimulus files
-    BASE_URL: The base URL for the dataverse service.
-    API_TOKEN: Your API token for authentication - you can get it from the dataverse service.
-    PARENT_DATAVERSE_NAME: The name of the program or service.
+info = """
+# Information of the configuration file:  
+# The configuration file is a YAML file that contains the following fields:
+#    BIDS_ROOT: Set up the BIDS output path - it is referenced from the home directory of your PC. 
+#    For example, if your home directory is /home/username and you have a /home/username/data/bids directory where you have the 
+#    BIDS data in the home directory then the BIDS_ROOT path will be 'data/bids/'
+#    PROJECT_ROOT: This is the actual path to the directory containing xdf files
+#    PROJECT_STIM_ROOT: This is the actual path to the directory containing the stimulus files
+#    BASE_URL: The base URL for the dataverse service.
+#    API_KEY: Your API token for authentication - you can get it from the dataverse service.
+#    PARENT_DATAVERSE_NAME: The name of the program or service.
+#
+# Important: all paths + API_KEY need to be placed in quotes!
+
 """
 
 # imports
@@ -18,11 +21,12 @@ import os
 
 # Create a dictionary representing the template data with comments
 template_data = {
-    "BIDS_ROOT": "workspace/projects/LSLAutoBIDS/data/bids/",       
-    "PROJECT_ROOT" : "workspace/projects/LSLAutoBIDS/data/projects/", 
-    "PROJECTS_STIM_ROOT" : "workspace/projects/LSLAutoBIDS/data/project_stimulus/", 
+       
+    "BIDS_ROOT": "# relative to home: workspace/projects/LSLAutoBIDS/data/bids/",       
+    "PROJECT_ROOT" : "# relative to home: workspace/projects/LSLAutoBIDS/data/projects/", 
+    "PROJECT_STIM_ROOT" : "# path relative to home: workspace/projects/LSLAutoBIDS/data/project_stimulus/", 
     "BASE_URL": "https://darus.uni-stuttgart.de",  # The base URL for the service.
-    "API_TOKEN": "# Paste your API token here",    # Your API token for authentication.
+    "API_KEY": "# Paste your dataverse API token here",    # Your API token for authentication.
     "PARENT_DATAVERSE_NAME": "simtech_pn7_computational_cognitive_science"     # The name of the program or service.
 }
 
@@ -72,6 +76,7 @@ def main():
                 if overwrite.lower() == "yes" or overwrite.lower() == "y":
                     print("The file will be overwritten.")
                     with open(config_path, "w") as template_file:
+                        template_file.write(info)
                         yaml.dump(template_data, template_file)
                     print(f"""Template YAML file '{config_path}' has been overwritten with the default template. Please go to 
                           {config_path} and fill in the fields.""")
@@ -83,6 +88,7 @@ def main():
                     print("Invalid input. Please enter a valid input.")
     except FileNotFoundError:
         # Write the template data to the YAML file
+        os.makedirs(os.path.dirname(config_path), exist_ok=True)
         with open(config_path, "w") as template_file:
             yaml.dump(template_data, template_file)
 
