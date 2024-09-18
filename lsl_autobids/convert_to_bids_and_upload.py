@@ -86,7 +86,7 @@ class BIDS:
             print('Copying the behavioural files to BIDS........')
         
             # get the source path
-            behavioural_path = os.path.join(project_stim_root,project_name,'data', subject_id,session_id)
+            behavioural_path = os.path.join(project_stim_root,project_name,'data', subject_id,session_id,'beh')
             # get the destination path
             dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
             #check if the directory exists
@@ -100,6 +100,7 @@ class BIDS:
                 dest_file = os.path.join(dest_dir, new_filename)
                 try:
                     # Directly copy the file
+                     #print(f"copying {behavioural_path}{file} to {dest_file}")
                      shutil.copy(os.path.join(behavioural_path, file), dest_file)
                 except FileExistsError:
                     pass
@@ -149,13 +150,24 @@ class BIDS:
         # Get the stream id of the EEG stream
         stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
         raw = read_raw_xdf(xdf_path,stream_ids=[stream_id])
-        raw.set_channel_types({'heog_u':'eog',
+        try:
+            channelList = {'heog_u':'eog',
                                 'heog_d':'eog',
                                 'veog_r':'eog',
                                 'veog_l':'eog',
-                                'bipoc':'misc'})
+                                'bipoc':'misc',
+                                'VEOGD':'eog',
+                                'VEOGU':'eog',
+                                'HEOGL':'eog',
+                                'HEOGR':'eog',
+                                'sampleNumber':'misc'}
+            raw.set_channel_types({k:channelList[k] for k in channelList.keys() if k in raw.ch_names})
+        except ValueError as inst:
+            print("error renaming channels, available channel names are:")
+            print(raw.ch_names)
+            print(inst)
 
-
+        
         return raw
 
     def convert_to_bids(self, xdf_path,subject_id,session_id,project_name,stim):
