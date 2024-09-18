@@ -205,7 +205,7 @@ class BIDS:
         
         # Write the raw data to BIDS in EDF format
         # BrainVision format weird memory issues
-        write_raw_bids(raw, bids_path, overwrite=True, verbose=True,format='EDF',symlink = False, allow_preload=True)
+        write_raw_bids(raw, bids_path, overwrite=False, verbose=True,format='EDF',symlink = False, allow_preload=True)
 
         print("Conversion to BIDS complete.")
 
@@ -302,6 +302,7 @@ def bids_process_and_upload(processed_files,project_name):
                     print('Uploading to dataverse........')
 
                     print('Linking dataverse dataset with datalad')
+                    print('An error "found existing siblings with conflicting names" is fine!')
                     add_sibling_dataverse_in_folder(doi)
 
                     print('Pushing files to dataverse........')
