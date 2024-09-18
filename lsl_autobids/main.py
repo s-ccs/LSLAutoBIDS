@@ -21,12 +21,11 @@ def get_user_input_for_data_check():
     str
         User input
     """
-    user_input = input("Do you want to check for the data in the project folder? (y/n): ")
     valid_letters = set("yYnN")
     attempts = 3
 
     for attempt in range(attempts):
-        user_input = input("Please enter a letter: ").strip()
+        user_input = input("Do you want to check for new data in the project folder? (y/n): ").strip()
         
         if len(user_input) == 1 and user_input in valid_letters:
             return user_input
