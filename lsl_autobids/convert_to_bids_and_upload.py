@@ -133,7 +133,7 @@ class BIDS:
                 print('Experiment files for the project already exist and hence not copied')
 
         else:
-            print("Skipped copying the behvaioural and experiment files to BIDS.")
+            print("Skipped copying the behavioural and experiment files to BIDS.")
 
     def create_raw_xdf(self, xdf_path,streams):
         """
@@ -149,7 +149,11 @@ class BIDS:
         """
         # Get the stream id of the EEG stream
         stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
-        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id])
+        
+        # interpolate to nominal sampling rate
+        fs_new = [s["info"]["nominal_srate"] for s in streams if s["info"]["stream_id"] == stream_id][0][0]
+
+        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new = fs_new)
         try:
             channelList = {'heog_u':'eog',
                                 'heog_d':'eog',
