@@ -153,7 +153,7 @@ class BIDS:
         # interpolate to nominal sampling rate
         fs_new = [s["info"]["nominal_srate"] for s in streams if s["info"]["stream_id"] == stream_id][0][0]
 
-        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new = fs_new)
+        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new = float(fs_new),prefix_markers=True)
         try:
             channelList = {'heog_u':'eog',
                                 'heog_d':'eog',
