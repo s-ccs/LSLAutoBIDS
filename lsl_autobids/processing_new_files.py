@@ -53,7 +53,7 @@ def proceesing_new_files(file_status, project_name):
 
     project_path = os.path.join(project_root,project_name)
     # User prompt asking if we want to proceed to convert and upload
-    ask_convert_message = "Do you want to proceed for BIDS Conversion?"
+    ask_convert_message = "Do you want to proceed for BIDS Conversion? (y/n): "
     while True:
         user_response = input(ask_convert_message)
         

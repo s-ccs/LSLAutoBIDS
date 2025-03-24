@@ -73,12 +73,12 @@ class BIDS:
             os.makedirs(dest_dir)
         dest_file = os.path.join(dest_dir, new_filename)
         
-        # Create a symbolic link with the new filename pointing to the source file
-        try:
-            # copy the file
-            shutil.copy(xdf_file, dest_file)
-        except FileExistsError:
+        
+        if os.path.exists(dest_file):
+            print("xdf already in sourcedata")
             pass
+        else:
+            shutil.copy(xdf_file, dest_file)
 
       
         if stim:
@@ -98,22 +98,24 @@ class BIDS:
                 file_name_without_eeg = file_name_without_ext[:-4]
                 new_filename = file_name_without_eeg + '_' + file
                 dest_file = os.path.join(dest_dir, new_filename)
-                try:
+                if os.path.exists(dest_file):
+                    print("...already exists")
+                    pass
+                else:
                     # Directly copy the file
                      #print(f"copying {behavioural_path}{file} to {dest_file}")
                      shutil.copy(os.path.join(behavioural_path, file), dest_file)
-                except FileExistsError:
-                    pass
+                    
             
             ### COPY THE EXPERIMENT FILES TO BIDS ###
             print('Copying the experiment files to BIDS........')
         
-            zip_file_path = os.path.join(bids_root, project_name, 'others.zip')
+            zip_file_path = os.path.join(bids_root, project_name,subject_id,session_id,"misc", 'experiment.zip')
 
             if not os.path.exists(zip_file_path):
                 experiments_path = os.path.join(project_stim_root,project_name,'experiment')
                 # get the destination path
-                dest_dir = os.path.join(bids_root , project_name, 'others')
+                dest_dir = os.path.join(bids_root , project_name, subject_id,session_id, "misc",'experiment')
                 
                 #check if the directory exists
                 if not os.path.exists(dest_dir):
@@ -130,10 +132,10 @@ class BIDS:
                 #Remove the original 'other' directory
                 shutil.rmtree(dest_dir)
             else:
-                print('Experiment files for the project already exist and hence not copied')
+                print('Experiment zip files for the project already exist and hence not copied')
 
         else:
-            print("Skipped copying the behvaioural and experiment files to BIDS.")
+            print("STIM was false, not copying the behavioural and experiment files from the stimulus computer.")
 
     def create_raw_xdf(self, xdf_path,streams):
         """
@@ -149,7 +151,13 @@ class BIDS:
         """
         # Get the stream id of the EEG stream
         stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
-        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id])
+        fs_new = max([stream["nominal_srate"] for stream in streams])
+        print("reading xdf and resampling... let's hope the RAM is big enough")
+        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new=fs_new,prefix_markers=True)
+        print("resampling done! phew")
+
+        # for memory reasons
+        raw.resample(500)
         try:
             channelList = {'heog_u':'eog',
                                 'heog_d':'eog',
@@ -189,11 +197,6 @@ class BIDS:
         # Copy the experiment and behavioural files to BIDS
         self.copy_source_files_to_bids(xdf_path,subject_id,session_id, project_name,stim)
 
-        
-        # Create the new raw file from xdf file
-        _,streams = self.get_the_streams(xdf_path)
-        raw = self.create_raw_xdf(xdf_path,streams)
-
         # Get the bidspath for the raw file
         bids_path = BIDSPath(subject=subject_id[-3:], 
                             session=session_id[-3:], 
@@ -201,11 +204,20 @@ class BIDS:
                             root=bids_root+project_name, 
                             datatype='eeg', 
                             suffix='eeg', 
-                            extension='.edf')
+                            extension='.set')
+        # print(bids_path)
+        if os.path.exists(bids_path):
+            return 2
+        
+        # Create the new raw file from xdf file
+        _,streams = self.get_the_streams(xdf_path)
+        raw = self.create_raw_xdf(xdf_path,streams)
+
         
         # Write the raw data to BIDS in EDF format
         # BrainVision format weird memory issues
-        write_raw_bids(raw, bids_path, overwrite=False, verbose=True,format='EDF',symlink = False, allow_preload=True)
+        print("Writing EEG-SET file")
+        write_raw_bids(raw, bids_path, overwrite=False, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True)
 
         print("Conversion to BIDS complete.")
 
@@ -217,7 +229,7 @@ class BIDS:
     def validate_bids(self,bids_path,subject_id,session_id):
         file_paths = []
         root_directory = os.path.abspath(bids_path)
-        print(root_directory)
+        # print(root_directory)
         
         for root, _, files in os.walk(root_directory):
             for file in files:
@@ -248,13 +260,17 @@ class BIDS:
 
                     # Validate BIDS for files in the root directory
                     res = BIDSValidator().is_bids(file)
+                    if not res:
+                        print(f"failed for {file}")
             
                 else:
                     # Modify file path to be relative to the root directory
                     relative_path = os.path.relpath(file_path, root_directory)
-                    print(relative_path)
+                    # print(relative_path)
                     res = BIDSValidator().is_bids('/'+relative_path)
-                    print(res)
+                    # print(res)
+                    if not res:
+                        print(f"failed for {file}")
                 
                 file_paths.append(res)  
         
@@ -269,55 +285,61 @@ class BIDS:
 # Convert the XDF file to BIDS
 
 def bids_process_and_upload(processed_files,project_name):
+    toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
+
+    with open(toml_path, 'r') as file:
+        data = toml.load(file)
+        stim = data["Computers"]["stimulusComputerUsed"]     
 
 
+    project_path = os.path.join(project_root,project_name)
+    
     bids = BIDS()
     for file in processed_files:
         subject_id = file.split('_')[0]
         session_id = file.split('_')[1]
         filename = file.split(os.path.sep)[-1]
-        project_path = os.path.join(project_root,project_name)
+        print(f"Currently processing {subject_id} / {session_id}")
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
-        toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
-        with open(toml_path, 'r') as file:
-            data = toml.load(file)
-            stim = data["Computers"]["stimulusComputerUsed"]     
-        
         val = bids.convert_to_bids(xdf_path,subject_id,session_id,project_name,stim)
 
         if val==1:
-                            
-                print('Generating metadatafiles........')   
-                generate_json_file(project_name)
-                print('Generating dataverse dataset........')
-                
-                doi, status = create_dataverse(project_name)
-
-                create_and_add_files_to_datalad_dataset(bids_root+project_name,status)
-
-                user_input = input("Do you want to upload the files to Dataverse? (y/n): ")
-
-                if user_input.lower() == "y":
-                    print('Uploading to dataverse........')
-
-                    print('Linking dataverse dataset with datalad')
-                    print('An error "found existing siblings with conflicting names" is fine!')
-                    add_sibling_dataverse_in_folder(doi)
-
-                    print('Pushing files to dataverse........')
-                    # Push the files to dataverse
-                    push_files_to_dataverse(project_name); 
-
-                elif user_input.lower() == "n":
-                    print("Program aborted.")
-                else:
-                    print("Invalid Input.")
+                print("bids conversion sucessfull")      
+        elif val == 2:
+                print("converted file already found, skipping")   
         else:
             print("Program is aborted as all BIDS files are not validated")
             file = os.path.join(project_path,"last_run_log.txt")
             with open(file, 'w') as file:
                 file.truncate(0)
             sys.exit()
+        
+    print("Conversion finished.")
+    print('Generating metadatafiles........')   
+    generate_json_file(project_name)
+    print('Generating dataverse dataset........')
+    
+    doi, status = create_dataverse(project_name)
+
+    create_and_add_files_to_datalad_dataset(bids_root+project_name,status)
+
+    user_input = input("Do you want to upload the files to Dataverse? (y/n): ")
+
+    if user_input.lower() == "y":
+        print('Uploading to dataverse........')
+
+        print('Linking dataverse dataset with datalad')
+        print('An error "found existing siblings with conflicting names" is fine!')
+        add_sibling_dataverse_in_folder(doi)
+
+        print('Pushing files to dataverse........')
+        # Push the files to dataverse
+        push_files_to_dataverse(project_name); 
+
+    elif user_input.lower() == "n":
+        print("Program aborted.")
+    else:
+        print("Invalid Input.")
 
 

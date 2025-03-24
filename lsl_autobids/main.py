@@ -60,7 +60,7 @@ def check_for_project(project_name,projects):
             print(f'Project: {project_name} not found')
             print('Exiting program')
             exit() 
-        print('Project found')
+        print(f'project/{project_name} exists')
 
         user_input = get_user_input_for_data_check()
 
