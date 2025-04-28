@@ -2,6 +2,36 @@
 
 In this project, we are using a sample xdf file along with the corresponding stimulus files to demonstrate how the data inside the `projectname` folder is organized. This data should be organized in a specific way:
 
+### Recommended Project Organization Structure 
+
+For convenience, we have provided a recommended project organization  structure for the root directories to organize the data better.
+You can directory skip to the [configuration](#configuration) section if you are not following the recommended directory structure.
+
+> [!IMPORTANT]
+> The recommended directory structure is not self generated. The user needs to create the directories and store the recorded and stimulus data in them.
+
+The dataset (both recorded and converted) is stored in the parent `data` directory. The `data` directory has three subdirectories under which the project data is stored. The recommended directory structure is as follows:
+```
+data
+├── bids                  # Converted BIDS data
+  ├── projectname1
+  ├── projectname2                
+├── project_stimulus      # Experimental files
+  ├── projectname1
+  ├── projectname2          
+├── projects 
+  ├── projectname1        # Raw data
+  ├── projectname2 
+             
+
+```
+This `data` directory can be in the current project or home directory as per choice.
+
+Here `./data/projects/`, `./data/project_stimulus/`, `./data/bids/` are the root project directories. Each of this root directories will have a project name directory inside it and each project directory will have a subdirectory for each subject. The organization of the files under the projectname directory is in the [data_organization](docs/data_organization.md) file.
+
+
+TODO: For convenience there are some sample data in the [sample](./sample/) folder. You can copy the sample data to the `data` directory and run the scripts to see how the scripts work.
+
 ## Projects Folder
 **Path:**  [../data/projects/projectname/](./data/projects/sampleproject)
 
