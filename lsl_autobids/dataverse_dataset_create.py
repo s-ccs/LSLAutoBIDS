@@ -35,7 +35,8 @@ def create_dataverse(project_name):
 
     # Get all the children
     resp1 = api.get_children(parent_dataverse_name,'dataverse',['datasets'])
-    pids_resp1 = [id['pid'] for id in resp1]
+    
+    pids_resp1 = [id['pid'].lower() for id in resp1]
 
     # open the toml file to get the dataset_id
     toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
@@ -43,7 +44,7 @@ def create_dataverse(project_name):
         data = tomllib.load(file)
         pid = data['Dataverse']['pid']
 
-        if pid in pids_resp1:
+        if pid.lower() in pids_resp1:
             flag=1
             print('Dataset already exists.')
             return pid,flag

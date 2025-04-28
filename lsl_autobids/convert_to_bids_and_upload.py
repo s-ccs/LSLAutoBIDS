@@ -323,16 +323,15 @@ def bids_process_and_upload(processed_files,project_name):
     doi, status = create_dataverse(project_name)
 
     create_and_add_files_to_datalad_dataset(bids_root+project_name,status)
+    
+    if status == 0:
+        print('Linking dataverse dataset with datalad')
+        add_sibling_dataverse_in_folder(doi)
 
+    
     user_input = input("Do you want to upload the files to Dataverse? (y/n): ")
 
     if user_input.lower() == "y":
-        print('Uploading to dataverse........')
-
-        print('Linking dataverse dataset with datalad')
-        print('An error "found existing siblings with conflicting names" is fine!')
-        add_sibling_dataverse_in_folder(doi)
-
         print('Pushing files to dataverse........')
         # Push the files to dataverse
         push_files_to_dataverse(project_name); 
