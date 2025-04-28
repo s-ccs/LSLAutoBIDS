@@ -7,10 +7,10 @@ pydataverse
 pydataverse.egg-info
 jsonschema
 processed_files.txt
-test.py
 .DS_Store
 empty_log_process_temp.py
 fill_config.py
+.vscode/
 # To be added later
 setup.py
 pyproject.toml
