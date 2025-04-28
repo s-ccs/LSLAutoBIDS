@@ -7,7 +7,7 @@ datalad-installer==1.0.3
 pyDataverse==0.3.1
 requests>=2.12.0
 jsonschema>=3.2.0
-git+https://github.com/Lykos153/AnnexRemote.git
+AnnexRemote@git+https://github.com/Lykos153/AnnexRemote.git@master#egg=AnnexRemote
 toml
 pyyaml
 mnelab
