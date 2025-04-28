@@ -1,6 +1,5 @@
 data/
 tests/
-TODO.md
 config/
 pyxdf
 pydataverse
@@ -11,9 +10,6 @@ test.py
 .DS_Store
 empty_log_process_temp.py
 fill_config.py
-# To be added later
-setup.py
-pyproject.toml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
