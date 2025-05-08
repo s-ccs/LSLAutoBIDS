@@ -33,6 +33,23 @@
 	keywords = {{BIDS} 1, {GUI} 2, Python 7, conversion 3, data sharing 5, neuroimaging 4, open source software 6, plugin 8},
 }
 
+@article{covitz_curation_2022,
+	title = {Curation of {BIDS} ({CuBIDS}): A workflow and software package for streamlining reproducible curation of large {BIDS} datasets},
+	volume = {263},
+	issn = {1053-8119},
+	url = {https://www.sciencedirect.com/science/article/pii/S1053811922007248},
+	doi = {10.1016/j.neuroimage.2022.119609},
+	shorttitle = {Curation of {BIDS} ({CuBIDS})},
+	abstract = {The Brain Imaging Data Structure ({BIDS}) is a specification accompanied by a software ecosystem that was designed to create reproducible and automated workflows for processing neuroimaging data. {BIDS} Apps flexibly build workflows based on the metadata detected in a dataset. However, even {BIDS} valid metadata can include incorrect values or omissions that result in inconsistent processing across sessions. Additionally, in large-scale, heterogeneous neuroimaging datasets, hidden variability in metadata is difficult to detect and classify. To address these challenges, we created a Python-based software package titled “Curation of {BIDS}” ({CuBIDS}), which provides an intuitive workflow that helps users validate and manage the curation of their neuroimaging datasets. {CuBIDS} includes a robust implementation of {BIDS} validation that scales to large samples and incorporates {DataLad}––a version control software package for data––as an optional dependency to ensure reproducibility and provenance tracking throughout the entire curation process. {CuBIDS} provides tools to help users perform quality control on their images’ metadata and identify unique combinations of imaging parameters. Users can then execute {BIDS} Apps on a subset of participants that represent the full range of acquisition parameters that are present, accelerating pipeline testing on large datasets.},
+	pages = {119609},
+	journaltitle = {{NeuroImage}},
+	shortjournal = {{NeuroImage}},
+	author = {Covitz, Sydney and Tapera, Tinashe M. and Adebimpe, Azeez and Alexander-Bloch, Aaron F. and Bertolero, Maxwell A. and Feczko, Eric and Franco, Alexandre R. and Gur, Raquel E. and Gur, Ruben C. and Hendrickson, Timothy and Houghton, Audrey and Mehta, Kahini and Murtha, Kristin and Perrone, Anders J. and Robert-Fitzgerald, Tim and Schabdach, Jenna M. and Shinohara, Russell T and Vogel, Jacob W. and Zhao, Chenying and Fair, Damien A. and Milham, Michael P. and Cieslak, Matthew and Satterthwaite, Theodore D.},
+	urldate = {2025-05-07},
+	date = {2022-11-01},
+	keywords = {{BIDS}, Brain, Curation, Heterogeneity, {MRI}, Metadata, Neuroimaging, Software, Validation, Version control},
+}
+
 @article{halchenko_datalad_2021,
 	title = {{DataLad}: distributed system for joint management of code, data, and their relationship},
 	volume = {6},
@@ -48,6 +65,26 @@
 	urldate = {2025-05-02},
 	date = {2021-07-01},
 	langid = {english},
+}
+
+@article{wittkuhn_dynamics_2021,
+	title = {Dynamics of {fMRI} patterns reflect sub-second activation sequences and reveal replay in human visual cortex},
+	volume = {12},
+	rights = {2021 The Author(s)},
+	issn = {2041-1723},
+	url = {https://www.nature.com/articles/s41467-021-21970-2},
+	doi = {10.1038/s41467-021-21970-2},
+	abstract = {Neural computations are often fast and anatomically localized. Yet, investigating such computations in humans is challenging because non-invasive methods have either high temporal or spatial resolution, but not both. Of particular relevance, fast neural replay is known to occur throughout the brain in a coordinated fashion about which little is known. We develop a multivariate analysis method for functional magnetic resonance imaging that makes it possible to study sequentially activated neural patterns separated by less than 100 ms with precise spatial resolution. Human participants viewed five images individually and sequentially with speeds up to 32 ms between items. Probabilistic pattern classifiers were trained on activation patterns in visual and ventrotemporal cortex during individual image trials. Applied to sequence trials, probabilistic classifier time courses allow the detection of neural representations and their order. Order detection remains possible at speeds up to 32 ms between items (plus 100 ms per item). The frequency spectrum of the sequentiality metric distinguishes between sub- versus supra-second sequences. Importantly, applied to resting-state data our method reveals fast replay of task-related stimuli in visual cortex. This indicates that non-hippocampal replay occurs even after tasks without memory requirements and shows that our method can be used to detect such spontaneously occurring replay.},
+	pages = {1795},
+	number = {1},
+	journaltitle = {Nature Communications},
+	shortjournal = {Nat Commun},
+	author = {Wittkuhn, Lennart and Schuck, Nicolas W.},
+	urldate = {2025-05-08},
+	date = {2021-03-19},
+	langid = {english},
+	note = {Publisher: Nature Publishing Group},
+	keywords = {Cognitive neuroscience, Functional magnetic resonance imaging, Learning and memory, Visual system},
 }
 
 @article{pernet_eeg-bids_2019,
@@ -179,6 +216,22 @@
 	note = {Repository: Neuroscience},
 }
 
+@article{stawiski_optimizing_2024,
+	title = {Optimizing neuroscience data management by combining {REDCap}, {BIDS} and {SQLite}: a case study in Deep Brain Stimulation},
+	volume = {18},
+	issn = {1662-5196},
+	url = {https://www.frontiersin.org/articles/10.3389/fninf.2024.1435971/full},
+	doi = {10.3389/fninf.2024.1435971},
+	shorttitle = {Optimizing neuroscience data management by combining {REDCap}, {BIDS} and {SQLite}},
+	abstract = {Neuroscience studies entail the generation of massive collections of heterogeneous data (e.g. demographics, clinical records, medical images). Integration and analysis of such data in research centers is pivotal for elucidating disease mechanisms and improving clinical outcomes. However, data collection in clinics often relies on non-standardized methods, such as paper-based documentation. Moreover, diverse data types are collected in different departments hindering efficient data organization, secure sharing and compliance to the {FAIR} (Findable, Accessible, Interoperable, Reusable) principles. Henceforth, in this manuscript we present a specialized data management system designed to enhance research workflows in Deep Brain Stimulation ({DBS}), a state-of-the-art neurosurgical procedure employed to treat symptoms of movement and psychiatric disorders. The system leverages {REDCap} to promote accurate data capture in hospital settings and secure sharing with research institutes, Brain Imaging Data Structure ({BIDS}) as image storing standard and a {DBS}-specific {SQLite} database as comprehensive data store and unified interface to all data types. A self-developed Python tool automates the data flow between these three components, ensuring their full interoperability. The proposed framework has already been successfully employed for capturing and analyzing data of 107 patients from 2 medical institutions. It effectively addresses the challenges of managing, sharing and retrieving diverse data types, fostering advancements in data quality, organization, analysis, and collaboration among medical and research institutions.},
+	pages = {1435971},
+	journaltitle = {Frontiers in Neuroinformatics},
+	shortjournal = {Front. Neuroinform.},
+	author = {Stawiski, Marc and Bucciarelli, Vittoria and Vogel, Dorian and Hemm, Simone},
+	urldate = {2025-05-08},
+	date = {2024-09-05},
+}
+
 @article{noauthor_pdf_2024,
 	title = {({PDF}) {DataLad}: distributed system for joint management of code, data, and their relationship},
 	url = {https://www.researchgate.net/publication/353286270_DataLad_distributed_system_for_joint_management_of_code_data_and_their_relationship},
@@ -211,6 +264,29 @@
 	keywords = {Bioinformatics, Magnetic resonance imaging, Neuroscience, Positron-emission tomography, Software},
 }
 
+@inproceedings{dobson_presentations_2018,
+	title = {Presentations 2000 : {ReproIn} : automatic generation of shareable , version-controlled {BIDS} datasets from {MR} scanners},
+	url = {https://www.semanticscholar.org/paper/Presentations-2000-%3A-ReproIn-%3A-automatic-generation-Dobson-Sackett/f8f4a4fbadb6033b545b57bd51bf0356ac105566},
+	shorttitle = {Presentations 2000},
+	abstract = {10:30 {AM} 10:42 {AM} Lack of reproducibility is a problem in neuroimaging. Adherence to open standards, easy data sharing, and automation of data conversion and analysis steps are some of the key solutions to address it. The formalization of the Brain Imaging Data Structure ({BIDS}) [1] made it easier for researchers to collaborate on shared data and to benefit from standardized processing using various {BIDS}-aware application. At Dartmouth, following the philosophy that science should be open by design [2], we automated the collection of neuroimaging data as a hierarchy of {BIDS} datasets right from the {MR} scanner. Thus, individual research groups do not have to convert their data to {BIDS} manually, eliminating one of the biggest barriers to data sharing. Adherence to the {BIDS} standard allows investigators to immediately use {BIDS}-aware applications for data {QA} (e.g., bids-validator, {MRIQC} [3]) to catch obvious problems with data acquisition, and to automate preprocessing and analysis. Because the entire process occurs in a Singularity container [4], and all data is version-controlled with {DataLad} and git, our approach eliminates virtually any ambiguity in data provenance. Here we present details of our setup, named {ReproIn} (Reproducible Input). All system configurations, software, and material are released under open-source licenses and are provided in a container, so that any institution can easily implement this solution at their imaging centers.},
+	author = {Dobson, J. and Sackett, T. and Kodiweera, Chandana and Haxby, J. and Goncalves, M. and Ghosh, Satrajit S. and Halchenko, Y.},
+	urldate = {2025-05-08},
+	date = {2018},
+}
+
+@article{hanke_research_2022,
+	title = {Research Data Management with {DataLad} - Workshop for the Max Planck School of Cognition},
+	rights = {Creative Commons Attribution 4.0 International, Open Access},
+	url = {https://zenodo.org/record/6827086},
+	doi = {10.5281/ZENODO.6827086},
+	abstract = {Slides and general materials for a two-half-day Workshop "Research Data Management with {DataLad}" for the Max Planck School of Cognition, held by Adina Wagner and Michael Hanke. The numbered files "mpsc-*.pdf" contain the slide decks for the 4 sessions. Each slide deck contains links to relevant materials and code. The file "ws-py-requirements.txt" contains the additional Python setup our Juypterhub provides participants. If you are coding along on your own system, you should install those requirements in addition to {DataLad} via "pip intall -r ws-py-requirements.txt". Mac users additionally might want to install "tig" on their system (https://jonas.github.io/tig/{INSTALL}.html). The sources for these slides can be found at https://github.com/datalad-handbook/datalad-course.},
+	author = {Hanke, Michael and Wagner, Adina S.},
+	urldate = {2025-05-08},
+	date = {2022-07-20},
+	note = {Publisher: Zenodo},
+	keywords = {{DataLad}, Research Data Management, Version control},
+}
+
 @article{noauthor_sharing_nodate,
 	title = {Sharing the wealth: Neuroimaging data repositories {\textbar} Request {PDF}},
 	url = {https://www.researchgate.net/publication/284138564_Sharing_the_wealth_Neuroimaging_data_repositories},
@@ -219,6 +295,24 @@
 	abstract = {Request {PDF} {\textbar} On Jan 1, 2016, Simon Eickhoff and others published Sharing the wealth: Neuroimaging data repositories {\textbar} Find, read and cite all the research you need on {ResearchGate}},
 	journaltitle = {{ResearchGate}},
 	urldate = {2025-05-01},
+	langid = {english},
+}
+
+@article{nastase_narratives_2021,
+	title = {The “Narratives” {fMRI} dataset for evaluating models of naturalistic language comprehension},
+	volume = {8},
+	issn = {2052-4463},
+	url = {https://www.nature.com/articles/s41597-021-01033-3},
+	doi = {10.1038/s41597-021-01033-3},
+	abstract = {Abstract
+            The “Narratives” collection aggregates a variety of functional {MRI} datasets collected while human subjects listened to naturalistic spoken stories. The current release includes 345 subjects, 891 functional scans, and 27 diverse stories of varying duration totaling {\textasciitilde}4.6 hours of unique stimuli ({\textasciitilde}43,000 words). This data collection is well-suited for naturalistic neuroimaging analysis, and is intended to serve as a benchmark for models of language and narrative comprehension. We provide standardized {MRI} data accompanied by rich metadata, preprocessed versions of the data ready for immediate use, and the spoken story stimuli with time-stamped phoneme- and word-level transcripts. All code and data are publicly available with full provenance in keeping with current best practices in transparent and reproducible neuroimaging.},
+	pages = {250},
+	number = {1},
+	journaltitle = {Scientific Data},
+	shortjournal = {Sci Data},
+	author = {Nastase, Samuel A. and Liu, Yun-Fei and Hillman, Hanna and Zadbood, Asieh and Hasenfratz, Liat and Keshavarzian, Neggin and Chen, Janice and Honey, Christopher J. and Yeshurun, Yaara and Regev, Mor and Nguyen, Mai and Chang, Claire H. C. and Baldassano, Christopher and Lositsky, Olga and Simony, Erez and Chow, Michael A. and Leong, Yuan Chang and Brooks, Paula P. and Micciche, Emily and Choe, Gina and Goldstein, Ariel and Vanderwal, Tamara and Halchenko, Yaroslav O. and Norman, Kenneth A. and Hasson, Uri},
+	urldate = {2025-05-08},
+	date = {2021-09-28},
 	langid = {english},
 }
 
