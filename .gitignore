@@ -1,16 +1,14 @@
 data/
 tests/
-TODO.md
 config/
 pyxdf
 pydataverse
 pydataverse.egg-info
 jsonschema
 processed_files.txt
-test.py
 .DS_Store
 empty_log_process_temp.py
-fill_config.py
+lsl_autobids/_test.ipynb
 # To be added later
 setup.py
 pyproject.toml
