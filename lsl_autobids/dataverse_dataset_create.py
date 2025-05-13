@@ -78,7 +78,7 @@ def create_dataverse(project_name):
         # Modify field
         data['Dataverse']['dataset_title']=ds_title 
         data['Dataverse']['pid']= resp.json()['data']['persistentId']
-        data['Dataverse']['dataset_id']= resp.json()['data']['id']
+        #data['Dataverse']['dataset_id']= resp.json()['data']['id']
 
         # To use the dump function, you need to open the file in 'write' mode
         # It did not work if I just specify file location like in load
