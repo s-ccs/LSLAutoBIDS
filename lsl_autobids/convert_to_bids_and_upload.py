@@ -6,7 +6,7 @@ import sys
 from pyxdf import match_streaminfos, resolve_streams
 from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
-from mne_bids import write_raw_bids, BIDSPath
+from mne_bids import write_raw_bids, BIDSPath, get_anonymization_daysback
 
 from generate_dataset_json import generate_json_file
 from dataverse_dataset_create import create_dataverse
@@ -225,11 +225,18 @@ class BIDS:
         _,streams = self.get_the_streams(xdf_path)
         raw = self.create_raw_xdf(xdf_path,streams)
 
-        
+        # Set up anonymization
+        daysback_min, daysback_max = get_anonymization_daysback(raw)
+
+        # get the anonymization number from the toml file
+        toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
+        data = read_toml_file(toml_path)
+        anonymization_number = data["Subject"]["anonymization_number"]
+
         # Write the raw data to BIDS in EDF format
         # BrainVision format weird memory issues
         logger.log("Writing EEG-SET file")
-        write_raw_bids(raw, bids_path, overwrite=False, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True)
+        write_raw_bids(raw, bids_path, overwrite=False, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True, anonymize = dict(daysback=daysback_min + anonymization_number,keep_his=True))
 
         logger.info("Conversion to BIDS complete.")
         # Validate BIDS data
