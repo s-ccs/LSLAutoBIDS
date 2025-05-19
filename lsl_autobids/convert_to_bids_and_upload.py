@@ -154,13 +154,13 @@ class BIDS:
         participantform_found = any(f.endswith("_participantform.tsv") for f in files)
 
         if not edf_found:
-            logger.warning(f"Missing required .edf file starting with {prefix}")
+            logger.warning(f"Missing required .edf file from the Eye Tracker")
         if not csv_found:
-            logger.warning(f"Missing required .csv file starting with {prefix}")
+            logger.warning(f"Missing required .csv file sfrom the Eye Tracker")
         if not labnotebook_found:
-            logger.warning("Missing required file ending with _labnotebook.tsv")
+            logger.warning("Missing required labnotebook file")
         if not participantform_found:
-            logger.warning("Missing required file ending with _participantform.tsv")
+            logger.warning("Missing required participant form file")
 
 
 
