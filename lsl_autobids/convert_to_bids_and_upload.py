@@ -109,12 +109,25 @@ class BIDS:
         dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
         #check if the directory exists
         os.makedirs(dest_dir, exist_ok=True)
-    
+
+        # Extract the sub-xxx_ses-yyy part
+        def extract_prefix(filename):
+            parts = filename.split("_")
+            sub = next((p for p in parts if p.startswith("sub-")), None)
+            ses = next((p for p in parts if p.startswith("ses-")), None)
+            if sub and ses:
+                return f"{sub}_{ses}_"
+            return None
+            
         for file in os.listdir(behavioural_path):
             # remove the _eeg from the file_name_without_ext
-            file_name_without_eeg = file_base[:-4]
-            new_filename = file_name_without_eeg + '_' + file
-            dest_file = os.path.join(dest_dir, new_filename)
+            file_name_without_eeg = file_base[:-4]   
+            prefix = extract_prefix(file_name_without_eeg)
+            
+            if not file.startswith(prefix):
+                file = file_name_without_eeg + '_' + file
+                
+            dest_file = os.path.join(dest_dir, file)
             if os.path.exists(dest_file):
                 logger.info(f"Behavioural file {file} already exists in BIDS.")
                 pass
