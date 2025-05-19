@@ -110,6 +110,7 @@ class BIDS:
         #check if the directory exists
         os.makedirs(dest_dir, exist_ok=True)
 
+        processed_files = []
         # Extract the sub-xxx_ses-yyy part
         def extract_prefix(filename):
             parts = filename.split("_")
@@ -118,15 +119,15 @@ class BIDS:
             if sub and ses:
                 return f"{sub}_{ses}_"
             return None
-            
+        
+        prefix = extract_prefix(file_base)
+
         for file in os.listdir(behavioural_path):
-            # remove the _eeg from the file_name_without_ext
-            file_name_without_eeg = file_base[:-4]   
-            prefix = extract_prefix(file_name_without_eeg)
             
             if not file.startswith(prefix):
-                file = file_name_without_eeg + '_' + file
-                
+                file = prefix + file
+            
+            processed_files.append(file)
             dest_file = os.path.join(dest_dir, file)
             if os.path.exists(dest_file):
                 logger.info(f"Behavioural file {file} already exists in BIDS.")
@@ -135,6 +136,33 @@ class BIDS:
                 # Directly copy the file
                 logger.info(f"Copying {file} to {dest_file}")
                 shutil.copy(os.path.join(behavioural_path, file), dest_file)
+
+        self._check_required_behavioral_files(processed_files, prefix)
+
+    
+    def _check_required_behavioral_files(self, files, prefix):
+        """
+        Check for required behavioral files after copying.
+
+        Args:
+            files (list): List of copied file names.
+            prefix (str): Expected prefix (e.g., "sub-001_ses-002_").
+        """
+        edf_found = any(f.startswith(prefix) and f.endswith(".edf") for f in files)
+        csv_found = any(f.startswith(prefix) and f.endswith(".csv") for f in files)
+        labnotebook_found = any(f.endswith("_labnotebook.tsv") for f in files)
+        participantform_found = any(f.endswith("_participantform.tsv") for f in files)
+
+        if not edf_found:
+            logger.warning(f"Missing required .edf file starting with {prefix}")
+        if not csv_found:
+            logger.warning(f"Missing required .csv file starting with {prefix}")
+        if not labnotebook_found:
+            logger.warning("Missing required file ending with _labnotebook.tsv")
+        if not participantform_found:
+            logger.warning("Missing required file ending with _participantform.tsv")
+
+
 
     def _copy_experiment_files(self, file_base, project_name, subject_id, session_id):
         logger.info("Copying the experiment files to BIDS...")
