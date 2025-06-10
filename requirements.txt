@@ -13,3 +13,4 @@ pyyaml
 mnelab
 pybv
 pytest
+eeglabio
