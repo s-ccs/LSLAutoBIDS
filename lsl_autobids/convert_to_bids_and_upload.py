@@ -383,17 +383,15 @@ def bids_process_and_upload(processed_files,project_name):
         logger.info('Linking dataverse dataset with datalad')
         add_sibling_dataverse_in_folder(doi)
 
-    
-    user_input = get_user_input("Do you want to upload the files to Dataverse? (y/n): ")
-
-    if user_input.lower() == "y":
+    if cli_args.yes:
         logger.info('Pushing files to dataverse........')
-        # Push the files to dataverse
-        push_files_to_dataverse(project_name); 
-
-    elif user_input.lower() == "n":
-        logger.info("Program aborted.")
+        push_files_to_dataverse(project_name)
     else:
-        logger.error("Invalid Input.")
-
-
+        user_input = get_user_input("Do you want to push the files to Dataverse? (y/n): ")
+        if user_input == "y":
+            logger.info('Pushing files to dataverse........')
+            push_files_to_dataverse(project_name)
+        elif user_input == "n":
+            logger.info("Program aborted.")
+        else:
+            logger.error("Invalid Input.")

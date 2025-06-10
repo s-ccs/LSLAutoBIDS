@@ -37,17 +37,25 @@ def check_for_project(project_name: str, available_projects: list[str]) -> Path:
 
     if not project_path.exists():
         raise FileNotFoundError(f"Project directory '{project_path}' does not exist.")
+    logger.info(f"Project folder for {project_name} found.")
     
-    logging.info(f"Project '{project_name}' found.")
+    # update the project name in the project configuration file
+    update_project_config(project_path, project_name)
 
-    user_input = get_user_input("Do you want to check for new data in the project folder?")
-    if user_input == 'y' :
-        check_for_new_data(project_name)
+    if cli_args.yes:
+        # Automatically proceed without asking
+        check_for_new_data()
+        print("Data check completed.")
     else:
-        logging.info("Data check skipped by user.")
-        sys.exit(0)
-
-    return project_path
+        # Ask the user before proceeding
+        user_input = get_user_input("Do you want to check for new data in the project folder? (y/n): ")
+        if user_input == 'y':
+            check_for_new_data()
+            print("Data check completed.")
+        else:
+            print("Data check skipped by user.")
+            sys.exit(0)
+    # Ask the user if they want to check for new data
     
 
 def list_directories(path: str) -> list:
