@@ -26,11 +26,11 @@ toml_content = """
 
   [Subject]
     subject = ["Medicine, Health and Life Sciences","Engineering"]
+    anonymization_number = 123
 
   [Dataverse]
-    dataset_id = 123456
     dataset_title = 'Convert XDF to BIDS'
-    pid = '12345 '
+    pid = '12345'
   """
 
 
