@@ -193,10 +193,11 @@ class BIDS:
         #check if the directory exists
         os.makedirs(dest_dir, exist_ok =True)
 
-        for file in os.listdir(experiments_path):
-            src_file = os.path.join(experiments_path, file)
-            dest_file = os.path.join(dest_dir, file)
-            shutil.copy(src_file, dest_file)
+                for file in os.listdir(experiments_path):
+                    src_file = os.path.join(experiments_path, file)
+                    dest_file = os.path.join(dest_dir, file)
+                    if os.path.isfile(src_file):
+                        shutil.copy(src_file, dest_file)
 
         # Compress the 'other' directory into a ZIP file
         shutil.make_archive(dest_dir, 'zip', dest_dir)
