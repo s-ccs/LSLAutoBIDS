@@ -104,16 +104,24 @@ def main():
     # Argument parser
     argparser = argparse.ArgumentParser(description="Check project and optionally update config.")
     argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
+    argparser.add_argument('-y','--yes', action='store_true', help='Automatically answer yes to all user prompts')
+    argparser.add_argument('--redo_bids_conversion', action='store_true', help='Redo the entire BIDS conversion process from scratch for the processed files')
     args = argparser.parse_args()
 
+    # Store args globally
+    cli_args.init(args)
+    
+    project_name = cli_args.project_name
+    print(project_name)
+    print("yes flag is set to: ", cli_args.yes)
     try:
         try:
             available_projects = list_directories(project_root)
         except (FileNotFoundError, PermissionError) as e:
             print(f"Failed to access project directory: {e}")
             sys.exit(1)
-        project_path = check_for_project(args.project_name, available_projects)
-        update_project_config(project_path, args.project_name)
+        check_for_project(available_projects, project_name)
+       
     except Exception as e:
         logging.error(str(e))
         sys.exit(1)
