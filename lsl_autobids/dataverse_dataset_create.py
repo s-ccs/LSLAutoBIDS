@@ -2,12 +2,11 @@
 from pyDataverse.api import NativeApi
 from pyDataverse.models import Dataset
 from pyDataverse.utils import read_file
-import json
-import tomllib
+import json 
 import os
-from globals import project_root, api_key,dataverse_base_url,parent_dataverse_name
+from config_globals import project_root, dataverse_base_url, api_key, parent_dataverse_name
 import logging
-from utils import read_toml_file
+from utils import read_toml_file, write_toml_file
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -82,8 +81,7 @@ def create_dataverse(project_name):
 
         # To use the dump function, you need to open the file in 'write' mode
         # It did not work if I just specify file location like in load
-        with open(toml_path, 'w') as f:
-            tomllib.dump(data, f)
+        write_toml_file(toml_path,data)
         
         # # change the dataset_id in the yaml file
         # data['pid'] = ds_pid

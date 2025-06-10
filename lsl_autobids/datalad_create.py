@@ -12,11 +12,11 @@ def create_and_add_files_to_datalad_dataset(dataset_path,flag):
     if flag==0:
         message ="LSL Auto BIDS: new datalad dataset created"
         # Create a new dataset
-        logger.log('Creating a new datalad dataset........')
+        logger.info('Creating a new datalad dataset........')
         try:
             dl.create(dataset_path, force=True) # files already exist, so we eforce it
         except:
-            logger.log("Could not create a new dataset, maybe it exists already?")
+            logger.info("Could not create a new dataset, maybe it exists already?")
 
     # Commit changes
     # Change to dataset path

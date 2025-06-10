@@ -3,7 +3,7 @@
 
 import subprocess
 import logging
-from globals import dataverse_base_url
+from config_globals import dataverse_base_url
 
 # Set up logging
 logger = logging.getLogger(__name__)

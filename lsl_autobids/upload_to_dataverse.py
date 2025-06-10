@@ -1,10 +1,9 @@
 import subprocess
 import os
 import time
-from globals import project_root
+from config_globals import project_root
 import logging
-# Set up logging
-# Set up logging
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 

@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from globals import project_root
+from config_globals import project_root
 from utils import read_toml_file
 
 # Set up logging

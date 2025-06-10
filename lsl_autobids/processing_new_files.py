@@ -4,22 +4,24 @@ import logging
 from typing import List, Union
 from utils import get_user_input
 from convert_to_bids_and_upload import  bids_process_and_upload
-from globals import project_root
+from config_globals import cli_args, project_root
 
 
 # Set up logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-def process_new_files(file_status: List[str], project_name: str) -> None:
+
+def process_new_files(file_status: List[str]) -> None:
     """Processes new .xdf files and prompts user to convert/upload.
 
     Args:
         file_status (List[str]): List of new files detected.
-        project_name (str): Name of the current project.
     """
 
     logger.info("Processing new files...")
+    # set up global variables
+    project_name = cli_args.project_name
     processed_files = []
     for file_path in file_status:
         if file_path.endswith('.xdf'):
@@ -52,16 +54,14 @@ def process_new_files(file_status: List[str], project_name: str) -> None:
             _clear_last_run_log(project_name)
             raise RuntimeError("BIDS conversion aborted by user.")
 
-    logger.info("Starting BIDS conversion.")
-    bids_process_and_upload(processed_files, project_name)
+        logger.info("Starting BIDS conversion.")
+        bids_process_and_upload(processed_files)
 
 
-def _clear_last_run_log(project_name: str) -> None:
+def _clear_last_run_log() -> None:
     """Clears the last run log file for the given project.
-
-    Args:
-        project_name (str): Name of the project.
     """
+    project_name = cli_args.project_name
     log_path = os.path.join(project_root, project_name, "last_run_log.txt")
     try:
         with open(log_path, 'w') as f:
@@ -100,13 +100,12 @@ def check_for_new_files(path: str) -> Union[List[str], str]:
 
     return new_files if new_files else 'No new files found'
     
-def check_for_new_data(project_name: str) -> None:
+def check_for_new_data() -> None:
 
     """Checks for new data files and triggers processing.
-
-    Args:
-        project_name (str): Name of the project.
     """
+    # set up global variables
+    project_name = cli_args.project_name
     logger.info("Checking for new data...")
 
     # Keep a log of the files changes in a text file
@@ -119,6 +118,6 @@ def check_for_new_data(project_name: str) -> None:
         raise RuntimeError("No new files found.")
     else:
         logger.info(f"New files detected: {file_status}")
-        process_new_files(file_status, project_name)
+        process_new_files(file_status)
 
 

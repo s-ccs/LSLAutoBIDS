@@ -1,6 +1,8 @@
 # utils.py
 import logging
 import toml
+import os
+import tomllib
 
 def get_user_input(prompt: str, max_attempts: int = 5) -> str:
     """Prompt the user with a yes/no question and validate the input.
@@ -24,9 +26,14 @@ def get_user_input(prompt: str, max_attempts: int = 5) -> str:
     raise ValueError("Maximum attempts exceeded. Invalid user input.")
 
 def read_toml_file(toml_file):
+    if not isinstance(toml_file, (str, bytes, os.PathLike)):
+        raise TypeError(f"Expected a path-like object, got {type(toml_file).__name__}")
+
     with open(toml_file, 'rb') as file:
-        return toml.load(file)
+        return tomllib.load(file)
+
     
 def write_toml_file(toml_file, data):
     with open(toml_file, 'w') as file:
         toml.dump(data, file)
+        
