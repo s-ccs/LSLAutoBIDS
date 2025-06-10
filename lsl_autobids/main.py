@@ -1,13 +1,12 @@
 #import packages
 import argparse
 import os
-import tomllib
 import toml
-from globals import project_root
+from config_globals import cli_args,project_root
 import logging
 from pathlib import Path
 import sys
-from utils import get_user_input, read_toml_file
+from utils import get_user_input, read_toml_file, write_toml_file
 from processing_new_files import check_for_new_data
 
 # Set up logging
@@ -16,15 +15,11 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 
-def check_for_project(project_name: str, available_projects: list[str]) -> Path:
+def check_for_project(available_projects: list[str], project_name:str):
     """Checks if the project exists and optionally verifies for new data.
 
         Args:
-            project_name (str): Name of the project.
             available_projects (list[str]): List of valid projects.
-
-        Returns:
-            Path: The resolved path of the project.
 
         Raises:
             FileNotFoundError: If the project directory does not exist.
@@ -33,7 +28,7 @@ def check_for_project(project_name: str, available_projects: list[str]) -> Path:
     if project_name not in available_projects:
         raise ValueError(f"Project '{project_name}' is not available in the recordings.")
     
-    project_path = os.path.join(project_root, project_name)
+    project_path = Path(os.path.join(project_root, project_name))
 
     if not project_path.exists():
         raise FileNotFoundError(f"Project directory '{project_path}' does not exist.")
@@ -80,7 +75,7 @@ def list_directories(path: str) -> list:
         logger.error(f"Permission denied when accessing '{path}'.")
         raise
 
-def update_project_config(project_path: Path, project_name: str):
+def update_project_config(project_path: str, project_name: str):
     """Updates the project TOML configuration file.
 
     Args:
@@ -91,15 +86,15 @@ def update_project_config(project_path: Path, project_name: str):
         FileNotFoundError: If the config file is missing.
     """
     toml_path = os.path.join(project_path, f"{project_name}_config.toml")
-    if not toml_path.exists():
+    if not Path(toml_path).exists():
         raise FileNotFoundError(f"Config file '{toml_path}' not found.")
 
     config = read_toml_file(toml_path)
-    config.setdefault('Dataset', {})['title'] = project_name # data['Dataset']['title'] = project_name
+    #config.setdefault('Dataset', {})['title'] = project_name 
+    config['Dataset']['title'] = project_name
+    logger.info("Updating project config with new project name...")
 
-    with toml_path.open("w", encoding="utf-8") as f:
-        toml.dump(config, f)
-
+    write_toml_file(toml_path, config)
     logging.info(f"Updated project config for '{project_name}'.")
 
 
