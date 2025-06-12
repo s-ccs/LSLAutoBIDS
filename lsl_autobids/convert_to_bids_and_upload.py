@@ -14,7 +14,7 @@ from globals import project_root,project_stim_root, bids_root
 import toml
 import yaml
 import sys
-
+import mne
 
 
 class BIDS:
@@ -75,12 +75,12 @@ class BIDS:
         
         
         if os.path.exists(dest_file):
-            print("xdf already in sourcedata")
+            print("xdf already in sourcedata - not copying again")
             pass
         else:
             shutil.copy(xdf_file, dest_file)
 
-      
+        
         if stim:
             ### COPY THE BEHAVIOURAL FILES TO BIDS ###
             print('Copying the behavioural files to BIDS........')
@@ -136,7 +136,7 @@ class BIDS:
                 print('Experiment zip files for the project already exist and hence not copied')
 
         else:
-            print("STIM was false, not copying the behavioural and experiment files from the stimulus computer.")
+            print("STIM was set to false, not copying the behavioural and experiment files from a stimulus computer.")
 
     def create_raw_xdf(self, xdf_path,streams):
         """
@@ -150,15 +150,26 @@ class BIDS:
         mne.io.RawXDF: The raw object created from the XDF file.
 
         """
+        
+        
         # Get the stream id of the EEG stream
         stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
         fs_new = max([stream["nominal_srate"] for stream in streams])
-        print("reading xdf and resampling... let's hope the RAM is big enough")
-        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new=fs_new,prefix_markers=True)
-        print("resampling done! phew")
+        print("reading xdf and resampling... if it breaks here, you need more RAM (close other programs, buy bigger RAM)")
+        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new=fs_new,prefix_markers=True,interpolate_or_resample="interpolate")
+        #print("interpolation done! phew")
 
-        # for memory reasons
-        raw.resample(500)
+        nan_annotations = mne.preprocessing.annotate_nan(raw)
+        raw_annotations = raw.annotations
+        bad_annotations = [idx for (idx,a) in enumerate(raw.annotations) if a['onset'] < 0]
+        if len(bad_annotations)>0:
+            print(f"Annotations: Deleted {len(bad_annotations)} annotations which started before time 0")
+            print(raw_annotations[bad_annotations])
+            raw_annotations.delete(bad_annotations)
+        raw.set_annotations(raw_annotations+nan_annotations)
+
+
+
         try:
             channelList = {'heog_u':'eog',
                                 'heog_d':'eog',
@@ -206,18 +217,17 @@ class BIDS:
                             datatype='eeg', 
                             suffix='eeg', 
                             extension='.set')
-        # print(bids_path)
+        
         if os.path.exists(bids_path):
+            print("EEG target file already exists")
             return 2
         
         # Create the new raw file from xdf file
         _,streams = self.get_the_streams(xdf_path)
         raw = self.create_raw_xdf(xdf_path,streams)
-
         
-        # Write the raw data to BIDS in EDF format
-        # BrainVision format weird memory issues
         print("Writing EEG-SET file")
+
         write_raw_bids(raw, bids_path, overwrite=False, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True)
 
         print("Conversion to BIDS complete.")
