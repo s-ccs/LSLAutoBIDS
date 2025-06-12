@@ -44,9 +44,7 @@ def process_new_files(file_status: List[str]) -> None:
     # User prompt asking if we want to proceed to convert and upload
     if cli_args.yes:
         # Automatically proceed without asking
-        logger.info("Automatically proceeding with BIDS conversion.")
-        logger.info("Starting BIDS conversion.")
-        bids_process_and_upload(processed_files)
+        logger.info("Automatically proceeding with BIDS conversion.")    
     else:
         user_choice = get_user_input("Do you want to proceed with BIDS conversion?")
         if user_choice == 'n':
@@ -54,8 +52,8 @@ def process_new_files(file_status: List[str]) -> None:
             _clear_last_run_log(project_name)
             raise RuntimeError("BIDS conversion aborted by user.")
 
-        logger.info("Starting BIDS conversion.")
-        bids_process_and_upload(processed_files)
+    logger.info("Starting BIDS conversion.")
+    bids_process_and_upload(processed_files)
 
 
 def _clear_last_run_log() -> None:
