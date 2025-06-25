@@ -2,9 +2,10 @@
 import os
 import logging
 from typing import List, Union
-from utils import get_user_input
+from utils import get_user_input, read_toml_file
 from convert_to_bids_and_upload import  bids_process_and_upload
 from config_globals import cli_args, project_root
+import toml
 
 
 # Set up logging
@@ -69,7 +70,7 @@ def _clear_last_run_log() -> None:
         logger.error(f"Failed to clear log: {e}")
 
 
-def check_for_new_files(path: str) -> Union[List[str], str]:
+def check_for_new_files(path: str, ignore_subjects) -> Union[List[str], str]:
     """Checks for new files in the given folder structure since last run.
 
     Args:
@@ -78,6 +79,7 @@ def check_for_new_files(path: str) -> Union[List[str], str]:
     Returns:
         Union[List[str], str]: List of new file paths or a 'no files' message.
     """
+    
     log_file_path = os.path.join(path, "last_run_log.txt")
 
     try:
@@ -88,9 +90,19 @@ def check_for_new_files(path: str) -> Union[List[str], str]:
         last_run_time = 0.0
 
     new_files = []
-    for dirpath, _, filenames in os.walk(path):
+    
+    for dirpath, dirnames, filenames in os.walk(path):
+        # Skip the root directory
         if dirpath == path:
+            # Modify dirnames in-place to exclude ignored subjects
+            dirnames[:] = [d for d in dirnames if d not in ignore_subjects]
             continue
+
+        # Skip if the current dirpath includes any ignored subject
+        if any(ignored in dirpath.split(os.sep) for ignored in ignore_subjects):
+            logger.info(f"Skipping directory {dirpath} due to ignored subjects.")   
+            continue
+
         for filename in filenames:
             file_path = os.path.join(dirpath, filename)
             if os.path.getmtime(file_path) > last_run_time:
@@ -109,7 +121,14 @@ def check_for_new_data() -> None:
     # Keep a log of the files changes in a text file
     # last_checked_file_path = './last_time_checked.txt'
     project_path = os.path.join(project_root,project_name)
-    file_status = check_for_new_files(project_path)
+
+    toml_path = os.path.join(project_path, cli_args.project_name + '_config.toml')
+    data = read_toml_file(toml_path)
+
+    ignore_subjects = data["IgnoreSubjects"]["ignore_subjects"]
+
+    logger.info("Ignored subjects: %s", ignore_subjects)
+    file_status = check_for_new_files(project_path, ignore_subjects)    
     if file_status == 'No new files found':
         logger.info("No new files detected.")
         input("Press Enter to exit...")
