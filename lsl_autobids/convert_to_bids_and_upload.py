@@ -161,11 +161,11 @@ class BIDS:
 
         required_files = data["ExpectedStimulusFiles"]["expectedFiles"]
 
+
         for required_file in required_files:
-            for f in files:
-                if not any(f.startswith(prefix) and f.endswith(required_file)):
-                    logger.error(f"Missing required behavioral file: {required_file} for prefix {prefix}")
-                    raise FileNotFoundError(f"Missing required behavioral file: {required_file} for prefix {prefix}")
+            if not any(f.startswith(prefix) and f.endswith(required_file) for f in files):
+                raise FileNotFoundError(f"Missing required behavioral file: {required_file}")
+
 
 
     def _copy_experiment_files(self, subject_id, session_id):
