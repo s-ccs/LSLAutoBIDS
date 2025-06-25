@@ -15,7 +15,7 @@ toml_content = """
     title = "Convert XDF to BIDS"
     dataset_description = "This is a test project to set up the pipeline to convert XDF to BIDS."
     License = "MIT License"
-    taskName = "task-1"
+    taskName = ["task-1"]
 
   [Sources]
     EEG = "EEGstream EE225"
@@ -23,6 +23,12 @@ toml_content = """
 
   [Computers]
     stimulusComputerUsed = true
+
+  [ExpectedStimulusFiles]
+    expectedFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
+
+  [IgnoreSubjects]
+    ignore_subjects = ["sub-01", "sub-999"]
 
   [Subject]
     subject = ["Medicine, Health and Life Sciences","Engineering"]

@@ -153,20 +153,19 @@ class BIDS:
             files (list): List of copied file names.
             prefix (str): Expected prefix (e.g., "sub-001_ses-002_").
         """
-        edf_found = any(f.startswith(prefix) and f.endswith(".edf") for f in files)
-        csv_found = any(f.startswith(prefix) and f.endswith(".csv") for f in files)
-        labnotebook_found = any(f.endswith("_labnotebook.tsv") for f in files)
-        participantform_found = any(f.endswith("_participantform.tsv") for f in files)
+        logger.info("Checking for required behavioral files...")
 
-        if not edf_found:
-            logger.warning(f"Missing required .edf file from the Eye Tracker")
-        if not csv_found:
-            logger.warning(f"Missing required .csv file sfrom the Eye Tracker")
-        if not labnotebook_found:
-            logger.warning("Missing required labnotebook file")
-        if not participantform_found:
-            logger.warning("Missing required participant form file")
+        # Get the expected file names from the toml file
+        toml_path = os.path.join(project_root, cli_args.project_name, cli_args.project_name + '_config.toml')
+        data = read_toml_file(toml_path)
 
+        required_files = data["ExpectedStimulusFiles"]["expectedFiles"]
+
+        for required_file in required_files:
+            for f in files:
+                if not any(f.startswith(prefix) and f.endswith(required_file)):
+                    logger.error(f"Missing required behavioral file: {required_file} for prefix {prefix}")
+                    raise FileNotFoundError(f"Missing required behavioral file: {required_file} for prefix {prefix}")
 
 
     def _copy_experiment_files(self, subject_id, session_id):
@@ -193,11 +192,11 @@ class BIDS:
         #check if the directory exists
         os.makedirs(dest_dir, exist_ok =True)
 
-                for file in os.listdir(experiments_path):
-                    src_file = os.path.join(experiments_path, file)
-                    dest_file = os.path.join(dest_dir, file)
-                    if os.path.isfile(src_file):
-                        shutil.copy(src_file, dest_file)
+        for file in os.listdir(experiments_path):
+            src_file = os.path.join(experiments_path, file)
+            dest_file = os.path.join(dest_dir, file)
+            if os.path.isfile(src_file):
+                shutil.copy(src_file, dest_file)
 
         # Compress the 'other' directory into a ZIP file
         shutil.make_archive(dest_dir, 'zip', dest_dir)
