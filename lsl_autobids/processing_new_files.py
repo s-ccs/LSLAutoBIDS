@@ -32,12 +32,9 @@ def process_new_files(file_status: List[str]) -> None:
             _, file_name = os.path.split(file_path)
             file_name_no_ext, ext = os.path.splitext(file_name)
             if file_name_no_ext.endswith('_old'):
-                user_choice = get_user_input("WARNING: The file appears to be a duplicate ('_old'). Overwrite?")
-                if user_choice == 'n':
-                    logger.warning("User declined to overwrite file. Exiting.")
-                    raise RuntimeError("File overwrite declined by user.")
-                logger.info("Overwrite confirmed.")
-                continue 
+                logger.error(f"File '{file_name}' appears to be a duplicate. It ends with '_old'. Please manually check the file.")
+                raise RuntimeError("File overwrite declined by user.")
+
             processed_files.append(file_name_no_ext + ext)
     
     logger.info(f"Processed files: {processed_files}")
