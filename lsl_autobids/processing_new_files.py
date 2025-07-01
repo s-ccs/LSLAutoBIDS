@@ -33,7 +33,7 @@ def process_new_files(file_status: List[str]) -> None:
             file_name_no_ext, ext = os.path.splitext(file_name)
             if file_name_no_ext.endswith('_old'):
                 logger.error(f"File '{file_name}' appears to be a duplicate. It ends with '_old'. Please manually check the file.")
-                raise RuntimeError("File overwrite declined by user.")
+                raise RuntimeError("Duplicate file detected. Please check the file manually.")
 
             processed_files.append(file_name_no_ext + ext)
     
