@@ -34,6 +34,10 @@ toml_content = """
     subject = ["Medicine, Health and Life Sciences","Engineering"]
     anonymization_number = 123
 
+  [Tasks]
+    tasks = ["Default2"]
+    exclude_tasks = ["dummy"]
+
   [Dataverse]
     dataset_title = 'Convert XDF to BIDS'
     pid = '12345'
