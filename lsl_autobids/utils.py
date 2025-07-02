@@ -1,10 +1,10 @@
 # utils.py
-import logging
 import toml
 import os
 import tomllib
 
-def get_user_input(prompt: str, max_attempts: int = 5) -> str:
+
+def get_user_input(prompt: str, logger, max_attempts: int = 5) -> str:
     """Prompt the user with a yes/no question and validate the input.
 
     Args:
@@ -17,12 +17,13 @@ def get_user_input(prompt: str, max_attempts: int = 5) -> str:
     Raises:
         ValueError: If the user fails to provide valid input.
     """
+    max_attempts = 5
     valid_inputs = {'y', 'n'}
     for attempt in range(max_attempts):
         user_input = input(f"{prompt} (y/n): ").strip().lower()
         if user_input in valid_inputs:
             return user_input
-        logging.warning(f"Invalid input. {max_attempts - attempt - 1} attempt(s) remaining.")
+        logger.warning(f"Invalid input. {max_attempts - attempt - 1} attempt(s) remaining.")
     raise ValueError("Maximum attempts exceeded. Invalid user input.")
 
 def read_toml_file(toml_file):

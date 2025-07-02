@@ -5,7 +5,6 @@ import os
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-#datalad.log.LoggerHelper().set_level("debug") #
 
 def create_and_add_files_to_datalad_dataset(dataset_path,flag):
     message = "LSL Auto BIDS: new files found and added"

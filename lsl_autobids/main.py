@@ -8,14 +8,11 @@ from pathlib import Path
 import sys
 from utils import get_user_input, read_toml_file, write_toml_file
 from processing_new_files import check_for_new_data
-
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-
-logger = logging.getLogger(__name__)
+from config_logger import get_logger
 
 
-def check_for_project(available_projects: list[str], project_name:str):
+
+def check_for_project(available_projects: list[str], project_name:str, logger):
     """Checks if the project exists and optionally verifies for new data.
 
         Args:
@@ -35,25 +32,24 @@ def check_for_project(available_projects: list[str], project_name:str):
     logger.info(f"Project folder for {project_name} found.")
     
     # update the project name in the project configuration file
-    update_project_config(project_path, project_name)
+    update_project_config(project_path, project_name, logger)
 
     if cli_args.yes:
         # Automatically proceed without asking
-        check_for_new_data()
+        check_for_new_data(logger)
         print("Data check completed.")
     else:
         # Ask the user before proceeding
-        user_input = get_user_input("Do you want to check for new data in the project folder? (y/n): ")
+        user_input = get_user_input("Do you want to check for new data in the project folder? (y/n): ",logger)
         if user_input == 'y':
-            check_for_new_data()
+            check_for_new_data(logger)
             print("Data check completed.")
         else:
             print("Data check skipped by user.")
             sys.exit(0)
-    # Ask the user if they want to check for new data
-    
+   
 
-def list_directories(path: str) -> list:
+def list_directories(path: str, logger) -> list:
     """List all directories at the given path.
 
     Args:
@@ -75,7 +71,7 @@ def list_directories(path: str) -> list:
         logger.error(f"Permission denied when accessing '{path}'.")
         raise
 
-def update_project_config(project_path: str, project_name: str):
+def update_project_config(project_path: str, project_name: str, logger):
     """Updates the project TOML configuration file.
 
     Args:
@@ -95,7 +91,7 @@ def update_project_config(project_path: str, project_name: str):
     logger.info("Updating project config with new project name...")
 
     write_toml_file(toml_path, config)
-    logging.info(f"Updated project config for '{project_name}'.")
+    logger.info(f"Updated project config for '{project_name}'.")
 
 
 def main():
@@ -112,18 +108,18 @@ def main():
     cli_args.init(args)
     
     project_name = cli_args.project_name
-    print(project_name)
-    print("yes flag is set to: ", cli_args.yes)
+    # Initialize the logger AFTER cli_args is ready
+    logger = get_logger(project_name, project_root)
     try:
         try:
-            available_projects = list_directories(project_root)
+            available_projects = list_directories(project_root, logger)
         except (FileNotFoundError, PermissionError) as e:
             print(f"Failed to access project directory: {e}")
             sys.exit(1)
-        check_for_project(available_projects, project_name)
+        check_for_project(available_projects, project_name, logger)
        
     except Exception as e:
-        logging.error(str(e))
+        logger.error(str(e))
         sys.exit(1)
 
 if __name__ == "__main__":

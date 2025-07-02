@@ -114,8 +114,10 @@ class BIDS:
             parts = filename.split("_")
             sub = next((p for p in parts if p.startswith("sub-")), None)
             ses = next((p for p in parts if p.startswith("ses-")), None)
-            if sub and ses:
-                return f"{sub}_{ses}_"
+            run = next((p for p in parts if p.startswith("run-")), None)
+            task = next((p for p in parts if p.startswith("task-")), None)
+            if sub and ses and run and task:
+                return f"{sub}_{ses}_task-{task}_run-{run}"
             return None
         
         prefix = extract_prefix(file_base)
@@ -242,7 +244,7 @@ class BIDS:
 
         return raw
 
-    def convert_to_bids(self, xdf_path,subject_id,session_id,stim):
+    def convert_to_bids(self, xdf_path,subject_id,session_id,task_id, run_id,stim):
 
         """
         Convert an XDF file to BIDS format.
@@ -265,7 +267,7 @@ class BIDS:
         # Get the bidspath for the raw file
         bids_path = BIDSPath(subject=subject_id[-3:], 
                             session=session_id[-3:], 
-                            run=None, task=project_name, 
+                            run=run_id[-3:], task=task_id, 
                             root=bids_root+project_name, 
                             datatype='eeg', 
                             suffix='eeg', 
@@ -365,11 +367,13 @@ def bids_process_and_upload(processed_files):
     for file in processed_files:
         subject_id = file.split('_')[0]
         session_id = file.split('_')[1]
+        run_id = file.split('_')[3]
+        task_id = file.split('_')[2]
         filename = file.split(os.path.sep)[-1]
-        logger.info(f"Currently processing {subject_id} / {session_id}")
+        logger.info(f"Currently processing {subject_id}, {session_id}, {run_id} of task {task_id}") 
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
 
-        val = bids.convert_to_bids(xdf_path,subject_id,session_id,stim)
+        val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, stim)
 
         if val == 1:
                 logger.info("Bids Conversion Sucessful")      
@@ -400,7 +404,7 @@ def bids_process_and_upload(processed_files):
         logger.info('Pushing files to dataverse........')
         push_files_to_dataverse(project_name)
     else:
-        user_input = get_user_input("Do you want to push the files to Dataverse? (y/n): ")
+        user_input = get_user_input("Do you want to push the files to Dataverse? (y/n): ",logger)
         if user_input == "y":
             logger.info('Pushing files to dataverse........')
             push_files_to_dataverse(project_name)

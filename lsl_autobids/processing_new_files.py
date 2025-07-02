@@ -2,18 +2,13 @@
 import os
 import logging
 from typing import List, Union
-from utils import get_user_input, read_toml_file
+from utils import get_user_input, read_toml_file, write_toml_file
 from convert_to_bids_and_upload import  bids_process_and_upload
 from config_globals import cli_args, project_root
 import toml
 
 
-# Set up logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-
-
-def process_new_files(file_status: List[str]) -> None:
+def process_new_files(file_status: List[str],logger) -> None:
     """Processes new .xdf files and prompts user to convert/upload.
 
     Args:
@@ -39,35 +34,60 @@ def process_new_files(file_status: List[str]) -> None:
     
     logger.info(f"Processed files: {processed_files}")
 
+    # extract tasks 
+    tasks = []
+    for file in processed_files:
+        # Assuming the task is part of the filename, sub-888_ses-001_task-Default_run-001_eeg.xdf has task name 'task-default'
+        parts = file.split('_')
+        for part in parts:
+            if part.startswith('task-'):
+                task_name = part.split('-')[1]
+                if task_name not in tasks:
+                    tasks.append(task_name)
+
+    # Append tasks to the project configuration file
+    project_path = os.path.join(project_root, project_name)
+    toml_path = os.path.join(project_path, project_name + '_config.toml')
+    data = read_toml_file(toml_path)
+   
+    existing_tasks = set(data.get('Tasks', {}).get('tasks', []))
+
+    # Add only new tasks
+    updated_tasks = list(existing_tasks.union(tasks))
+
+    # Save updated task list back to the config
+    data['Tasks']['tasks'] = updated_tasks
+    write_toml_file(toml_path, data)
+
     # User prompt asking if we want to proceed to convert and upload
     if cli_args.yes:
         # Automatically proceed without asking
         logger.info("Automatically proceeding with BIDS conversion.")    
     else:
-        user_choice = get_user_input("Do you want to proceed with BIDS conversion?")
+        user_choice = get_user_input("Do you want to proceed with BIDS conversion?",logger)
         if user_choice == 'n':
             logger.warning("User aborted BIDS conversion.")
-            _clear_last_run_log(project_name)
+            #_clear_last_run_log(project_name)
             raise RuntimeError("BIDS conversion aborted by user.")
 
     logger.info("Starting BIDS conversion.")
     bids_process_and_upload(processed_files)
 
 
-def _clear_last_run_log() -> None:
-    """Clears the last run log file for the given project.
-    """
-    project_name = cli_args.project_name
-    log_path = os.path.join(project_root, project_name, "last_run_log.txt")
-    try:
-        with open(log_path, 'w') as f:
-            f.truncate(0)
-        logger.info("Cleared last run log.")
-    except Exception as e:
-        logger.error(f"Failed to clear log: {e}")
+# def _clear_last_run_log() -> None:
+#     """Clears the last run log file for the given project.
+#     """
+#     project_name = cli_args.project_name
+#     log_path = os.path.join(project_root, project_name, "last_run_log.txt")
+#     try:
+#         with open(log_path, 'w') as f:
+#             f.truncate(0)
+#         logger.info("Cleared last run log.")
+#     except Exception as e:
+#         logger.error(f"Failed to clear log: {e}")
 
 
-def check_for_new_files(path: str, ignore_subjects) -> Union[List[str], str]:
+def check_for_new_files(path: str, ignore_subjects, logger) -> Union[List[str], str]:
     """Checks for new files in the given folder structure since last run.
 
     Args:
@@ -107,7 +127,7 @@ def check_for_new_files(path: str, ignore_subjects) -> Union[List[str], str]:
 
     return new_files if new_files else 'No new files found'
     
-def check_for_new_data() -> None:
+def check_for_new_data(logger) -> None:
 
     """Checks for new data files and triggers processing.
     """
@@ -125,13 +145,13 @@ def check_for_new_data() -> None:
     ignore_subjects = data["IgnoreSubjects"]["ignore_subjects"]
 
     logger.info("Ignored subjects: %s", ignore_subjects)
-    file_status = check_for_new_files(project_path, ignore_subjects)    
+    file_status = check_for_new_files(project_path, ignore_subjects, logger)    
     if file_status == 'No new files found':
         logger.info("No new files detected.")
         input("Press Enter to exit...")
         raise RuntimeError("No new files found.")
     else:
         logger.info(f"New files detected: {file_status}")
-        process_new_files(file_status)
+        process_new_files(file_status, logger)
 
 
