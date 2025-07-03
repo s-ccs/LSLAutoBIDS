@@ -120,6 +120,8 @@ def main():
     version = get_git_version()
     # make the log file if it does not exist
     log_path = os.path.join(bids_root, project_name, "code",f"{project_name}.log")
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(log_path), exist_ok=True)
     
     def log_raw_line(log_path: str, message: str):
         with open(log_path, "a") as log_file:
