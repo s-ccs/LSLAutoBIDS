@@ -114,10 +114,8 @@ class BIDS:
             parts = filename.split("_")
             sub = next((p for p in parts if p.startswith("sub-")), None)
             ses = next((p for p in parts if p.startswith("ses-")), None)
-            run = next((p for p in parts if p.startswith("run-")), None)
-            task = next((p for p in parts if p.startswith("task-")), None)
-            if sub and ses and run and task:
-                return f"{sub}_{ses}_task-{task}_run-{run}"
+            if sub and ses:
+                return f"{sub}_{ses}"
             return None
         
         prefix = extract_prefix(file_base)
