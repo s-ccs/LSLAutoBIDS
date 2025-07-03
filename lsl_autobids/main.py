@@ -1,15 +1,15 @@
 #import packages
 import argparse
 import os
-import toml
-from config_globals import cli_args,project_root
+from config_globals import cli_args,project_root, bids_root
 import logging
 from pathlib import Path
 import sys
 from utils import get_user_input, read_toml_file, write_toml_file
 from processing_new_files import check_for_new_data
 from config_logger import get_logger
-
+import subprocess
+from datetime import datetime
 
 
 def check_for_project(available_projects: list[str], project_name:str, logger):
@@ -108,8 +108,33 @@ def main():
     cli_args.init(args)
     
     project_name = cli_args.project_name
+
+    def get_git_version():
+        try:
+            version = subprocess.check_output(["git", "describe", "--tags"], stderr=subprocess.DEVNULL).decode().strip()
+            return version
+        except Exception:
+            return "unknown"
+
+    ## NOTE : Make sure you have git tags.
+    version = get_git_version()
+    # make the log file if it does not exist
+    log_path = os.path.join(bids_root, project_name, "code",f"{project_name}.log")
+    
+    def log_raw_line(log_path: str, message: str):
+        with open(log_path, "a") as log_file:
+            log_file.write(message + "\n")
+    
+    # Get the current time and format it
+    curr_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Special logger without the general format
+    log_raw_line(log_path, "\n" + "=" * 100)
+    log_raw_line(log_path, f" LSLAutoBIDS | Version: {version} | Time: {curr_time}")
+    log_raw_line(log_path, "=" * 100)
     # Initialize the logger AFTER cli_args is ready
     logger = get_logger(project_name, project_root)
+
     try:
         try:
             available_projects = list_directories(project_root, logger)
