@@ -206,6 +206,8 @@ class BIDS:
         #Remove the original 'other' directory
         shutil.rmtree(dest_dir)
         logger.info(f"Copied experiment files to {dest_dir} and zipped them.")
+    
+
 
     def create_raw_xdf(self, xdf_path,streams):
         """
@@ -278,6 +280,9 @@ class BIDS:
             if os.path.exists(bids_path):
                 logger.info("BIDS file already exists. Skipping conversion.")
                 return 2
+        else:
+            logger.info("Forcing BIDS conversion, existing files will be overwritten.")
+     
         
         # Create the new raw file from xdf file
         _,streams = self.get_the_streams(xdf_path)
@@ -294,7 +299,7 @@ class BIDS:
         # Write the raw data to BIDS in EDF format
         # BrainVision format weird memory issues
         logger.info("Writing EEG-SET file")
-        write_raw_bids(raw, bids_path, overwrite=False, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True, anonymize = dict(daysback=daysback_min + anonymization_number,keep_his=True))
+        write_raw_bids(raw, bids_path, overwrite=cli_args.redo_bids_conversion, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True, anonymize = dict(daysback=daysback_min + anonymization_number,keep_his=True))
 
         logger.info("Conversion to BIDS complete.")
         # Validate BIDS data

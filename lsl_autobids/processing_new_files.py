@@ -67,24 +67,22 @@ def process_new_files(file_status: List[str],logger) -> None:
         user_choice = get_user_input("Do you want to proceed with BIDS conversion?",logger)
         if user_choice == 'n':
             logger.warning("User aborted BIDS conversion.")
-            #_clear_last_run_log(project_name)
             raise RuntimeError("BIDS conversion aborted by user.")
 
     logger.info("Starting BIDS conversion.")
     bids_process_and_upload(processed_files)
 
-
-# def _clear_last_run_log() -> None:
-#     """Clears the last run log file for the given project.
-#     """
-#     project_name = cli_args.project_name
-#     log_path = os.path.join(project_root, project_name, "last_run_log.txt")
-#     try:
-#         with open(log_path, 'w') as f:
-#             f.truncate(0)
-#         logger.info("Cleared last run log.")
-#     except Exception as e:
-#         logger.error(f"Failed to clear log: {e}")
+def _clear_last_run_log(logger) -> None:
+    """Clears the last run log file for the given project.
+    """
+    project_name = cli_args.project_name
+    log_path = os.path.join(project_root, project_name, "last_run_log.txt")
+    try:
+        with open(log_path, 'w') as f:
+            f.truncate(0)
+        logger.info("Cleared last run log.")
+    except Exception as e:
+        logger.error(f"Failed to clear log: {e}")
 
 
 def check_for_new_files(path: str, ignore_subjects, logger) -> Union[List[str], str]:
@@ -98,6 +96,9 @@ def check_for_new_files(path: str, ignore_subjects, logger) -> Union[List[str], 
     """
     
     log_file_path = os.path.join(path, "last_run_log.txt")
+
+    if cli_args.redo_bids_conversion:
+        _clear_last_run_log(logger)
 
     try:
         with open(log_file_path, 'r') as f:
