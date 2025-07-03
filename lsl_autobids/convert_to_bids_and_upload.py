@@ -201,7 +201,7 @@ class BIDS:
                 shutil.copy(src_file, dest_file)
 
         # Compress the 'other' directory into a ZIP file
-        shutil.make_archive(dest_dir, 'zip', dest_dir)
+        shutil.make_archive(dest_dir, 'gztar', dest_dir)
 
         #Remove the original 'other' directory
         shutil.rmtree(dest_dir)
