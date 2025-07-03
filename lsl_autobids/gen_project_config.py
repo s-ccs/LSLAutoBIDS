@@ -6,20 +6,18 @@ import yaml
 # Define the content for the TOML template
 toml_content = """
   # This is the project configuration file - This configuration can be customized for each project
+  
   [Authors]
     authors = "John Doe, Lina Doe"
     affiliation = "University of Stuttgart, Germany"
+  
   [AuthorsContact]
     email = "john@gmail.com"
+  
   [Dataset]
     title = "Convert XDF to BIDS"
     dataset_description = "This is a test project to set up the pipeline to convert XDF to BIDS."
     License = "MIT License"
-    taskName = ["task-1"]
-
-  [Sources]
-    EEG = "EEGstream EE225"
-    marker = ["LSL_Markers","eegoSports-EE225_markersMarkers"]
 
   [Computers]
     stimulusComputerUsed = true
@@ -28,18 +26,16 @@ toml_content = """
     expectedFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
 
   [IgnoreSubjects]
-    ignore_subjects = ["sub-01", "sub-999"]
+    ignore_subjects = [] # List of subjects to ignore during the conversion - Leave empty to include all subjects
 
   [Subject]
     subject = ["Medicine, Health and Life Sciences","Engineering"]
     anonymization_number = 123
 
   [Tasks]
-    tasks = ["Default2"]
-    exclude_tasks = ["dummy"]
-
+    exclude_tasks = [] # List of tasks to exclude from the conversion
+  
   [Dataverse]
-    dataset_title = 'Convert XDF to BIDS'
     pid = '12345'
   """
 
