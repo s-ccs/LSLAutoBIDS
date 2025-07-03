@@ -1,7 +1,7 @@
 # config_logger.py
 import logging
 import os
-from config_globals import project_root
+from config_globals import bids_root
 _logger = None  # Private variable to hold the shared logger
 
 
@@ -25,7 +25,7 @@ def get_logger(project_name: str, project_root: str) -> logging.Logger:
     _logger.setLevel(logging.DEBUG)  # Accept all logs at DEBUG level and above
 
     if not _logger.handlers:
-        log_path = os.path.join(project_root, project_name, f"{project_name}_log_file.log")
+        log_path = os.path.join(bids_root, project_name, "code",f"{project_name}.log")
         # Ensure the directory exists
         os.makedirs(os.path.dirname(log_path), exist_ok=True)
 
