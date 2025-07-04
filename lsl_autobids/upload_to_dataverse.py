@@ -4,10 +4,7 @@ import time
 from config_globals import project_root
 import logging
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-
-def push_files_to_dataverse(project_name):
+def push_files_to_dataverse(project_name, logger):
         """     
     Pushes files from the current Datalad dataset to a linked Dataverse repository.
 

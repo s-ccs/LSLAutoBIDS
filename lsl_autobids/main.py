@@ -134,8 +134,9 @@ def main():
     log_raw_line(log_path, "\n" + "=" * 100)
     log_raw_line(log_path, f" LSLAutoBIDS | Version: {version} | Time: {curr_time}")
     log_raw_line(log_path, "=" * 100)
+   
     # Initialize the logger AFTER cli_args is ready
-    logger = get_logger(project_name, project_root)
+    logger = get_logger(project_name)
 
     # Check if the stim flag is set in the toml file
     if args.redo_stim_pc:

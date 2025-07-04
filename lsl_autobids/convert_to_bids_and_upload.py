@@ -1,7 +1,6 @@
 #import libraries
 import os
 import shutil
-import logging
 import sys
 from pyxdf import match_streaminfos, resolve_streams
 from mnelab.io.xdf import read_raw_xdf
@@ -16,9 +15,7 @@ from upload_to_dataverse import push_files_to_dataverse
 from config_globals import cli_args, project_root, bids_root, project_stim_root
 from utils import get_user_input, read_toml_file
 
-# Set up logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+
 
 class BIDS:
     """
@@ -43,7 +40,7 @@ class BIDS:
         return stream_names,streams
 
 
-    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,stim):
+    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,stim, logger):
         
         """
         Copy raw .xdf and optionally stimulus data to BIDS folder.
@@ -81,16 +78,16 @@ class BIDS:
       
         if stim:
             ### COPY THE BEHAVIOURAL FILES TO BIDS ###
-            self._copy_behavioral_files(file_name_without_ext,subject_id, session_id)
+            self._copy_behavioral_files(file_name_without_ext,subject_id, session_id, logger)
 
             ### COPY THE EXPERIMENT FILES TO BIDS ###
-            self._copy_experiment_files(subject_id, session_id)
+            self._copy_experiment_files(subject_id, session_id, logger)
         else:
             logger.info("Skipping copying of behavioral files and experiment files.")
     
 
 
-    def _copy_behavioral_files(self, file_base, subject_id, session_id):
+    def _copy_behavioral_files(self, file_base, subject_id, session_id, logger):
         """
         Copy behavioral files to the BIDS structure.
 
@@ -147,7 +144,7 @@ class BIDS:
 
 
 
-        unnecessary_files = self._check_required_behavioral_files(processed_files, prefix)
+        unnecessary_files = self._check_required_behavioral_files(processed_files, prefix, logger)
 
         # remove the unnecessary files
         for file in unnecessary_files:
@@ -160,7 +157,7 @@ class BIDS:
 
 
     
-    def _check_required_behavioral_files(self, files, prefix):
+    def _check_required_behavioral_files(self, files, prefix, logger):
         """
         Check for required behavioral files after copying.
 
@@ -189,7 +186,7 @@ class BIDS:
         return unnecessary_files
 
 
-    def _copy_experiment_files(self, subject_id, session_id):
+    def _copy_experiment_files(self, subject_id, session_id, logger):
         """
         Copy experimental files
 
@@ -234,7 +231,7 @@ class BIDS:
     
 
 
-    def create_raw_xdf(self, xdf_path,streams):
+    def create_raw_xdf(self, xdf_path,streams, logger):
         """
         Read XDF and convert to MNE Raw object.
 
@@ -271,7 +268,7 @@ class BIDS:
 
         return raw
 
-    def convert_to_bids(self, xdf_path,subject_id,session_id, run_id, task_id,stim):
+    def convert_to_bids(self, xdf_path,subject_id,session_id, run_id, task_id,stim, logger):
 
         """
         Convert an XDF file to BIDS format.
@@ -289,7 +286,7 @@ class BIDS:
         logger.info("Converting to BIDS...")
 
         # Copy the experiment, behavioural and raw recorded files to BIDS
-        self.copy_source_files_to_bids(xdf_path,subject_id,session_id,stim)
+        self.copy_source_files_to_bids(xdf_path,subject_id,session_id,stim, logger)
 
         # Get the bidspath for the raw file
         bids_path = BIDSPath(subject=subject_id[-3:], 
@@ -312,7 +309,7 @@ class BIDS:
         
         # Create the new raw file from xdf file
         _,streams = self.get_the_streams(xdf_path)
-        raw = self.create_raw_xdf(xdf_path,streams)
+        raw = self.create_raw_xdf(xdf_path,streams, logger)
 
         # Set up anonymization
         daysback_min, _ = get_anonymization_daysback(raw)
@@ -331,10 +328,10 @@ class BIDS:
         # Validate BIDS data
         logger.info("Validating BIDS data...")
         # Validate the BIDS data
-        val = self.validate_bids(bids_root+project_name,subject_id,session_id)
+        val = self.validate_bids(bids_root+project_name,subject_id,session_id, logger)
         return val
     
-    def validate_bids(self,bids_path,subject_id,session_id):
+    def validate_bids(self,bids_path,subject_id,session_id, logger):
         """
         Validate the BIDS format for all files in the BIDS path.
 
@@ -380,12 +377,14 @@ class BIDS:
     
 
 
-def bids_process_and_upload(processed_files):
+def bids_process_and_upload(processed_files,logger):
     """
     Process and upload BIDS files to Dataverse.
     Args:
         processed_files (list): List of processed files.
+
     """
+
     project_name = cli_args.project_name
     toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
@@ -405,7 +404,7 @@ def bids_process_and_upload(processed_files):
         logger.info(f"Currently processing {subject_id}, {session_id}, {run_id} of task : {task_id}") 
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
 
-        val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, stim)
+        val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, stim, logger)   
 
         if val == 1:
                 logger.info("Bids Conversion Sucessful")      
@@ -420,26 +419,26 @@ def bids_process_and_upload(processed_files):
         
     logger.info("Conversion finished.")
     logger.info('Generating metadatafiles........')   
-    generate_json_file(project_name)
+    generate_json_file(project_name, logger)
     logger.info('Generating dataverse dataset........')
     
     doi, status = create_dataverse(project_name)
     
     logger.info("Creating and adding files to Dataverse dataset...")
-    create_and_add_files_to_datalad_dataset(bids_root+project_name,status)
+    create_and_add_files_to_datalad_dataset(bids_root+project_name,status, logger)
     
     if status == 0:
         logger.info('Linking dataverse dataset with datalad')
-        add_sibling_dataverse_in_folder(doi)
+        add_sibling_dataverse_in_folder(doi, logger)
 
     if cli_args.yes:
         logger.info('Pushing files to dataverse........')
-        push_files_to_dataverse(project_name)
+        push_files_to_dataverse(project_name, logger)
     else:
         user_input = get_user_input("Do you want to push the files to Dataverse? (y/n): ",logger)
         if user_input == "y":
             logger.info('Pushing files to dataverse........')
-            push_files_to_dataverse(project_name)
+            push_files_to_dataverse(project_name, logger)
         elif user_input == "n":
             logger.info("Program aborted.")
         else:

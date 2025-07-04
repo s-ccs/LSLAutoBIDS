@@ -1,12 +1,8 @@
 import json
-import logging
 import os
 from config_globals import project_root
 from utils import read_toml_file
 
-# Set up logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 
 def update_json_data(json_data, toml_data):
@@ -27,7 +23,7 @@ def update_json_data(json_data, toml_data):
     json_data['datasetVersion']['metadataBlocks']['citation']['fields'][4]['value'] = toml_data['Subject']['subject']
     return json_data
 
-def generate_json_file(project_name):
+def generate_json_file(project_name, logger):
     json_file_path = os.path.join(project_root, project_name, 'dataset.json')
 
     try:

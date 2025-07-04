@@ -5,7 +5,7 @@ from config_globals import bids_root
 _logger = None  # Private variable to hold the shared logger
 
 
-def get_logger(project_name: str, project_root: str) -> logging.Logger:
+def get_logger(project_name: str) -> logging.Logger:
     """Initializes and returns a shared logger instance.
 
     Args:

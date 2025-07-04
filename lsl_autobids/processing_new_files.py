@@ -1,11 +1,9 @@
 # imports
 import os
-import logging
 from typing import List, Union
 from utils import get_user_input, read_toml_file, write_toml_file
 from convert_to_bids_and_upload import  bids_process_and_upload
 from config_globals import cli_args, project_root
-import toml
 
 
 def process_new_files(file_status: List[str],logger) -> None:
@@ -70,7 +68,7 @@ def process_new_files(file_status: List[str],logger) -> None:
             raise RuntimeError("BIDS conversion aborted by user.")
 
     logger.info("Starting BIDS conversion.")
-    bids_process_and_upload(processed_files)
+    bids_process_and_upload(processed_files, logger)
 
 def _clear_last_run_log(logger) -> None:
     """Clears the last run log file for the given project.

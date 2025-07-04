@@ -1,12 +1,8 @@
 import datalad.api as dl
-import logging
 import os
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-
-def create_and_add_files_to_datalad_dataset(dataset_path,flag):
+def create_and_add_files_to_datalad_dataset(dataset_path,flag, logger):
     message = "LSL Auto BIDS: new files found and added"
     if flag==0:
         message ="LSL Auto BIDS: new datalad dataset created"

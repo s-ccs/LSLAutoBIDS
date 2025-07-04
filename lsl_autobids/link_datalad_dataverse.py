@@ -2,14 +2,10 @@
 #import datalad_dataverse as dd
 
 import subprocess
-import logging
 from config_globals import dataverse_base_url
 
-# Set up logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-def add_sibling_dataverse_in_folder(doi_id):
+def add_sibling_dataverse_in_folder(doi_id, logger):
     """
     Adds a Dataverse repository as a sibling to the current Datalad dataset.
 
