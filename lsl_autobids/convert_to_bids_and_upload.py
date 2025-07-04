@@ -271,7 +271,7 @@ class BIDS:
 
         return raw
 
-    def convert_to_bids(self, xdf_path,subject_id,session_id,task_id, run_id,stim):
+    def convert_to_bids(self, xdf_path,subject_id,session_id, run_id, task_id,stim):
 
         """
         Convert an XDF file to BIDS format.
@@ -294,7 +294,8 @@ class BIDS:
         # Get the bidspath for the raw file
         bids_path = BIDSPath(subject=subject_id[-3:], 
                             session=session_id[-3:], 
-                            run=run_id[-3:], task=task_id, 
+                            task=task_id, 
+                            run=int(run_id[-3:]) ,
                             root=bids_root+project_name, 
                             datatype='eeg', 
                             suffix='eeg', 
@@ -353,7 +354,7 @@ class BIDS:
                 file_path = os.path.join(root, file)
                 
                 # Skip non-relevant files
-                if file_path.endswith(".xdf") or file_path.endswith(".zip") or 'beh' in file_path or file.startswith('.') or '.git' in file_path or os.path.basename(root).startswith('.'):
+                if file_path.endswith(".xdf") or file_path.endswith(".tar.gz") or 'beh' in file_path or file.startswith('.') or '.git' in file_path or os.path.basename(root).startswith('.'):
                     continue
 
                 if root == root_directory:
@@ -392,15 +393,16 @@ def bids_process_and_upload(processed_files):
     stim = data["Computers"]["stimulusComputerUsed"]     
 
     project_path = os.path.join(project_root,project_name)
+    logger.info("Initializing BIDS conversion and upload process...")
     # Initialize BIDS object
     bids = BIDS()
     for file in processed_files:
         subject_id = file.split('_')[0]
         session_id = file.split('_')[1]
         run_id = file.split('_')[3]
-        task_id = file.split('_')[2]
+        task_id = file.split('_')[2].split('-')[1]
         filename = file.split(os.path.sep)[-1]
-        logger.info(f"Currently processing {subject_id}, {session_id}, {run_id} of task {task_id}") 
+        logger.info(f"Currently processing {subject_id}, {session_id}, {run_id} of task : {task_id}") 
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
 
         val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, stim)
