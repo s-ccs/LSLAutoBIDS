@@ -101,7 +101,7 @@ def main():
     argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
     argparser.add_argument('-y','--yes', action='store_true', help='Automatically answer yes to all user prompts')
     argparser.add_argument('--redo_bids_conversion', action='store_true', help='Redo the entire BIDS conversion process from scratch for the processed files')
-    argparser.add_argument('--redo-stim-pc', action='store_true', help='Redo the stim and physio processing for the processed files')
+    argparser.add_argument('--redo_stim_pc', action='store_true', help='Redo the stim and physio processing for the processed files')
     args = argparser.parse_args()
 
     # Store args globally
