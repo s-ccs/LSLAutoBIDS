@@ -86,7 +86,6 @@ def update_project_config(project_path: str, project_name: str, logger):
         raise FileNotFoundError(f"Config file '{toml_path}' not found.")
 
     config = read_toml_file(toml_path)
-    #config.setdefault('Dataset', {})['title'] = project_name 
     config['Dataset']['title'] = project_name
     logger.info("Updating project config with new project name...")
 
@@ -102,6 +101,7 @@ def main():
     argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
     argparser.add_argument('-y','--yes', action='store_true', help='Automatically answer yes to all user prompts')
     argparser.add_argument('--redo_bids_conversion', action='store_true', help='Redo the entire BIDS conversion process from scratch for the processed files')
+    argparser.add_argument('--redo-stim-pc', action='store_true', help='Redo the stim and physio processing for the processed files')
     args = argparser.parse_args()
 
     # Store args globally
@@ -136,6 +136,16 @@ def main():
     log_raw_line(log_path, "=" * 100)
     # Initialize the logger AFTER cli_args is ready
     logger = get_logger(project_name, project_root)
+
+    # Check if the stim flag is set in the toml file
+    if args.redo_stim_pc:
+        # get the stimulus flag from the toml file
+        toml_path = os.path.join(project_root, project_name, f"{project_name}_config.toml")
+        data = read_toml_file(toml_path)
+        stim_flag = data['Computers']['stimulusComputerUsed']
+        if not stim_flag:
+            logger.warning("The stimulus computer flag is not set in the config file. Please set it to True to proceed with stim redo process.")
+            sys.exit(1)
 
     try:
         try:

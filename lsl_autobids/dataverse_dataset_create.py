@@ -75,7 +75,7 @@ def create_dataverse(project_name):
         logger.info(f"Dataset created with PID: {resp.json()['data']['persistentId']}")
    
         # Modify field
-        data['Dataverse']['dataset_title']=ds_title 
+        data['Dataset']['title']=ds_title 
         data['Dataverse']['pid']= resp.json()['data']['persistentId']
         #data['Dataverse']['dataset_id']= resp.json()['data']['id']
 

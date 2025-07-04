@@ -87,7 +87,7 @@ class BIDS:
             self._copy_experiment_files(subject_id, session_id)
         else:
             logger.info("Skipping copying of behavioral files and experiment files.")
-        
+    
 
 
     def _copy_behavioral_files(self, file_base, subject_id, session_id):
@@ -115,7 +115,7 @@ class BIDS:
             sub = next((p for p in parts if p.startswith("sub-")), None)
             ses = next((p for p in parts if p.startswith("ses-")), None)
             if sub and ses:
-                return f"{sub}_{ses}"
+                return f"{sub}_{ses}_"
             return None
         
         prefix = extract_prefix(file_base)
@@ -134,15 +134,30 @@ class BIDS:
         
             processed_files.append(renamed_file)
             dest_file = os.path.join(dest_dir, renamed_file)
-            if os.path.exists(dest_file):
-                logger.info(f"Behavioural file {file} already exists in BIDS.")
-                pass
-            else:
-                # Directly copy the file
-                logger.info(f"Copying {file} to {dest_file}")
+        
+            if cli_args.redo_stim_pc:
+                logger.info(f"Copying (overwriting if needed) {file} to {dest_file}")
                 shutil.copy(original_path, dest_file)
+            else:
+                if os.path.exists(dest_file):
+                    logger.info(f"Behavioural file {file} already exists in BIDS. Skipping.")
+                else:
+                    logger.info(f"Copying new file {file} to {dest_file}")
+                    shutil.copy(original_path, dest_file)
 
-        self._check_required_behavioral_files(processed_files, prefix)
+
+
+        unnecessary_files = self._check_required_behavioral_files(processed_files, prefix)
+
+        # remove the unnecessary files
+        for file in unnecessary_files:
+            file_path = os.path.join(dest_dir, file)
+            if os.path.exists(file_path):
+                logger.info(f"Removing unnecessary file: {file_path}")
+                os.remove(file_path)
+            else:
+                logger.warning(f"File to remove does not exist: {file_path}")
+
 
     
     def _check_required_behavioral_files(self, files, prefix):
@@ -165,7 +180,13 @@ class BIDS:
         for required_file in required_files:
             if not any(f.startswith(prefix) and f.endswith(required_file) for f in files):
                 raise FileNotFoundError(f"Missing required behavioral file: {required_file}")
-
+        
+        unnecessary_files = []
+        # remove everything except the required files
+        for file in files:
+            if not any(file.endswith(required_file) for required_file in required_files):
+                unnecessary_files.append(file)
+        return unnecessary_files
 
 
     def _copy_experiment_files(self, subject_id, session_id):
@@ -183,7 +204,13 @@ class BIDS:
 
         if os.path.exists(zip_file_path):
             logger.info("Experiment zip already exists. Skipping.")
-            return
+            if not cli_args.redo_stim_pc:
+                logger.info("Skipping experiment file copy ")
+                return
+            else:
+                logger.info("Overwriting existing experiment archive due to --redo_stim_pc flag.")
+        
+
         # get the source path
         experiments_path = os.path.join(project_stim_root,project_name,'experiment')
         # get the destination path

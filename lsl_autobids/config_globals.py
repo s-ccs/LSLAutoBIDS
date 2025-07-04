@@ -11,6 +11,7 @@ class CLIArgs:
             "yes": False,
             "redo_bids_conversion": False,
             "reupload": False,
+            "redo_stim_pc": False,
         }
 
     def init(self, args):
