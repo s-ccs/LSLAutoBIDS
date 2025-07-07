@@ -14,6 +14,7 @@ from link_datalad_dataverse import add_sibling_dataverse_in_folder
 from upload_to_dataverse import push_files_to_dataverse
 from config_globals import cli_args, project_root, bids_root, project_stim_root
 from utils import get_user_input, read_toml_file
+import json
 
 
 
@@ -374,8 +375,43 @@ class BIDS:
         else:
             logger.error(f"BIDS data is invalid for subject {subject_id} and session {session_id}")
             return 0
-    
 
+    def populate_dataset_description_json(self, project_name, logger):
+        """
+        Populate the dataset_description.json file with metadata from the project configuration.
+
+        Args:
+            project_name (str): Name of the project.
+        """
+        toml_path = os.path.join(project_root, project_name, project_name + '_config.toml')
+        data = read_toml_file(toml_path)
+
+        # Create the dataset_description.json file
+        name =  data["Dataset"]["title"]
+        license_ = data["Dataset"]["License"]
+        authors = data["Authors"]["authors"]
+
+        # open the dataset_description.json file
+        dataset_description_path = os.path.join(bids_root, project_name, 'dataset_description.json')
+        
+        logger.info("Populating dataset_description.json with project metadata...")
+
+        try:
+            with open(dataset_description_path, 'r') as f:
+                dataset_description = json.load(f)
+        except FileNotFoundError:
+            dataset_description = {}
+
+        # Update the relevant fields
+        dataset_description["Name"] = name
+        dataset_description["License"] = license_
+        dataset_description["Authors"] = authors
+
+        # Write the updated file back
+        with open(dataset_description_path, 'w') as f:
+            json.dump(dataset_description, f, indent=4)
+
+        logger.info(f"dataset_description.json updated successfully for project '{project_name}'.")
 
 def bids_process_and_upload(processed_files,logger):
     """
@@ -418,6 +454,8 @@ def bids_process_and_upload(processed_files,logger):
             sys.exit()
         
     logger.info("Conversion finished.")
+    logger.info("Populating dataset_description.json file with metadata...")
+    bids.populate_dataset_description_json(project_name, logger)
     logger.info('Generating metadatafiles........')   
     generate_json_file(project_name, logger)
     logger.info('Generating dataverse dataset........')
