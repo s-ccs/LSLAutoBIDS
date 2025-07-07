@@ -145,13 +145,20 @@ def check_for_new_data(logger) -> None:
     ignore_subjects = data["IgnoreSubjects"]["ignore_subjects"]
 
     logger.info("Ignored subjects: %s", ignore_subjects)
-    file_status = check_for_new_files(project_path, ignore_subjects, logger)    
+    file_status = check_for_new_files(project_path, ignore_subjects, logger)
+    ignore_tasks = data["Tasks"]["exclude_tasks"]
+
+    filtered_files = [
+    f for f in file_status
+    if f.endswith('.xdf') and not any(f'task-{task}' in os.path.basename(f) for task in ignore_tasks)
+    ]
+    logger.info(f"Excluded files based on ignored tasks: {ignore_tasks}")
     if file_status == 'No new files found':
         logger.info("No new files detected.")
         input("Press Enter to exit...")
         raise RuntimeError("No new files found.")
     else:
-        logger.info(f"New files detected: {file_status}")
-        process_new_files(file_status, logger)
+        logger.info(f"New files detected: {filtered_files}")
+        process_new_files(filtered_files, logger)
 
 
