@@ -4,6 +4,7 @@ from typing import List, Union
 from utils import get_user_input, read_toml_file, write_toml_file
 from convert_to_bids_and_upload import  bids_process_and_upload
 from config_globals import cli_args, project_root
+import re
 
 
 def process_new_files(file_status: List[str],logger) -> None:
@@ -24,8 +25,8 @@ def process_new_files(file_status: List[str],logger) -> None:
             # Remove "_old" from the filename if present
             _, file_name = os.path.split(file_path)
             file_name_no_ext, ext = os.path.splitext(file_name)
-            if file_name_no_ext.endswith('_old'):
-                logger.error(f"File '{file_name}' appears to be a duplicate. It ends with '_old'. Please manually check the file.")
+            if re.search(r'_old\d*$', file_name_no_ext):
+                logger.error(f"File '{file_name}' appears to be a duplicate. It ends with an '_old' suffix. Please manually check the file.")
                 raise RuntimeError("Duplicate file detected. Please check the file manually.")
 
             processed_files.append(file_name_no_ext + ext)
