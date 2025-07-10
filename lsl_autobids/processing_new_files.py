@@ -1,9 +1,9 @@
 # imports
 import os
 from typing import List, Union
-from utils import get_user_input, read_toml_file, write_toml_file
-from convert_to_bids_and_upload import  bids_process_and_upload
-from config_globals import cli_args, project_root
+from lsl_autobids.utils import get_user_input, read_toml_file, write_toml_file
+from lsl_autobids.convert_to_bids_and_upload import  bids_process_and_upload
+from lsl_autobids.config_globals import cli_args, project_root
 import re
 
 

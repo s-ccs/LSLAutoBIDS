@@ -1,14 +1,12 @@
 #import packages
 import argparse
 import os
-from config_globals import cli_args,project_root, bids_root
-import logging
+from lsl_autobids.config_globals import cli_args,project_root, bids_root
 from pathlib import Path
 import sys
-from utils import get_user_input, read_toml_file, write_toml_file
-from processing_new_files import check_for_new_data
-from config_logger import get_logger
-import subprocess
+from lsl_autobids.utils import get_user_input, read_toml_file, write_toml_file
+from lsl_autobids.processing_new_files import check_for_new_data
+from lsl_autobids.config_logger import get_logger
 from datetime import datetime
 
 
@@ -108,16 +106,16 @@ def main():
     cli_args.init(args)
     
     project_name = cli_args.project_name
-
-    def get_git_version():
+    try:
+        # Try to get version via pip-installed metadata
+        from importlib.metadata import version, PackageNotFoundError
+        version = version("lsl_autobids")
+    except (ImportError, PackageNotFoundError):
         try:
-            version = subprocess.check_output(["git", "describe", "--tags"], stderr=subprocess.DEVNULL).decode().strip()
-            return version
-        except Exception:
-            return "unknown"
+            from lsl_autobids import __version__ as version
+        except ImportError:
+            version = "unknown"
 
-    ## NOTE : Make sure you have git tags.
-    version = get_git_version()
     # make the log file if it does not exist
     log_path = os.path.join(bids_root, project_name, "code",f"{project_name}.log")
     # Ensure the directory exists

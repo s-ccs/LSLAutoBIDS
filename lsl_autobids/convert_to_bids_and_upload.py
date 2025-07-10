@@ -7,13 +7,13 @@ from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
 from mne_bids import write_raw_bids, BIDSPath, get_anonymization_daysback
 
-from generate_dataset_json import generate_json_file
-from dataverse_dataset_create import create_dataverse
-from datalad_create import create_and_add_files_to_datalad_dataset
-from link_datalad_dataverse import add_sibling_dataverse_in_folder
-from upload_to_dataverse import push_files_to_dataverse
-from config_globals import cli_args, project_root, bids_root, project_stim_root
-from utils import get_user_input, read_toml_file
+from lsl_autobids.generate_dataset_json import generate_json_file
+from lsl_autobids.dataverse_dataset_create import create_dataverse
+from lsl_autobids.datalad_create import create_and_add_files_to_datalad_dataset
+from lsl_autobids.link_datalad_dataverse import add_sibling_dataverse_in_folder
+from lsl_autobids.upload_to_dataverse import push_files_to_dataverse
+from lsl_autobids.config_globals import cli_args, project_root, bids_root, project_stim_root
+from lsl_autobids.utils import get_user_input, read_toml_file
 import json
 
 

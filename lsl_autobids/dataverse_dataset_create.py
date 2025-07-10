@@ -4,9 +4,9 @@ from pyDataverse.models import Dataset
 from pyDataverse.utils import read_file
 import json 
 import os
-from config_globals import project_root, dataverse_base_url, api_key, parent_dataverse_name
+from lsl_autobids.config_globals import project_root, dataverse_base_url, api_key, parent_dataverse_name
 import logging
-from utils import read_toml_file, write_toml_file
+from lsl_autobids.utils import read_toml_file, write_toml_file
 
 # Set up logging
 logger = logging.getLogger(__name__)
