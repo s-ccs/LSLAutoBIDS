@@ -26,7 +26,7 @@ toml_content = """
     expectedFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
 
   [IgnoreSubjects]
-    ignore_subjects = [] # List of subjects to ignore during the conversion - Leave empty to include all subjects
+    ignore_subjects = [] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.
 
   [Subject]
     subject = ["Medicine, Health and Life Sciences","Engineering"]
