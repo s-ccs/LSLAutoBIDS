@@ -5,7 +5,7 @@ import sys
 from pyxdf import match_streaminfos, resolve_streams
 from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
-from mne_bids import write_raw_bids, BIDSPath, get_anonymization_daysback
+from mne_bids import write_raw_bids, BIDSPath, get_anonymization_daysback,  make_dataset_description
 
 from lsl_autobids.generate_dataset_json import generate_json_file
 from lsl_autobids.dataverse_dataset_create import create_dataverse
@@ -386,30 +386,17 @@ class BIDS:
         toml_path = os.path.join(project_root, project_name, project_name + '_config.toml')
         data = read_toml_file(toml_path)
 
-        # Create the dataset_description.json file
-        name =  data["Dataset"]["title"]
-        license_ = data["Dataset"]["License"]
-        authors = data["Authors"]["authors"]
-
         # open the dataset_description.json file
-        dataset_description_path = os.path.join(bids_root, project_name, 'dataset_description.json')
-        
-        logger.info("Populating dataset_description.json with project metadata...")
+        dataset_description_path = os.path.join(bids_root, project_name)
 
-        try:
-            with open(dataset_description_path, 'r') as f:
-                dataset_description = json.load(f)
-        except FileNotFoundError:
-            dataset_description = {}
+        make_dataset_description(
+            path = dataset_description_path,
+            name = data["Dataset"]["title"],
+            data_license = data["Dataset"]["License"],
+            authors = data["Authors"]["authors"],
+            overwrite= True, #necessary to overwrite the existing file created by mne_bids.write_raw_bids()
+        )
 
-        # Update the relevant fields
-        dataset_description["Name"] = name
-        dataset_description["License"] = license_
-        dataset_description["Authors"] = authors
-
-        # Write the updated file back
-        with open(dataset_description_path, 'w') as f:
-            json.dump(dataset_description, f, indent=4)
 
         logger.info(f"dataset_description.json updated successfully for project '{project_name}'.")
 
