@@ -1,12 +1,12 @@
 #import packages
 import argparse
 import os
-from lsl_autobids.config_globals import cli_args,project_root, bids_root
+from lslautobids.config_globals import cli_args,project_root, bids_root
 from pathlib import Path
 import sys
-from lsl_autobids.utils import get_user_input, read_toml_file, write_toml_file
-from lsl_autobids.processing_new_files import check_for_new_data
-from lsl_autobids.config_logger import get_logger
+from lslautobids.utils import get_user_input, read_toml_file, write_toml_file
+from lslautobids.processing_new_files import check_for_new_data
+from lslautobids.config_logger import get_logger
 from datetime import datetime
 
 
@@ -112,7 +112,7 @@ def main():
         version = version("lsl_autobids")
     except (ImportError, PackageNotFoundError):
         try:
-            from lsl_autobids import __version__ as version
+            from lslautobids import __version__ as version
         except ImportError:
             version = "unknown"
 

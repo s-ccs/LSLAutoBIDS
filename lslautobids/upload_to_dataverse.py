@@ -1,7 +1,7 @@
 import subprocess
 import os
 import time
-from lsl_autobids.config_globals import project_root
+from lslautobids.config_globals import project_root
 import logging
 
 def push_files_to_dataverse(project_name, logger):

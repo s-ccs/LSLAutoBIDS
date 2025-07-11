@@ -2,7 +2,7 @@
 #import datalad_dataverse as dd
 
 import subprocess
-from lsl_autobids.config_globals import dataverse_base_url
+from lslautobids.config_globals import dataverse_base_url
 
 
 def add_sibling_dataverse_in_folder(doi_id, logger):

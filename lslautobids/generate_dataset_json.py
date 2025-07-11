@@ -1,7 +1,7 @@
 import json
 import os
-from lsl_autobids.config_globals import project_root
-from lsl_autobids.utils import read_toml_file
+from lslautobids.config_globals import project_root
+from lslautobids.utils import read_toml_file
 
 
 
