@@ -1,6 +1,5 @@
 data/
 tests/
-TODO.md
 config/
 pyxdf
 pydataverse
@@ -9,8 +8,7 @@ jsonschema
 processed_files.txt
 .DS_Store
 empty_log_process_temp.py
-fill_config.py
-.vscode/
+lsl_autobids/_test.ipynb
 # To be added later
 setup.py
 pyproject.toml

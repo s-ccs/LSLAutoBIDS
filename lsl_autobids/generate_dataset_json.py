@@ -1,21 +1,9 @@
 import json
-import toml
 import os
-import yaml
-from globals import project_root
+from lsl_autobids.config_globals import project_root
+from lsl_autobids.utils import read_toml_file
 
-def read_toml_file(toml_file):
-    with open(toml_file, 'r') as file:
-        return toml.load(file)
 
-def parse_yaml_file(yaml_file):
-    with open(yaml_file, 'r') as file:
-        try:
-            data = yaml.safe_load(file)
-            return data
-        except yaml.YAMLError as e:
-            print(f"Error parsing YAML file: {e}")
-            return None
 
 def update_json_data(json_data, toml_data):
     # Update title field
@@ -35,7 +23,7 @@ def update_json_data(json_data, toml_data):
     json_data['datasetVersion']['metadataBlocks']['citation']['fields'][4]['value'] = toml_data['Subject']['subject']
     return json_data
 
-def generate_json_file(project_name):
+def generate_json_file(project_name, logger):
     json_file_path = os.path.join(project_root, project_name, 'dataset.json')
 
     try:
@@ -43,7 +31,7 @@ def generate_json_file(project_name):
         with open(json_file_path, 'r') as json_file:
             json_data = json.load(json_file)
     except FileNotFoundError:
-        print(f"The 'dataset.json' file was not found. Creating a new one.")
+        logger.info(f"The 'dataset.json' file was not found. Creating a new one.")
         
         # Creating default data for the new dataset.json file
         default_data = {
@@ -140,4 +128,4 @@ def generate_json_file(project_name):
     with open(json_file_path, 'w') as json_file:
         json.dump(updated_json_data, json_file, indent=4)
 
-    print("Generated dataset.json file.")
+    logger.info("Generated dataset.json file.")
