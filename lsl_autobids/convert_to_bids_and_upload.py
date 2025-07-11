@@ -2,6 +2,7 @@
 import os
 import shutil
 import sys
+
 from pyxdf import match_streaminfos, resolve_streams
 from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
@@ -15,7 +16,6 @@ from lsl_autobids.upload_to_dataverse import push_files_to_dataverse
 from lsl_autobids.config_globals import cli_args, project_root, bids_root, project_stim_root
 from lsl_autobids.utils import get_user_input, read_toml_file
 import json
-
 
 
 class BIDS:
@@ -71,12 +71,13 @@ class BIDS:
         
         if os.path.exists(dest_file):
             logger.info("Raw XDF already exists in sourcedata.")
+
             pass
         else:
             shutil.copy(xdf_file, dest_file)
             logger.info(f"Copied {xdf_file} to {dest_file}")
 
-      
+        
         if stim:
             ### COPY THE BEHAVIOURAL FILES TO BIDS ###
             self._copy_behavioral_files(file_name_without_ext,subject_id, session_id, logger)
@@ -243,14 +244,25 @@ class BIDS:
         Returns:
             mne.io.Raw: Raw object ready for BIDS conversion.
         """
+       
         # Get the stream id of the EEG stream
         stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
         fs_new = max([stream["nominal_srate"] for stream in streams])
-        logger.info("Reading xdf and resampling... let's hope the RAM is big enough")
-        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new=fs_new,prefix_markers=True)
-        logger.info("Resampling done! phew")
-        # for memory reasons
-        raw.resample(500)
+
+        logger.info("Reading xdf and resampling... if it breaks here, you need more RAM (close other programs, buy bigger RAM)")
+        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new=fs_new,prefix_markers=True,interpolate_or_resample="interpolate")
+        logger.info("Interpolation done! phew")
+
+        nan_annotations = mne.preprocessing.annotate_nan(raw)
+        raw_annotations = raw.annotations
+        bad_annotations = [idx for (idx,a) in enumerate(raw.annotations) if a['onset'] < 0]
+        if len(bad_annotations)>0:
+            print(f"Annotations: Deleted {len(bad_annotations)} annotations which started before time 0")
+            print(raw_annotations[bad_annotations])
+            raw_annotations.delete(bad_annotations)
+        raw.set_annotations(raw_annotations+nan_annotations)
+
+
         try:
             channelList = {'heog_u':'eog',
                                 'heog_d':'eog',
@@ -298,7 +310,7 @@ class BIDS:
                             datatype='eeg', 
                             suffix='eeg', 
                             extension='.set')
-
+        
         # Force BIDS conversion
         if not cli_args.redo_bids_conversion:
             if os.path.exists(bids_path):
@@ -324,6 +336,7 @@ class BIDS:
         # BrainVision format weird memory issues
         logger.info("Writing EEG-SET file")
         write_raw_bids(raw, bids_path, overwrite=cli_args.redo_bids_conversion, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True, anonymize = dict(daysback=daysback_min + anonymization_number,keep_his=True))
+
 
         logger.info("Conversion to BIDS complete.")
         # Validate BIDS data
