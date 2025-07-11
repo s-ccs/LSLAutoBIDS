@@ -1,7 +1,7 @@
 # config_logger.py
 import logging
 import os
-from lsl_autobids.config_globals import bids_root
+from lslautobids.config_globals import bids_root
 _logger = None  # Private variable to hold the shared logger
 
 
