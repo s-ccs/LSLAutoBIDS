@@ -72,7 +72,7 @@ lslautobids gen-proj-config -p <projectname>
 
 Run the conversion scripts to convert the xdf files to BIDS format and upload the data to the dataverse.
 ```
-lslautobids gen-proj-config -p TestData2025
+lslautobids run -p TestData2025
 ```
 > [!NOTE]  
 >You can run the `--help` for all the commands to get more information about the available options and directly `lsl-autobids help` to get the list of available commands.
