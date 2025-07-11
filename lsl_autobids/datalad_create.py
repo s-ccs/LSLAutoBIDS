@@ -1,20 +1,17 @@
 import datalad.api as dl
-import datalad 
-
 import os
 
-#datalad.log.LoggerHelper().set_level("debug") #
 
-def create_and_add_files_to_datalad_dataset(dataset_path,flag):
+def create_and_add_files_to_datalad_dataset(dataset_path,flag, logger):
     message = "LSL Auto BIDS: new files found and added"
     if flag==0:
         message ="LSL Auto BIDS: new datalad dataset created"
         # Create a new dataset
-        print('Creating a new datalad dataset........')
+        logger.info('Creating a new datalad dataset........')
         try:
             dl.create(dataset_path, force=True) # files already exist, so we eforce it
         except:
-            print("could not create a new dataset, maybe it exists already?")
+            logger.info("Could not create a new dataset, maybe it exists already?")
 
     # Commit changes
     # Change to dataset path
@@ -27,6 +24,6 @@ def create_and_add_files_to_datalad_dataset(dataset_path,flag):
             f.write("\n*.tsv annex.largefiles=nothing")
             f.write("\n*.md annex.largefiles=nothing")
             f.write("\n*.json annex.largefiles=nothing")
-    print('Committing current changes........')
+    logger.info('Committing current changes........')
     dl.save(path = '.', message=message)
     
