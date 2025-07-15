@@ -79,8 +79,8 @@ This folder contains the converted BIDS data files and other files we want to ve
     └── code
         └── log files
     └──projectname/
-        └── sub-<label>
-            └── ses-<label>
+        └── sub-<label-sub>
+            └── ses-<label-ses>
                 └── datatype (eg: eeg)
                     └── converted BIDS files
                         ├── sub-<label-sub>_ses-<label-ses>_task-Duration_run-001_eeg.vhdr
