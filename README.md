@@ -62,8 +62,8 @@ lslautobids gen-dv-config
 
 ***This will be mostly same for all the projects, thus running this command is only recommended once per system.***
 
-2. __Project Configuration__ : This is to be done once for each new project. This store the project details like project name, project id, project description etc.
-- Run the command below to create a configuration file template in `/projects/<PROJECT_NAME>/` folder (according to the selected root directories).
+2. __Project Configuration__ : This is to be done once for each new project. This store the project details like project name, project id, project description etc. and is saved in a `projects/<PROJECT_NAME>/project_<PROJECT_NAME>.toml` file 
+- Run the command below to create a configuration file template in `projects/<PROJECT_NAME>/` folder (according to the selected root directories).
 
 ```
 lslautobids gen-proj-config -p <projectname> 
