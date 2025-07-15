@@ -264,12 +264,16 @@ class BIDS:
 
 
         try:
-            channelList = {'heog_u':'eog',
-                                'heog_d':'eog',
-                                'veog_r':'eog',
+            channelList = {     'heog':'eog',
+                                'veog':'eog',
+                                'veog_u':'eog',
+                                'veog_d':'eog',
                                 'veog_l':'eog',
+                                'heog_r':'eog',
+                                'heog_l':'eog',
                                 'bipoc':'misc',
                                 'VEOGD':'eog',
+                                'VEOGL':'eog',
                                 'VEOGU':'eog',
                                 'HEOGL':'eog',
                                 'HEOGR':'eog',
