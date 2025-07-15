@@ -35,11 +35,11 @@ conda activate <ENV_NAME>
 
 ### **Step 3: Data Organization**
 
-The package requires the data to be organized in a specific directory structure which is compliant with the BIDS (Brain Imaging Data Structure) format. The BIDS format is a standard for organizing and describing neuroimaging data, making it easier to share and analyze.
+The package requires the recorded XDF data to be organized in a specific directory structure which is semi-compliant with the BIDS (Brain Imaging Data Structure) format. The BIDS format is a standard for organizing and describing neuroimaging data, making it easier to share and analyze.
 
 
-- The `projects` root location is the root directory where all the eeg raw recordings (say `.xdf` files) are stored.
-- The `project_stimulus` root location is the directory where the experiments (e.g `.py`, `.oxexp`) and behavioral files (e.g. eye-tracking recordings, labnotebook, participant forms, etc ) are stored.
+- The `projects` root location is the root directory where all the eeg raw recordings (say `.xdf` files) are stored e.g. `projects/sub-A/ses-001/eeg/sub-A_ses-001_task-foo.xdf`.
+- The (optional) `project_stimulus` root location is the directory where the experiments (e.g `.py`, `.oxexp`) and behavioral files (e.g. eye-tracking recordings, labnotebook, participant forms, etc ) are stored.
 - The `bids` root location is the directory where the converted BIDS data is stored, along with source data and code files which we want to version control using `Datalad`.
 
 > [!IMPORTANT]
@@ -58,7 +58,7 @@ This configuration is required to run for running the automation pipeline of `ls
 ```
 lslautobids gen-dv-config
 ```
-- Edit the file `autobids_config.yaml` to add the dataverse and project root details.
+- Edit the file e.g. via `nano ~/.config/lslautobids/autobids_config.yaml` to add the dataverse and project root details.
 
 ***This will be mostly same for all the projects, thus running this command is only recommended once per system.***
 

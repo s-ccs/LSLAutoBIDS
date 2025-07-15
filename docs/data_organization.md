@@ -47,7 +47,7 @@ This folder contains the recorded raw files (`xdf files`). We save these files i
 
 Filename Convention for the raw data files :
 `sub-<subjectlabel>_ses-<sessionlabel>_task-<tasklabel>_run-<runlabel>_ieeg.<extension>`
-- **subjectlabel** - `001, 002, 003, ...`
+- **subjectlabel** - `001, 002, abc, XF, ...`
 - **sessionlabel** - `001, 002, 003, ...`
 - **tasklabel** - `duration, mscoco, ...`
 - **runlabel** - `001, 002, 003, ...` (need to be an integer)
@@ -83,7 +83,7 @@ This folder contains the converted BIDS data files and other files we want to ve
             └── ses-<label>
                 └── datatype (eg: eeg)
                     └── converted BIDS files
-                        ├── sub-001_ses-001_task-Duration_run-001_eeg.vhdr
+                        ├── sub-<label-sub>_ses-<label-ses>_task-Duration_run-001_eeg.vhdr
                         ├── sub-001_ses-001_task-Duration_run-001_eeg.vmrk
                         ├── sub-001_ses-001_task-Duration_run-001_eeg.eeg
                         .........
