@@ -6,5 +6,5 @@ echo "Processing $projname"
 cd ~/Documents/LSLAutoBIDS&&
 
 	conda activate autobids-new &&
-python lsl_autobids/main.py -p $projname
+python lslautobids/main.py -p $projname
 
