@@ -38,7 +38,7 @@ def check_for_project(available_projects: list[str], project_name:str, logger):
         print("Data check completed.")
     else:
         # Ask the user before proceeding
-        user_input = get_user_input("Do you want to check for new data in the project folder? (y/n): ",logger)
+        user_input = get_user_input("Do you want to check for new data in the project folder? ",logger)
         if user_input == 'y':
             check_for_new_data(logger)
             print("Data check completed.")

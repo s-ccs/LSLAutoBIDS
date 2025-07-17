@@ -478,7 +478,7 @@ def bids_process_and_upload(processed_files,logger):
         logger.info('Pushing files to dataverse........')
         push_files_to_dataverse(project_name, logger)
     else:
-        user_input = get_user_input("Do you want to push the files to Dataverse? (y/n): ",logger)
+        user_input = get_user_input("Do you want to push the files to Dataverse? ",logger)
         if user_input == "y":
             logger.info('Pushing files to dataverse........')
             push_files_to_dataverse(project_name, logger)
