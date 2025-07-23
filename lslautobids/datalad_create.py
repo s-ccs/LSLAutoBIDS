@@ -21,6 +21,7 @@ def create_and_add_files_to_datalad_dataset(dataset_path,flag, logger):
     	with open(os.path.join(dataset_path,".gitattributes"), "a") as f:
             f.write("* annex.largefiles=largerthan=100kb")
             f.write("\n*.csv annex.largefiles=nothing")
+            f.write("\n*.log annex.largefiles=nothing")
             f.write("\n*.tsv annex.largefiles=nothing")
             f.write("\n*.md annex.largefiles=nothing")
             f.write("\n*.json annex.largefiles=nothing")

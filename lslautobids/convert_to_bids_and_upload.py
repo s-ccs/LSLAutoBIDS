@@ -7,6 +7,7 @@ from pyxdf import match_streaminfos, resolve_streams
 from mnelab.io.xdf import read_raw_xdf
 from bids_validator import BIDSValidator
 from mne_bids import write_raw_bids, BIDSPath, get_anonymization_daysback,  make_dataset_description
+import mne
 
 from lslautobids.generate_dataset_json import generate_json_file
 from lslautobids.dataverse_dataset_create import create_dataverse
@@ -199,10 +200,10 @@ class BIDS:
         project_name = cli_args.project_name
         logger.info("Copying the experiment files to BIDS...")
     
-        zip_file_path = os.path.join(bids_root, project_name,subject_id,session_id,"misc", 'experiment.zip')
+        zip_file_path = os.path.join(bids_root, project_name,subject_id,session_id,"misc", 'experiment.tar.gz')
 
         if os.path.exists(zip_file_path):
-            logger.info("Experiment zip already exists. Skipping.")
+            logger.info("Experiment tar.gz already exists. Skipping.")
             if not cli_args.redo_stim_pc:
                 logger.info("Skipping experiment file copy ")
                 return
@@ -264,12 +265,16 @@ class BIDS:
 
 
         try:
-            channelList = {'heog_u':'eog',
-                                'heog_d':'eog',
-                                'veog_r':'eog',
+            channelList = {     'heog':'eog',
+                                'veog':'eog',
+                                'veog_u':'eog',
+                                'veog_d':'eog',
                                 'veog_l':'eog',
+                                'heog_r':'eog',
+                                'heog_l':'eog',
                                 'bipoc':'misc',
                                 'VEOGD':'eog',
+                                'VEOGL':'eog',
                                 'VEOGU':'eog',
                                 'HEOGL':'eog',
                                 'HEOGR':'eog',
@@ -473,7 +478,7 @@ def bids_process_and_upload(processed_files,logger):
         logger.info('Pushing files to dataverse........')
         push_files_to_dataverse(project_name, logger)
     else:
-        user_input = get_user_input("Do you want to push the files to Dataverse? (y/n): ",logger)
+        user_input = get_user_input("Do you want to push the files to Dataverse? ",logger)
         if user_input == "y":
             logger.info('Pushing files to dataverse........')
             push_files_to_dataverse(project_name, logger)
