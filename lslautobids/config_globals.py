@@ -1,5 +1,6 @@
 import os
 import yaml
+import sys
 
 class CLIArgs:
     _instance = None
@@ -52,13 +53,20 @@ def parse_yaml_file(yaml_file):
             return None
 
 
-config_file = os.path.join(os.path.expanduser("~"),'.config/lslautobids/autobids_config.yaml')
+# Determine config path based on context
+if "pytest" in sys.modules:
+    config_file = os.path.join(os.path.expanduser("~"), ".config/lslautobids/test-autobids_config.yaml")
+else:
+    config_file = os.path.join(os.path.expanduser("~"), ".config/lslautobids/autobids_config.yaml")
 config = parse_yaml_file(config_file)
 
-project_root = os.path.join(os.path.expanduser("~"),config['PROJECT_ROOT'])
-bids_root = os.path.join(os.path.expanduser("~"),config['BIDS_ROOT'])
-project_stim_root = os.path.join(os.path.expanduser("~"),config['PROJECT_STIM_ROOT'])
-api_key = config['API_KEY']
-dataverse_base_url = config['BASE_URL']
-parent_dataverse_name = config['PARENT_DATAVERSE_NAME']
+if config:
+    project_root = os.path.join(os.path.expanduser("~"), config["PROJECT_ROOT"])
+    bids_root = os.path.join(os.path.expanduser("~"), config["BIDS_ROOT"])
+    project_stim_root = os.path.join(os.path.expanduser("~"), config["PROJECT_STIM_ROOT"])
+    api_key = config.get("API_KEY", "")
+    dataverse_base_url = config.get("BASE_URL", "")
+    parent_dataverse_name = config.get("PARENT_DATAVERSE_NAME", "")
+else:
+    project_root = bids_root = project_stim_root = api_key = dataverse_base_url = parent_dataverse_name = None
 
