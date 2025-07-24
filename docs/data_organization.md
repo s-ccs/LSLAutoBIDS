@@ -75,6 +75,7 @@ You can get the filename convention for the data files [here](https://bids-stand
 ## BIDS Folder
 
 This folder contains the converted BIDS data files and other files we want to version control using `Datalad`. Since we are storing the entire dataset in the dataverse, we also store the raw xdf files and the associated stimulus/behavioral files in the dataverse. The folder structure is as follows:
+```
 └── bids
     └── code
         └── log files
@@ -97,7 +98,7 @@ This folder contains the converted BIDS data files and other files we want to ve
     └── participants.tsv
     └── participants.json
     └── README.md
-
+```
 
 - **projectname** - any descriptive name for the project
 - **label** - `001, 002, 003, ...`
