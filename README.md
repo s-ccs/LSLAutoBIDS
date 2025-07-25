@@ -23,7 +23,7 @@ git clone https://github.com/s-ccs/LSLAutoBIDS.git
 ```
 pip3 install lslautobids
 ```
-It is advised to install the package in a seperate environment (e.g. using `conda` or `virtualenv`).
+It is advised to install the package in a separate environment (e.g. using `conda` or `virtualenv`).
 
 > [!NOTE]  
 > If you are using conda, you can create a new conda environment using the following command and activate it.

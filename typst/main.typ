@@ -49,7 +49,7 @@ Cognitive neuroscience routinely collect large datasets, yet data integration, m
 // set spellcheck language
 #set text(lang: "en", region: "US")
 
-// figure caption alighment
+// figure caption alignment
 #show figure.caption: set align(center)
 
 //#elements.float(align: bottom, [\*Corresponding author]) 
