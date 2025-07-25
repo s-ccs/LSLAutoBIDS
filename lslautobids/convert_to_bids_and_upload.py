@@ -448,7 +448,7 @@ def bids_process_and_upload(processed_files,logger):
         val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, stim, logger)   
 
         if val == 1:
-                logger.info("Bids Conversion Sucessful")      
+                logger.info("Bids Conversion Successful")      
         elif val == 2:
                 logger.info("Converted file already found, skipping")   
         else:
