@@ -53,7 +53,7 @@ def parse_yaml_file(yaml_file):
             return None
 
 
-# Determine config path based on context
+# Determine config paty based on context
 if "pytest" in sys.modules:
     config_file = os.path.join(os.path.expanduser("~"), ".config/lslautobids/test-autobids_config.yaml")
 else:
