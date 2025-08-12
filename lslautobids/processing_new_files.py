@@ -27,7 +27,7 @@ def process_new_files(file_status: List[str],logger) -> None:
             file_name_no_ext, ext = os.path.splitext(file_name)
             if re.search(r'_old\d*$', file_name_no_ext):
                 logger.error(f"File '{file_name}' appears to be a duplicate. It ends with an '_old' suffix. Please manually check the file.")
-                raise RuntimeError("Duplicate file detected. Please check the file manually.")
+                raise SystemExit("Duplicate file detected. Please check the file manually.")
 
             processed_files.append(file_name_no_ext + ext)
     
