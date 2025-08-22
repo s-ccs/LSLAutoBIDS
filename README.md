@@ -81,8 +81,8 @@ lslautobids run -p TestData2025
 For more information on how to use the package, please refer to the [documentation](docs) folder.
 
 The documentation includes:
-- [Data Organizattion](docs/data_organization.md): Guidelines for organizing the data in a BIDS compliant manner.
-- [Developer Documentation](docs/developer_documentation.md): Information about the internal functionalaty of the tool, how to contribute, and how to extend the package. (Will be there soon.)
+- [Data Organization](docs/data_organization.md): Guidelines for organizing the data in a BIDS compliant manner.
+- [Developer Documentation](docs/developer_documentation.md): Information about the internal functionality of the tool, how to contribute, and how to extend the package. (Will be there soon.)
 
 
 ## Disclaimer
