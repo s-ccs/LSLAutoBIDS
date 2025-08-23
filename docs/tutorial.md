@@ -55,7 +55,7 @@ You can find the details about the parameters in the comments of the template co
 
 ## Example Case 1
 
-A lab wants to conduct an EEG-EyeTracking experiment and wants to make this dataset  publicly available for the other neuroscience researchers. To assure data provenence and reproducibility within and accross labs, they want to have a standarized structure for storing the data and code files. 
+A lab wants to conduct an EEG-EyeTracking experiment and wants to make this dataset  publicly available for the other neuroscience researchers. To assure data provenence and reproducibility within and across labs, they want to have a standardized structure for storing the data and code files. 
 
 In this example we will see how to use the LSLAutoBIDS package to:
 1. Convert the recorded EEG data in xdf format to BIDS format.
