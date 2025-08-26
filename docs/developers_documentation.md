@@ -8,7 +8,7 @@ LSLAutoBIDS is a Python tool series designed to automate the following tasks seq
 - Integrate the EEG data with non-EEG data (e.g., behavioral, stimulus) for the complete dataset 
 - Datalad integration for version control for the integrated dataset
 - Upload the dataset to Dataverse 
-- Provide a command-line interface for cloning, configuring, and running the conversion processs
+- Provide a command-line interface for cloning, configuring, and running the conversion process
 
 
 ### Key Features
@@ -35,7 +35,8 @@ LSLAutoBIDS is a Python tool series designed to automate the following tasks seq
     - [4. User Prompt & Conversion](#4-user-prompt--conversion)
     - [5. BIDS Conversion and Upload (`bids_process_and_upload()`)](#5-bids-conversion-and-upload-bids_process_and_upload)
     - [6. Supporting Utility](#6-supporting-utility)
-  - [4. BIDS Conversion and Upload Pipleine ⚙️ (`convert_to_bids_and_upload.py`)](#3-bids-conversion-and-upload-pipleine-️-convert_to_bids_and_uploadpy)
+
+  - [4. BIDS Conversion and Upload Pipeline ⚙️ (`convert_to_bids_and_upload.py`)](#4-bids-conversion-and-upload-pipeline-️-convert_to_bids_and_uploadpy)
     - [1. Entry Point (`bids_process_and_upload()`)](#1-entry-point-bids_process_and_upload)
     - [2. Convert to BIDS (`convert_to_bids()`)](#2-convert-to-bids-convert_to_bids)
     - [3. Copy Source Files (`copy_source_files_to_bids()`)](#3-copy-source-files-copy_source_files_to_bids)
@@ -180,7 +181,7 @@ For each new file:
 - `_clear_last_run_log()` :Clears the last run timestamp (last_run_log.txt) when --redo_bids_conversion is specified (as a flag in `lslautobids run`), forcing reprocessing of all files.
 
 
-### 3. BIDS Conversion and Upload Pipleine ⚙️ (`convert_to_bids_and_upload.py`)
+### 4. BIDS Conversion and Upload Pipeline ⚙️ (`convert_to_bids_and_upload.py`)
 
 The pipeline is designed to ensure:
 
