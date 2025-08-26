@@ -72,13 +72,13 @@ def main():
   argparser = argparse.ArgumentParser(description='Get the project name')
   argparser.add_argument('-p','--project_name', type=str, help='Enter the project name')
   argparser.add_argument('-s','--standalone_toml', type=str, default='no', help= 'To enable the standalone toml file creation')
-  argparser.add_argument('-c','--config_file', type=str, default=None, help='Optional path to a custom YAML config file')
+  argparser.add_argument('-c','--custom_dv_config', type=str, default=None, help='Optional path to a custom YAML config file')
   args = argparser.parse_args()
 
   print(f"ARGS: {args}")
 
   # Replace hardcoded path
-  config_file = args.config_file or os.path.join(os.path.expanduser("~"),'.config/lslautobids/autobids_config.yaml')
+  config_file = args.custom_dv_config or os.path.join(os.path.expanduser("~"),'.config/lslautobids/autobids_config.yaml')
 
   # get the project name and check if the project exists
   project_name = args.project_name
