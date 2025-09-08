@@ -77,21 +77,22 @@ You can get the filename convention for the data files [here](https://bids-stand
 This folder contains the converted BIDS data files and other files we want to version control using `Datalad`. Since we are storing the entire dataset in the dataverse, we also store the raw xdf files and the associated stimulus/behavioral files in the dataverse. The folder structure is as follows:
 ```
 └── bids
+  └──projectname/
     └── code
         └── log files
-    └──projectname/
-        └── sub-<label-sub>
-            └── ses-<label-ses>
-                └── datatype (eg: eeg)
-                    └── converted BIDS files
-                        ├── sub-<label-sub>_ses-<label-ses>_task-Duration_run-001_eeg.vhdr
-                        ├── sub-001_ses-001_task-Duration_run-001_eeg.vmrk
-                        ├── sub-001_ses-001_task-Duration_run-001_eeg.eeg
-                        .........
-                └── beh
-                    └──behavioral files
-                └── misc
-                    └── experimental files (This needs to stored in zip format)
+    
+    └── sub-<label-sub>
+        └── ses-<label-ses>
+            └── datatype (eg: eeg)
+                └── converted BIDS files
+                    ├── sub-<label-sub>_ses-<label-ses>_task-Duration_run-001_eeg.vhdr
+                    ├── sub-001_ses-001_task-Duration_run-001_eeg.vmrk
+                    ├── sub-001_ses-001_task-Duration_run-001_eeg.eeg
+                    .........
+            └── beh
+                └──behavioral files
+            └── misc
+                └── experimental files (This needs to stored in zip format)
     └── sourcedata
         └── raw xdf files
     └── dataset_description.json
