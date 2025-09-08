@@ -80,7 +80,7 @@ lslautobids run -p TestData2025
 
 1. This will convert the xdf file in the `LSLAutoBIDS/data/projects/TestProject2025/sub-001/ses-001/eeg/` directory to BIDS format and store it in the `LSLAutoBIDS/data/bids/TestProject2025/sub-001/ses-001/` directory. 
 2. You can check the logs in the log file `LSLAutoBIDS/data/bids/TestProject2025/code/TestProject2025.log` file. 
-3. The source data i.e. the raw xdf file, behavioral data (e.g. eye-tracking recording) and the experimental code files (e.g. .py, .oxexp) will be copied to the `LSLAutoBIDS/data/bids/TestProject2025/source_data/`, `LSLAutoBIDS/data/bids/TestProject2025/beh/` and `LSLAutoBIDS/data/bids/TestProject2025/misc/` directories respectively.
+3. The source data i.e. the raw xdf file, behavioral data (e.g. eye-tracking recording) and the experimental code files in `PROJECT_STIM_ROOT/TestProject2025/experiment` (all files e.g. .py, .oxexp will be compressed to a `tar.gz` archive) will be copied to the `LSLAutoBIDS/data/bids/TestProject2025/source_data/`, `LSLAutoBIDS/data/bids/TestProject2025/beh/` and `LSLAutoBIDS/data/bids/TestProject2025/misc/` directories respectively.
 
 ## Example Case 2
 
