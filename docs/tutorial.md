@@ -116,7 +116,7 @@ In this case the experimenter wants to publish **only the raw EEG recordings and
 ```
 lslautobids run -p test-project
 ```
-  1. This will convert the xdf file, and you can check the logs in the log file as shwon in example case 1.
+  1. This will convert the xdf file, and you can check the logs in the log file as shown in example case 1.
   2. `LSLAutoBIDS/sample_data/bids/test-project/beh` and `LSLAutoBIDS/sample_data/bids/test-project/misc` directories are not exist in the **converted bids**. 
 
 
