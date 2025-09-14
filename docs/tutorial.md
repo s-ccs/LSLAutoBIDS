@@ -64,11 +64,17 @@ Configuration file template:
 ***This will be mostly same for all the projects, thus running this command is only recommended once per system.***
 
 4. Create a project-specific configuration file
-This will create a project-specific configuration file template in the specified project directory.
+This will create a project-specific configuration file template in the specified project root directory.
 
 ```
 lslautobids gen-proj-config --project TestProject2025
 ```
+
+This will create a test-project_config.toml file in the project root directory. 
+
+> [!NOTE]: _For the rest of the tutorial, we are assuming that we place the downloaded sample_data in the root of the cloned LSLAutoBIDS repository and `LSLAutoBIDS` is cloned in the `home/users/` folder. In this case, the projects root will be `LSLAutoBIDS/sample_data/projects/` and so on for project_stimulus and bids._
+
+
 Fill in the details in the configuration file `LSLAutoBIDS/sample_data/projects/test-project/test-project_config.toml` file.
 
 You can find the details about the parameters in the comments of the template configuration file generated. For this tutorial, you might want to just change the author and email fields. Rest of the fields are already filled in for the test project.
