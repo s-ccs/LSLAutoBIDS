@@ -55,6 +55,9 @@ LSLAutoBIDS is a Python tool series designed to automate the following tasks seq
     - [2. Logging Configuration (`config_logger.py`)](#2-logging-configuration-config_loggerpy)
     - [3. Utility Functions (`utils.py`)](#3-utility-functions-utilspy)
 
+- [Testing](#testing)
+  - [Running Tests](#running-tests)
+
 
 ## Architecture - TODO
 
@@ -364,7 +367,7 @@ This module handles the creation of a new dataset in Dataverse using the `pyData
 #### 2. Linking DataLad to Dataverse (`link_datalad_dataverse.py`)
 This module links the local DataLad dataset to the remote Dataverse dataset as a sibling. The function performs the following steps:
 1. It first checks if the Dataverse is already created in the previous runs or it is just created in the current run (flag==0). If flag==0, it proceeds to link the DataLad dataset to Dataverse.
-2. It runs the command `datalad add-sibling-dataverse dataverse_base_url doi_id`. This command adds the Dataverse as a sibling to the local DataLad dataset, allowing for synchronization and data management between the two. For lslautobids, we currently only allow to deposit data to Dataverse. In future version, we shall also add user controlled options for adding other siblings like github, gitlab, etc.
+2. It runs the command `datalad add-sibling-dataverse dataverse_base_url doi_id`. This command adds the Dataverse as a sibling to the local DataLad dataset, allowing for synchronization and data management between the two. For lslautobids, we currently only allow to deposit data to Dataverse. In future version, we shall also add user controlled options for adding other siblings like github, gitlab, OpenNeuro, AWS etc.
 
 We chose Dataverse as it serves as both a repository and a data sharing platform, making it suitable for our needs. It also integrates well with DataLad and allows sharing datasets with collaborators or the public.
 
@@ -401,4 +404,28 @@ This module contains various utility functions used across the application.
 2. `read_toml_file` : Reads and parses a TOML file, returning its contents as a dictionary.
 3. `write_toml_file` : Writes a dictionary to a TOML file.
 
+
+## Testing
+
+The testing framework uses `pytest` to validate the functionality of the core components.
+
+- The tests are located in the `tests/` directory and cover various modules including configuration generation, file processing, BIDS conversion, DataLad integration, and Dataverse interaction. (Work in progress)
+
+- The test directory contains :
+    - `test_utils` : Directory containing utility functions needed accross multiple test files.
+    - `testcases` : Directory containing all the tests in a in a directory structure - `test_<test_name>`.
+    - Each `test_<test_name>` directory contains a `data` folder with sample data for that test and a `test_<test_name>.py` file with the actual test cases.
+    - `run_all_tests.py` : A script to run all the tests in the `testcases` directory sequentially.
+
+Tests will be added continously as new features are added and existing features are updated.
+
+### Running Tests
+
+To run the tests, navigate to the `tests/` directory and execute:
+`python tests/run_all_tests.py`
+
+These tests ensure that each component functions as expected and that the overall pipeline works seamlessly. This tests will also be triggered automatically on each push or PR to the main repository using GitHub Actions.
+
+## Miscellianeous Points
+- To the current date, only EEG data is supported for BIDS conversion. Support for other modalities like Eye-tracking, etc,. in the BIDS format is not yet supported. Hence, LSLAutoBIDS relies on semi-BIDS data structures for those data and use user-definable regular expressions to match expected data-files. A future planned feature is to provide users more flexibility, especially in naming / sorting non-standard files. Currently, the user can only specify the expected file extensions for stimulus/behavioral data and is automatically renamed to include sub-XXX_ses-YYY_ prefix if missing and also copied to pseudo-BIDS folder structure like `<BIDS_ROOT>/sourcedata/sub-XXX/ses-YYY/`, `<BIDS_ROOT>/misc/experiment.tar.gz` etc,.
 
