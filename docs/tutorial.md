@@ -15,6 +15,11 @@ git clone https://github.com/s-ccs/LSLAutoBIDS.git
     cd LSLAutoBIDS
     pip install .
 ```
+  `git-annex` is required but not a Python package. You need to install it separately after installing the requirements, either with your system’s package manager or simply by running:
+```
+datalad-installer git-annex
+```
+
 3. Download the dummy dataset for testing in the LSLAutoBIDS root directory - ([tutorial_sample_dataset](https://files.de-1.osf.io/v1/resources/wz7g9/providers/osfstorage/68c3c636e33eca3b0feffa2c/?zip=))
 
 The dataset has a sample project called "test-project" which contains an EEG recording file in the projects directory, a sample eyetracking recording in the `project_stimulus/data` directory, and a dummy experimental code file in the `project_stimulus/experiment` directory.

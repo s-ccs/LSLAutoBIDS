@@ -25,4 +25,7 @@ __7. Can you upload to any other portals apart from Dataverse?__
 
 
 __8. How do you handle data licensing?__
-Answer : Data license depends on the repository and can typically be chosen by the user typically upon making the dataset publicly available (or a data user agreement form can be employed). That being said, at OpenNeuro data is typically licensed CC0. 
+- Data license depends on the repository and can typically be chosen by the user typically upon making the dataset publicly available (or a data user agreement form can be employed). That being said, at OpenNeuro data is typically licensed CC0. 
+
+__9. Troubleshooting: Datalad push to Dataverse command failed.__
+- You might encounter errors such as: 'GitRepo' object has no attribute 'call_annex' and 'Datalad push command failed', this is because `git-annex` is required but not a Python package, and it needs to be installed sepearatly, run: `datalad-installer git-annex` after installing requirements.
