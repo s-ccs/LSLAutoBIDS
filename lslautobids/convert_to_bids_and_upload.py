@@ -430,10 +430,12 @@ def bids_process_and_upload(processed_files,logger):
     toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
     data = read_toml_file(toml_path)
-    stim = data["Computers"]["stimulusComputerUsed"]     
+    stim = data["Computers"]["stimulusComputerUsed"]
+
+    logger.info(f"StimulusPC used : {stim}")     
 
     project_path = os.path.join(project_root,project_name)
-    logger.info("Initializing BIDS conversion and upload process...")
+    logger.info("Initializing BIDS conversion and upload process")
     # Initialize BIDS object
     bids = BIDS()
     for file in processed_files:
