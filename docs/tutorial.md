@@ -67,7 +67,7 @@ Configuration file template:
 This will create a project-specific configuration file template in the specified project root directory.
 
 ```
-lslautobids gen-proj-config --project TestProject2025
+lslautobids gen-proj-config --project test-project
 ```
 
 This will create a test-project_config.toml file in the project root directory. 
