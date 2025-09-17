@@ -409,8 +409,8 @@ class BIDS:
 
         make_dataset_description(
             path = dataset_description_path,
-            name = data["Dataset"]["title"],
-            data_license = data["Dataset"]["license"],
+            name = data["DataverseDataset"]["title"],
+            data_license = data["DataverseDataset"]["license"],
             authors = data["AuthorsInfo"]["authors"],
             overwrite= True, #necessary to overwrite the existing file created by mne_bids.write_raw_bids()
         )
