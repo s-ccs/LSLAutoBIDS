@@ -200,7 +200,7 @@ The pipeline is designed to ensure:
 
 #### 1. Entry Point (`bids_process_and_upload()`)
 
-- Reads project configuration (<project_name>_config.toml) to check if a stimulus computer was used. (stimulusComputerUsed: true)
+- Reads project configuration (<project_name>_config.toml) to check if a stimulus computer was used. (stimulusFilesUsed: true)
 
 - Iterates over each processed file and extracts identifiers. For example, for a file named `sub-001_ses-001_task-Default_run-001_eeg.xdf`, it extracts:
 
@@ -249,7 +249,7 @@ This function handles the core conversion of a XDF files to BIDS format and cons
 
     - Load `.xdf` with `create_raw_xdf()`. (See section).
 
-    - Apply anonymization (daysback_min + anonymization_number from project TOML config).
+    - Apply anonymization (daysback_min + anonymizationNumber from project TOML config).
 
     - Write EEG data into BIDS folder via `write_raw_bids().`
 
@@ -273,13 +273,13 @@ This function ensures that the original source files (EEG and stimulus/behaviora
 
 - If a file already exists, logs a message and skips copying.
 
-If stimulusComputerUsed=True in project config file:
+If stimulusFilesUsed=True in project config file:
 
 1. Behavioral files are copied via `_copy_behavioral_files()`.
 
-    - Validates required files against TOML config (`ExpectedStimulusFiles`). In this config we add the the extensions of the expected stimulus files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required stimulus files. We also have mandatory labnotebook and participant info files in .tsv format.
+    - Validates required files against TOML config (`StimulusFilesInfo`). In this config we add the the extensions of the expected stimulus files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required stimulus files. We also have mandatory labnotebook and participant info files in .tsv format.
     - Renames files to include sub-XXX_ses-YYY_ prefix if missing.
-    - Deletes the other files in the stimulus directory that are not listed in `ExpectedStimulusFiles` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
+    - Deletes the other files in the stimulus directory that are not listed in `StimulusFilesInfo` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
 
 2. Experimental files are copied via `_copy_experiment_files().`
 
