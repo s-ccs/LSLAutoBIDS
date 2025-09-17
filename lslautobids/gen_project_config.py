@@ -7,7 +7,6 @@ import yaml
 toml_content = """
   # This is the project configuration file - This configuration can be customized for each project
   
-  # The authors info field will have information about the creators of the dataset
   [AuthorsInfo]
     authors = "John Doe, Lina Doe" # List of authors separated by commas
     affiliation = "University of Stuttgart, University of Stuttgart" # Affiliation of the authors in the same order as authors
@@ -25,8 +24,9 @@ toml_content = """
     expectedStimFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"] # List of expected stimulus file extensions. Only the expected files will be copied to the beh folder in BIDS dataset. Give an empty list [] if you don't want any stimulus files to be in the dataset. In this case only experiment files will be zipeed and copied to the misc folder in BIDS dataset.
   
   [SubjectInfo]
-    ignoreSubjects = ['sub-999'] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.
-    excludeTasks = ['freeviewing'] # List of tasks to exclude from the conversion for all subjects - Leave empty to include all tasks. Changing this value will not delete already existing tasks.
+    ignoreSubjects = ['sub-777'] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.
+    allTasks = [] # List of all possible tasks in the dataset. This will automatically be updated when new tasks are found during the conversion.
+    excludeTasks = ['sampletask'] # List of tasks to exclude from the conversion for all subjects - Leave empty to include all tasks. Changing this value will not delete already existing tasks.
     anonymizationNumber = 123 # This is an anomization number that will be added to the recording date of all subjects.
     
   """

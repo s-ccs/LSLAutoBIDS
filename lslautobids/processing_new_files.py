@@ -49,13 +49,13 @@ def process_new_files(file_status: List[str],logger) -> None:
     toml_path = os.path.join(project_path, project_name + '_config.toml')
     data = read_toml_file(toml_path)
    
-    existing_tasks = set(data.get('Tasks', {}).get('tasks', []))
+    existing_tasks = set(data.get('SubjectInfo', {}).get('allTasks', []))
 
     # Add only new tasks
     updated_tasks = list(existing_tasks.union(tasks))
 
     # Save updated task list back to the config
-    data['Tasks']['tasks'] = updated_tasks
+    data['SubjectInfo']['allTasks'] = updated_tasks
     write_toml_file(toml_path, data)
 
     # User prompt asking if we want to proceed to convert and upload
