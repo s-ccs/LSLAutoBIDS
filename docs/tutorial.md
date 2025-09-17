@@ -65,13 +65,13 @@ In this example we will see how to use the LSLAutoBIDS package to:
 
 ### How to run the example?
 
-1. Check if the toml configuration file `LSLAutoBIDS/data/projects/TestProject2025/TestProject2025_config.toml` is filled in with the correct details, specially the stimulusComputerUsed and expectedFiles fields. For this example we are using eye tracking data as a behavioral file, thus the stimulusComputerUsed field should be set to true and the expectedFiles field should contain the expected stimulus file extensions.
+1. Check if the toml configuration file `LSLAutoBIDS/data/projects/TestProject2025/TestProject2025_config.toml` is filled in with the correct details, specially the stimulusFilesUsed and expectedFiles fields. For this example we are using eye tracking data as a behavioral file, thus the stimulusFilesUsed field should be set to true and the expectedFiles field should contain the expected stimulus file extensions.
 ```toml
-  [Computers]
-    stimulusComputerUsed = true
+  [StimulusFilesInfo]
+    stimulusFilesUsed = true
 
-  [ExpectedStimulusFiles]
-    expectedFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
+  [StimulusFilesInfo]
+    expectedStimFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
 ```
 2. Run the conversion and upload command to convert the xdf files to BIDS format and upload the data to the dataverse.
 ```
