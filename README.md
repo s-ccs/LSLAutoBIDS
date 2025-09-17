@@ -20,7 +20,9 @@ This package automates the conversion of EEG recordings (xdf files) to BIDS (Bra
 git clone https://github.com/s-ccs/LSLAutoBIDS.git
 ```
 ### **Step 2: Install the package**
+Go to the cloned directory and install the package using pip.
 ```
+cd LSLAutoBIDS
 pip3 install lslautobids
 ```
 It is advised to install the package in a separate environment (e.g. using `conda` or `virtualenv`).
