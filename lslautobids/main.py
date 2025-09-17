@@ -84,7 +84,7 @@ def update_project_config(project_path: str, project_name: str, logger):
         raise FileNotFoundError(f"Config file '{toml_path}' not found.")
 
     config = read_toml_file(toml_path)
-    config['Dataset']['title'] = project_name
+    config['DataverseDataset']['title'] = project_name
     logger.info("Updating project config with new project name...")
 
     write_toml_file(toml_path, config)
@@ -141,7 +141,7 @@ def main():
         # get the stimulus flag from the toml file
         toml_path = os.path.join(project_root, project_name, f"{project_name}_config.toml")
         data = read_toml_file(toml_path)
-        stim_flag = data['Computers']['stimulusComputerUsed']
+        stim_flag = data['StimulusFilesInfo']['stimulusFilesUsed']
         if not stim_flag:
             logger.warning("The stimulus computer flag is not set in the config file. Please set it to True to proceed with stim redo process.")
             sys.exit(1)

@@ -7,20 +7,20 @@ from lslautobids.utils import read_toml_file
 
 def update_json_data(json_data, toml_data):
     # Update title field
-    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][0]['value'] = toml_data['Dataset']['title']
+    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][0]['value'] = toml_data['DataverseDataset']['title']
 
     # Update author field
-    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][1]['value'][0]['authorName']['value'] = toml_data['Authors']['authors']
+    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][1]['value'][0]['authorName']['value'] = toml_data['AuthorsInfo']['authors']
 
     # Update dataset name and email field
-    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][2]['value'][0]['datasetContactEmail']['value'] = toml_data['AuthorsContact']['email']
-    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][2]['value'][0]['datasetContactName']['value'] = toml_data['Authors']['authors']
+    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][2]['value'][0]['datasetContactEmail']['value'] = toml_data['AuthorsInfo']['email']
+    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][2]['value'][0]['datasetContactName']['value'] = toml_data['AuthorsInfo']['authors']
 
     # Update dsDescription field
-    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][3]['value'][0]['dsDescriptionValue']['value'] = toml_data['Dataset']['dataset_description']
+    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][3]['value'][0]['dsDescriptionValue']['value'] = toml_data['DataverseDataset']['datasetDescription']
 
     # Update subject field
-    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][4]['value'] = toml_data['Subject']['subject']
+    json_data['datasetVersion']['metadataBlocks']['citation']['fields'][4]['value'] = toml_data['DataverseDataset']['subject']
     return json_data
 
 def generate_json_file(project_name, logger):

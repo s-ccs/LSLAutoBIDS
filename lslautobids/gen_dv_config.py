@@ -3,14 +3,14 @@ info = """
 # The configuration file is a YAML file that contains the following fields:
 #    BIDS_ROOT: Set up the BIDS output path - it is referenced from the home directory of your PC. 
 #    For example, if your home directory is /home/username and you have a /home/username/data/bids directory where you have the 
-#    BIDS data in the home directory then the BIDS_ROOT path will be 'data/bids/'
-#    PROJECT_ROOT: This is the actual path to the directory containing xdf files
-#    PROJECT_STIM_ROOT: This is the actual path to the directory containing the stimulus files
+#    BIDS data, then the BIDS_ROOT path will be 'data/bids/'
+#    PROJECT_ROOT: This is the path to the directory containing xdf files
+#    PROJECT_STIM_ROOT: This is the path to the directory containing the stimulus files
 #    BASE_URL: The base URL for the dataverse service.
 #    API_KEY: Your API token for authentication - you can get it from the dataverse service.
-#    PARENT_DATAVERSE_NAME: The name of the program or service.
+#    PARENT_DATAVERSE_NAME: The name of the parent dataverse under which the datasets will be created. It is usually in the url of the dataverse.
 #
-# Important: all paths + API_KEY need to be placed in quotes!
+# Important: all paths + API_KEY need to be placed in quotes! Diclaimer: Without quotes also works!
 
 """
 

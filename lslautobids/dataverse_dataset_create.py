@@ -75,8 +75,8 @@ def create_dataverse(project_name):
         logger.info(f"Dataset created with PID: {resp.json()['data']['persistentId']}")
    
         # Modify field
-        data['Dataset']['title']=ds_title 
-        data['Dataverse']['pid']= resp.json()['data']['persistentId']
+        data['DataverseDataset']['title']=ds_title 
+        data['DataverseDataset']['pid']= resp.json()['data']['persistentId']
         #data['Dataverse']['dataset_id']= resp.json()['data']['id']
 
         # To use the dump function, you need to open the file in 'write' mode

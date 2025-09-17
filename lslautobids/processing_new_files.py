@@ -93,7 +93,7 @@ def check_for_new_files(path: str, ignore_subjects, logger) -> Union[List[str], 
     Returns:
         Union[List[str], str]: List of new file paths or a 'no files' message.
     """
-    
+    logger.info(f"Scanning for new files in {path}...")
     log_file_path = os.path.join(path, "last_run_log.txt")
 
     if cli_args.redo_bids_conversion:
@@ -103,6 +103,7 @@ def check_for_new_files(path: str, ignore_subjects, logger) -> Union[List[str], 
         with open(log_file_path, 'r') as f:
             last_run = f.read().strip()
             last_run_time = float(last_run) if last_run else 0.0
+            logger.info(f"Last run time read from log: {last_run_time}")
     except FileNotFoundError:
         last_run_time = 0.0
 
@@ -142,11 +143,11 @@ def check_for_new_data(logger) -> None:
     toml_path = os.path.join(project_path, cli_args.project_name + '_config.toml')
     data = read_toml_file(toml_path)
 
-    ignore_subjects = data["IgnoreSubjects"]["ignore_subjects"]
+    ignore_subjects = data["SubjectInfo"]["ignoreSubjects"]
 
     logger.info("Ignored subjects: %s", ignore_subjects)
     file_status = check_for_new_files(project_path, ignore_subjects, logger)
-    ignore_tasks = data["Tasks"]["exclude_tasks"]
+    ignore_tasks = data["SubjectInfo"]["excludeTasks"]
 
     filtered_files = [
     f for f in file_status
@@ -158,7 +159,7 @@ def check_for_new_data(logger) -> None:
         input("Press Enter to exit...")
         raise RuntimeError("No new files found.")
     else:
-        logger.info(f"New files detected: {filtered_files}")
+        logger.info(f"New files found: {filtered_files}")
         process_new_files(filtered_files, logger)
 
 

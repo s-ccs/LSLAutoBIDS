@@ -174,7 +174,7 @@ class BIDS:
         toml_path = os.path.join(project_root, cli_args.project_name, cli_args.project_name + '_config.toml')
         data = read_toml_file(toml_path)
 
-        required_files = data["ExpectedStimulusFiles"]["expectedFiles"]
+        required_files = data["StimulusFilesInfo"]["expectedStimFiles"]
 
 
         for required_file in required_files:
@@ -335,7 +335,7 @@ class BIDS:
         # get the anonymization number from the toml file
         toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
         data = read_toml_file(toml_path)
-        anonymization_number = data["Subject"]["anonymization_number"]
+        anonymization_number = data["SubjectInfo"]["anonymizationNumber"]
 
         # Write the raw data to BIDS in EDF format
         # BrainVision format weird memory issues
@@ -410,8 +410,8 @@ class BIDS:
         make_dataset_description(
             path = dataset_description_path,
             name = data["Dataset"]["title"],
-            data_license = data["Dataset"]["License"],
-            authors = data["Authors"]["authors"],
+            data_license = data["Dataset"]["license"],
+            authors = data["AuthorsInfo"]["authors"],
             overwrite= True, #necessary to overwrite the existing file created by mne_bids.write_raw_bids()
         )
 
@@ -430,7 +430,7 @@ def bids_process_and_upload(processed_files,logger):
     toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
     data = read_toml_file(toml_path)
-    stim = data["Computers"]["stimulusComputerUsed"]
+    stim = data["StimulusFilesInfo"]["stimulusFilesUsed"]
 
     logger.info(f"StimulusPC used : {stim}")     
 
