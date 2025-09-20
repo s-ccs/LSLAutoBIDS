@@ -10,14 +10,14 @@ toml_content = """
   [AuthorsInfo]
     authors = "John Doe, Lina Doe" # List of authors separated by commas
     affiliation = "University of Stuttgart, University of Stuttgart" # Affiliation of the authors in the same order as authors
-    email = "john@gmail.com, lina@gmail.com" # Contact email of the authors in the same order as authors
+    email = "john@gmail.com" # Contact email of the authors in the same order as authors
   
   [DataverseDataset]
     title = "Convert XDF to BIDS" # Title of the  Dataverse dataset. This gets updated automatically by the project name.
     datasetDescription = "This is a test project to set up the pipeline to convert XDF to BIDS." # Description of the dataset. This description will appear in the dataset.json file which then eventually gets displayed in the dataverse metadata
     license = "MIT License" # License for the dataset, e.g. "CC0", "CC-BY-4.0", "ODC-By-1.0", "PDDL-1.0", "ODC-PDDL-1.0", "MIT License"
     subject = ["Medicine, Health and Life Sciences","Engineering"] # List of subjects related to the dataset required for dataverse metadata
-    pid = '12345' # Persistent identifier for the dataset, e.g. DOI or Handle. This will be updated automatically after creating the dataset in dataverse.
+    pid = '' # Persistent identifier for the dataset, e.g. DOI or Handle. This will be updated automatically after creating the dataset in dataverse.
 
   [OtherFilesInfo]
     otherFilesUsed = true # Set to true if you want to include other (non-eeg-files) files (experiment files, other modalities like eye tracking) in the dataset, else false
