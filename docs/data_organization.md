@@ -1,6 +1,6 @@
 # How the data is organized
 
-In this project, we are using a sample xdf file along with the corresponding stimulus files to demonstrate how the data inside the `projectname` folder is organized. This data should be organized in a specific way:
+In this project, we are using a sample xdf file along with the corresponding other files to demonstrate how the data inside the `projectname` folder is organized. This data should be organized in a specific way:
 
 ### Recommended Project Organization Structure 
 
@@ -8,7 +8,7 @@ For convenience, we have provided a recommended project organization  structure 
 
 
 > [!IMPORTANT]
-> The recommended directory structure is not self generated. The user needs to create the directories and store the recorded and stimulus data in them before running the conversion.
+> The recommended directory structure is not self generated. The user needs to create the directories and store the recorded and others data in them before running the conversion.
 
 The dataset (both recorded and converted) is stored in the parent `data` directory. The `data` directory has three subdirectories under which the entire project is stored. The recommended directory structure is as follows:
 ```
@@ -16,7 +16,7 @@ data
 ├── bids                  # Converted BIDS data
   ├── projectname1
   ├── projectname2                
-├── project_stimulus      # Experimental/Behavioral files
+├── project_other      # Experimental/Behavioral files
   ├── projectname1
   ├── projectname2          
 ├── projects 
@@ -26,7 +26,7 @@ data
 
 ```
 
-Here `./data/projects/`, `./data/project_stimulus/`, `./data/bids/` are the root project directories. Each of this root directories will have a project name directory inside it and each project directory will have a subdirectory for each subject. 
+Here `./data/projects/`, `./data/project_other/`, `./data/bids/` are the root project directories. Each of this root directories will have a project name directory inside it and each project directory will have a subdirectory for each subject. 
 
 
 ## Projects Folder
@@ -52,7 +52,7 @@ Filename Convention for the raw data files :
 - **tasklabel** - `duration, mscoco, ...`
 - **runlabel** - `001, 002, 003, ...` (need to be an integer)
 
-## Project Stimulus Folder
+## Project Other Folder
 
 This folder contains the experimental and behavioral files which we also store in the dataverse. The folder structure is should as follows:
 
@@ -66,7 +66,7 @@ This folder contains the experimental and behavioral files which we also store i
                         └── behavioral_files((lab notebook, CSV, EDF file, etc))
 
 - **projectname** - any descriptive name for the project
-- **experiment** - contains the experimental files for the project. Eg: showStimulus.m, showStimulus.py
+- **experiment** - contains the experimental files for the project. Eg: showOther.m, showOther.py
 - **data** - contains the behavioral files for the corresponding subject. Eg: experimentalParameters.csv, eyetrackingdata.edf, results.tsv. 
 
 
@@ -74,7 +74,7 @@ You can get the filename convention for the data files [here](https://bids-stand
 
 ## BIDS Folder
 
-This folder contains the converted BIDS data files and other files we want to version control using `Datalad`. Since we are storing the entire dataset in the dataverse, we also store the raw xdf files and the associated stimulus/behavioral files in the dataverse. The folder structure is as follows:
+This folder contains the converted BIDS data files and other files we want to version control using `Datalad`. Since we are storing the entire dataset in the dataverse, we also store the raw xdf files and the associated other/behavioral files in the dataverse. The folder structure is as follows:
 ```
 └── bids
   └──projectname/
@@ -90,7 +90,7 @@ This folder contains the converted BIDS data files and other files we want to ve
                     ├── sub-001_ses-001_task-Duration_run-001_eeg.eeg
                     .........
             └── beh
-                └──behavioral files
+                └──behavioral files (other files)
             └── misc
                 └── experimental files (This needs to stored in zip format)
     └── sourcedata

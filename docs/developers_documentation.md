@@ -5,7 +5,7 @@
 
 LSLAutoBIDS is a Python tool series designed to automate the following tasks sequentially:
 - Convert recorded XDF files to BIDS format
-- Integrate the EEG data with non-EEG data (e.g., behavioral, stimulus) for the complete dataset 
+- Integrate the EEG data with non-EEG data (e.g., behavioral, other) for the complete dataset 
 - Datalad integration for version control for the integrated dataset
 - Upload the dataset to Dataverse 
 - Provide a command-line interface for cloning, configuring, and running the conversion process
@@ -17,7 +17,7 @@ LSLAutoBIDS is a Python tool series designed to automate the following tasks seq
 - DataLad integration for version control
 - Dataverse integration for data sharing
 - Configurable project management
-- Support for stimulus and behavioral data in addition to EEG data
+- Support for behavioral data (non eeg files) in addition to EEG data
 - Comprehensive logging and validation for BIDS compliance
 
 
@@ -87,7 +87,7 @@ The configuration system manages dataversse and project-specific settings using 
 #### 1. Dataverse and Project Root Configuration (`gen_dv_config.py`)
 
 This module generates a global configuration file for Dataverse and project root directories. This is a one-time setup per system.  This file is stored in `~/.config/lslautobids/autobids_config.yaml` and contains:
-- Paths for BIDS, projects, and stimulus directories : This allows users to specify where their eeg data, stimulus data, and converted BIDS data are stored on their system. This paths should be relative to the home/users directory of your system and string format.
+- Paths for BIDS, projects, and project_other directories : This allows users to specify where their eeg data, behavioral data, and converted BIDS data are stored on their system. This paths should be relative to the home/users directory of your system and string format.
 
 - Dataverse connection details: Base URL, API key, and parent dataverse name for uploading datasets. Base URL is the URL of the dataverse server (e.g. https://darus.uni-stuttgart.de), API key is your personal API token for authentication (found in your dataverse account settings), and parent dataverse name is the name of the dataverse under which datasets will be created (this can be found in the URL when you are in the dataverses page just after 'dataverse/'). For example, if the URL is `https://darus.uni-stuttgart.de/dataverse/simtech_pn7_computational_cognitive_science`, then the parent dataverse name is `simtech_pn7_computational_cognitive_science`.
 
@@ -192,7 +192,7 @@ The pipeline is designed to ensure:
 
 2. EEG recordings are converted to BIDS format using MNE and validated against the BIDS standard.
 
-3. Behavioral and experimental metadata (also called stimulus files in general) are included and checked against project expectations.
+3. Behavioral and experimental metadata (also called other files in general in context on this project) are included and checked against project expectations.
 
 4. Project metadata is populated (dataset_description.json). This is required as a part of BIDS standard.
 
@@ -200,7 +200,7 @@ The pipeline is designed to ensure:
 
 #### 1. Entry Point (`bids_process_and_upload()`)
 
-- Reads project configuration (<project_name>_config.toml) to check if a stimulus computer was used. (stimulusFilesUsed: true)
+- Reads project configuration (<project_name>_config.toml) to check if a other computer (non eeg files) was used. (otherFilesUsed: true)
 
 - Iterates over each processed file and extracts identifiers. For example, for a file named `sub-001_ses-001_task-Default_run-001_eeg.xdf`, it extracts:
 
@@ -264,7 +264,7 @@ This function handles the core conversion of a XDF files to BIDS format and cons
     - 0: BIDS Conversion done but validation failure
 
 #### 3. Copy Source Files (`copy_source_files_to_bids()`)
-This function ensures that the original source files (EEG and stimulus/behavioral files) are also a part our dataset. These files can't be directly converted to BIDS format but we give the user the option to include them in the BIDS directory structure in a pseudo-BIDS format for completeness.
+This function ensures that the original source files (EEG and other/behavioral files) are also a part our dataset. These files can't be directly converted to BIDS format but we give the user the option to include them in the BIDS directory structure in a pseudo-BIDS format for completeness.
 
 - Copies the .xdf into the following structure: 
 `<BIDS_ROOT>/sourcedata/sub-XXX/ses-YYY/sub-XXX_ses-YYY_task-Name_run-ZZZ_eeg.xdf`
@@ -273,13 +273,13 @@ This function ensures that the original source files (EEG and stimulus/behaviora
 
 - If a file already exists, logs a message and skips copying.
 
-If stimulusFilesUsed=True in project config file:
+If otherFilesUsed=True in project config file:
 
 1. Behavioral files are copied via `_copy_behavioral_files()`.
 
-    - Validates required files against TOML config (`StimulusFilesInfo`). In this config we add the the extensions of the expected stimulus files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required stimulus files. We also have mandatory labnotebook and participant info files in .tsv format.
+    - Validates required files against TOML config (`OtherFilesInfo`). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also have mandatory labnotebook and participant info files in .tsv format.
     - Renames files to include sub-XXX_ses-YYY_ prefix if missing.
-    - Deletes the other files in the stimulus directory that are not listed in `StimulusFilesInfo` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
+    - Deletes the other files in the project_other directory that are not listed in `OtherFilesInfo` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
 
 2. Experimental files are copied via `_copy_experiment_files().`
 
@@ -288,7 +288,7 @@ If stimulusFilesUsed=True in project config file:
     - Compresses into experiment.tar.gz.
     - Removes the uncompressed folder.
 
-There is a flag in the `lslautobids run` command called `--redo_stim_pc` which when specified, forces overwriting of existing stimulus and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the stimulus/behavioral data that need to be reflected in the BIDS dataset.
+There is a flag in the `lslautobids run` command called `--redo_other_pc` which when specified, forces overwriting of existing other and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the other/behavioral data that need to be reflected in the BIDS dataset.
 
 #### 4. Create Raw XDF (`create_raw_xdf()`)
 This function reads the XDF file and creates an MNE Raw object. It performs the following steps:
@@ -427,5 +427,5 @@ To run the tests, navigate to the `tests/` directory and execute:
 These tests ensure that each component functions as expected and that the overall pipeline works seamlessly. This tests will also be triggered automatically on each push or PR to the main repository using GitHub Actions.
 
 ## Miscellianeous Points
-- To the current date, only EEG data is supported for BIDS conversion. Support for other modalities like Eye-tracking, etc,. in the BIDS format is not yet supported. Hence, LSLAutoBIDS relies on semi-BIDS data structures for those data and use user-definable regular expressions to match expected data-files. A future planned feature is to provide users more flexibility, especially in naming / sorting non-standard files. Currently, the user can only specify the expected file extensions for stimulus/behavioral data and is automatically renamed to include sub-XXX_ses-YYY_ prefix if missing and also copied to pseudo-BIDS folder structure like `<BIDS_ROOT>/sourcedata/sub-XXX/ses-YYY/`, `<BIDS_ROOT>/misc/experiment.tar.gz` etc,.
+- To the current date, only EEG data is supported for BIDS conversion. Support for other modalities like Eye-tracking, etc,. in the BIDS format is not yet supported. Hence, LSLAutoBIDS relies on semi-BIDS data structures for those data and use user-definable regular expressions to match expected data-files. A future planned feature is to provide users more flexibility, especially in naming / sorting non-standard files. Currently, the user can only specify the expected file extensions for other/behavioral data and is automatically renamed to include sub-XXX_ses-YYY_ prefix if missing and also copied to pseudo-BIDS folder structure like `<BIDS_ROOT>/sourcedata/sub-XXX/ses-YYY/`, `<BIDS_ROOT>/misc/experiment.tar.gz` etc,.
 

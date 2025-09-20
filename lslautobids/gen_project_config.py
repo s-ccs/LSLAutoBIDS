@@ -19,9 +19,9 @@ toml_content = """
     subject = ["Medicine, Health and Life Sciences","Engineering"] # List of subjects related to the dataset required for dataverse metadata
     pid = '12345' # Persistent identifier for the dataset, e.g. DOI or Handle. This will be updated automatically after creating the dataset in dataverse.
 
-  [StimulusFilesInfo]
-    stimulusFilesUsed = true # Set to true if you want to include stimulus files (experiment files, other modalities like eye tracking) in the dataset, else false
-    expectedStimFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"] # List of expected stimulus file extensions. Only the expected files will be copied to the beh folder in BIDS dataset. Give an empty list [] if you don't want any stimulus files to be in the dataset. In this case only experiment files will be zipeed and copied to the misc folder in BIDS dataset.
+  [OtherFilesInfo]
+    otherFilesUsed = true # Set to true if you want to include other (non-eeg-files) files (experiment files, other modalities like eye tracking) in the dataset, else false
+    expectedOtherFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"] # List of expected other file extensions. Only the expected files will be copied to the beh folder in BIDS dataset. Give an empty list [] if you don't want any other files to be in the dataset. In this case only experiment files will be zipeed and copied to the misc folder in BIDS dataset.
   
   [SubjectInfo]
     ignoreSubjects = ['sub-777'] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.

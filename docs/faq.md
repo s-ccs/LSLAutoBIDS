@@ -26,7 +26,7 @@ __5. Who controls the data upload process?__
 - There is a user prompt asking the experimenter if they want to upload the subject recording immediately when we run the `lslautobids run`  command. We can also use the `--yes` flag of the `lslautobids run` command to force yes user input for all the user prompts throughout the run.
 
 __6. Can you upload a subset of files ?__
-- Yes, we have configurations in the project_config.toml file where the experimenter can specify to exclude certain subjects, certain tasks, and only exclude private stimulus files.
+- Yes, we have configurations in the project_config.toml file where the experimenter can specify to exclude certain subjects, certain tasks, and only exclude private project_other files.
 
 __7. Can you upload to any other portals apart from Dataverse?__ 
 - It is not yet implemented as a choice but rather hard coded, but as long as a dataverse sibling is supported, many portals could be used (dataverse, openneuro, aws,...). Currently, on Dataverse as a sibling is supported by our tool.
