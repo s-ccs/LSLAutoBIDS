@@ -5,7 +5,7 @@ info = """
 #    For example, if your home directory is /home/username and you have a /home/username/data/bids directory where you have the 
 #    BIDS data, then the BIDS_ROOT path will be 'data/bids/'
 #    PROJECT_ROOT: This is the path to the directory containing xdf files
-#    PROJECT_STIM_ROOT: This is the path to the directory containing the stimulus files
+#    PROJECT_OTHER_ROOT: This is the path to the directory containing the non-eeg files
 #    BASE_URL: The base URL for the dataverse service.
 #    API_KEY: Your API token for authentication - you can get it from the dataverse service.
 #    PARENT_DATAVERSE_NAME: The name of the parent dataverse under which the datasets will be created. It is usually in the url of the dataverse.
@@ -24,7 +24,7 @@ template_data = {
        
     "BIDS_ROOT": "# relative to home: workspace/projects/LSLAutoBIDS/data/bids/",       
     "PROJECT_ROOT" : "# relative to home: workspace/projects/LSLAutoBIDS/data/projects/", 
-    "PROJECT_STIM_ROOT" : "# path relative to home: workspace/projects/LSLAutoBIDS/data/project_stimulus/", 
+    "PROJECT_OTHER_ROOT" : "# path relative to home: workspace/projects/LSLAutoBIDS/data/project_other/", 
     "BASE_URL": "https://darus.uni-stuttgart.de",  # The base URL for the service.
     "API_KEY": "# Paste your dataverse API token here",    # Your API token for authentication.
     "PARENT_DATAVERSE_NAME": "simtech_pn7_computational_cognitive_science"     # The name of the program or service.
