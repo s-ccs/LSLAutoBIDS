@@ -335,7 +335,7 @@ class BIDS:
         # get the anonymization number from the toml file
         toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
         data = read_toml_file(toml_path)
-        anonymization_number = data["SubjectInfo"]["anonymizationNumber"]
+        anonymization_number = data["BidsConfig"]["anonymizationNumber"]
 
         # Write the raw data to BIDS in EDF format
         # BrainVision format weird memory issues

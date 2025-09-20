@@ -49,14 +49,15 @@ def process_new_files(file_status: List[str],logger) -> None:
     toml_path = os.path.join(project_path, project_name + '_config.toml')
     data = read_toml_file(toml_path)
    
-    existing_tasks = set(data.get('SubjectInfo', {}).get('allTasks', []))
+    # existing_tasks = set(data.get('SubjectInfo', {}).get('allTasks', []))
 
-    # Add only new tasks
-    updated_tasks = list(existing_tasks.union(tasks))
+    # # Add only new tasks
+    # updated_tasks = list(existing_tasks.union(tasks))
 
-    # Save updated task list back to the config
-    data['SubjectInfo']['allTasks'] = updated_tasks
-    write_toml_file(toml_path, data)
+    # # Save updated task list back to the config
+    # data['FileSelection']['allTasks'] = updated_tasks
+    
+    # write_toml_file(toml_path, data)
 
     # User prompt asking if we want to proceed to convert and upload
     if cli_args.yes:
@@ -143,11 +144,11 @@ def check_for_new_data(logger) -> None:
     toml_path = os.path.join(project_path, cli_args.project_name + '_config.toml')
     data = read_toml_file(toml_path)
 
-    ignore_subjects = data["SubjectInfo"]["ignoreSubjects"]
+    ignore_subjects = data["FileSelection"]["ignoreSubjects"]
 
     logger.info("Ignored subjects: %s", ignore_subjects)
     file_status = check_for_new_files(project_path, ignore_subjects, logger)
-    ignore_tasks = data["SubjectInfo"]["excludeTasks"]
+    ignore_tasks = data["FileSelection"]["excludeTasks"]
 
     filtered_files = [
     f for f in file_status

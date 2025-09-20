@@ -23,13 +23,14 @@ toml_content = """
     otherFilesUsed = true # Set to true if you want to include other (non-eeg-files) files (experiment files, other modalities like eye tracking) in the dataset, else false
     expectedOtherFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"] # List of expected other file extensions. Only the expected files will be copied to the beh folder in BIDS dataset. Give an empty list [] if you don't want any other files to be in the dataset. In this case only experiment files will be zipeed and copied to the misc folder in BIDS dataset.
   
-  [SubjectInfo]
+  [FileSelection]
     ignoreSubjects = ['sub-777'] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.
-    allTasks = [] # List of all possible tasks in the dataset. This will automatically be updated when new tasks are found during the conversion.
     excludeTasks = ['sampletask'] # List of tasks to exclude from the conversion for all subjects - Leave empty to include all tasks. Changing this value will not delete already existing tasks.
-    anonymizationNumber = 123 # This is an anomization number that will be added to the recording date of all subjects.
     
-  """
+  [BidsConfig]
+    anonymizationNumber = 123 # This is an anomization number that will be added to the recording date of all subjects.
+
+   """
 
 
 
