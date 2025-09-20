@@ -96,7 +96,7 @@ In this example, we will see how to use the LSLAutoBIDS package to:
 
 ### How to run the example?
 
-1. Check if the toml configuration file `LSLAutoBIDS/data/projects/test-project/test-project_config.toml` is filled in with the correct details, specially the otherFilesUsed and expectedOtherFiles fields. For this example we are using eye tracking data as a behavioral file, thus the otherFilesUsed field should be set to true and the expectedOtherFiles field should contain the expected other files (non-eeg files) extensions.
+1. Check if the toml configuration file `LSLAutoBIDS/data/projects/test-project/test-project_config.toml` is filled in with the correct details, specially the `otherFilesUsed` and `expectedOtherFiles` fields. For this example we are using eye tracking data as a behavioral file, thus the otherFilesUsed field should be set to true and the `expectedOtherFiles` field should contain the expected other files (non-eeg files) extensions.
 1. Check if the toml configuration file `LSLAutoBIDS/sample_data/projects/test-project/test-project_config.toml` is filled in with the correct details, specially the OtherFilesUsed and expectedOtherFiles fields. For this example, we are using eye tracking data as a behavioral file, thus the otherFilesUsed field should be set to true and the expectedFiles field should contain the expected other file extensions.
 ```toml
   [OtherFilesInfo]
