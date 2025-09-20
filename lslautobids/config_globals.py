@@ -12,7 +12,7 @@ class CLIArgs:
             "yes": False,
             "redo_bids_conversion": False,
             "reupload": False,
-            "redo_stim_pc": False,
+            "redo_other_pc": False,
         }
 
     def init(self, args):
@@ -63,10 +63,10 @@ config = parse_yaml_file(config_file)
 if config:
     project_root = os.path.join(os.path.expanduser("~"), config["PROJECT_ROOT"])
     bids_root = os.path.join(os.path.expanduser("~"), config["BIDS_ROOT"])
-    project_stim_root = os.path.join(os.path.expanduser("~"), config["PROJECT_STIM_ROOT"])
+    project_other_root = os.path.join(os.path.expanduser("~"), config["PROJECT_OTHER_ROOT"])
     api_key = config.get("API_KEY", "")
     dataverse_base_url = config.get("BASE_URL", "")
     parent_dataverse_name = config.get("PARENT_DATAVERSE_NAME", "")
 else:
-    project_root = bids_root = project_stim_root = api_key = dataverse_base_url = parent_dataverse_name = None
+    project_root = bids_root = project_other_root = api_key = dataverse_base_url = parent_dataverse_name = None
 

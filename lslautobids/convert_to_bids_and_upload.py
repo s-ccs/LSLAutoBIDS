@@ -14,7 +14,7 @@ from lslautobids.dataverse_dataset_create import create_dataverse
 from lslautobids.datalad_create import create_and_add_files_to_datalad_dataset
 from lslautobids.link_datalad_dataverse import add_sibling_dataverse_in_folder
 from lslautobids.upload_to_dataverse import push_files_to_dataverse
-from lslautobids.config_globals import cli_args, project_root, bids_root, project_stim_root
+from lslautobids.config_globals import cli_args, project_root, bids_root, project_other_root
 from lslautobids.utils import get_user_input, read_toml_file
 import json
 
@@ -42,16 +42,16 @@ class BIDS:
         return stream_names,streams
 
 
-    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,stim, logger):
+    def copy_source_files_to_bids(self,xdf_file,subject_id,session_id,other, logger):
         
         """
-        Copy raw .xdf and optionally stimulus data to BIDS folder.
+        Copy raw .xdf and optionally other (non-eeg) data to BIDS folder.
 
         Args:
             xdf_file (str): Full path to the .xdf file.
             subject_id (str): Subject identifier.
             session_id (str): Session identifier.
-            stim (bool): Whether to copy stimulus/behavioral files as well.
+            other (bool): Whether to copy other/behavioral files as well.
         """
         ### COPY THE SOURCE FILES TO BIDS (recorded xdf file) ###
         project_name = cli_args.project_name
@@ -79,7 +79,7 @@ class BIDS:
             logger.info(f"Copied {xdf_file} to {dest_file}")
 
         
-        if stim:
+        if other:
             ### COPY THE BEHAVIOURAL FILES TO BIDS ###
             self._copy_behavioral_files(file_name_without_ext,subject_id, session_id, logger)
 
@@ -102,7 +102,7 @@ class BIDS:
         project_name = cli_args.project_name
         logger.info("Copying the behavioral files to BIDS...")
         # get the source path
-        behavioural_path = os.path.join(project_stim_root,project_name,'data', subject_id,session_id,'beh')
+        behavioural_path = os.path.join(project_other_root,project_name,'data', subject_id,session_id,'beh')
         # get the destination path
         dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
         #check if the directory exists
@@ -135,7 +135,7 @@ class BIDS:
             processed_files.append(renamed_file)
             dest_file = os.path.join(dest_dir, renamed_file)
         
-            if cli_args.redo_stim_pc:
+            if cli_args.redo_other_pc:
                 logger.info(f"Copying (overwriting if needed) {file} to {dest_file}")
                 shutil.copy(original_path, dest_file)
             else:
@@ -174,7 +174,7 @@ class BIDS:
         toml_path = os.path.join(project_root, cli_args.project_name, cli_args.project_name + '_config.toml')
         data = read_toml_file(toml_path)
 
-        required_files = data["ExpectedStimulusFiles"]["expectedFiles"]
+        required_files = data["OtherFilesInfo"]["expectedOtherFiles"]
 
 
         for required_file in required_files:
@@ -204,15 +204,15 @@ class BIDS:
 
         if os.path.exists(zip_file_path):
             logger.info("Experiment tar.gz already exists. Skipping.")
-            if not cli_args.redo_stim_pc:
+            if not cli_args.redo_other_pc:
                 logger.info("Skipping experiment file copy ")
                 return
             else:
-                logger.info("Overwriting existing experiment archive due to --redo_stim_pc flag.")
+                logger.info("Overwriting existing experiment archive due to --redo_other_pc flag.")
         
 
         # get the source path
-        experiments_path = os.path.join(project_stim_root,project_name,'experiment')
+        experiments_path = os.path.join(project_other_root,project_name,'experiment')
         # get the destination path
         dest_dir = os.path.join(bids_root , project_name, subject_id,session_id, "misc",'experiment')
             
@@ -286,7 +286,7 @@ class BIDS:
 
         return raw
 
-    def convert_to_bids(self, xdf_path,subject_id,session_id, run_id, task_id,stim, logger):
+    def convert_to_bids(self, xdf_path,subject_id,session_id, run_id, task_id,other, logger):
 
         """
         Convert an XDF file to BIDS format.
@@ -295,7 +295,7 @@ class BIDS:
             xdf_path (str): Path to the .xdf file.
             subject_id (str): Subject identifier.
             session_id (str): Session identifier.
-            stim (bool): Whether to copy stimulus/behavioral files as well.
+            other (bool): Whether to copy other/behavioral files as well.
 
         Returns:
             int: 1 if conversion is successful, 2 if the file already exists, 0 if validation fails.
@@ -304,7 +304,7 @@ class BIDS:
         logger.info("Converting to BIDS...")
 
         # Copy the experiment, behavioural and raw recorded files to BIDS
-        self.copy_source_files_to_bids(xdf_path,subject_id,session_id,stim, logger)
+        self.copy_source_files_to_bids(xdf_path,subject_id,session_id,other, logger)
 
         # Get the bidspath for the raw file
         bids_path = BIDSPath(subject=subject_id[-3:], 
@@ -335,7 +335,7 @@ class BIDS:
         # get the anonymization number from the toml file
         toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
         data = read_toml_file(toml_path)
-        anonymization_number = data["Subject"]["anonymization_number"]
+        anonymization_number = data["BidsConfig"]["anonymizationNumber"]
 
         # Write the raw data to BIDS in EDF format
         # BrainVision format weird memory issues
@@ -409,9 +409,9 @@ class BIDS:
 
         make_dataset_description(
             path = dataset_description_path,
-            name = data["Dataset"]["title"],
-            data_license = data["Dataset"]["License"],
-            authors = data["Authors"]["authors"],
+            name = data["DataverseDataset"]["title"],
+            data_license = data["DataverseDataset"]["license"],
+            authors = data["AuthorsInfo"]["authors"],
             overwrite= True, #necessary to overwrite the existing file created by mne_bids.write_raw_bids()
         )
 
@@ -430,10 +430,12 @@ def bids_process_and_upload(processed_files,logger):
     toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
     data = read_toml_file(toml_path)
-    stim = data["Computers"]["stimulusComputerUsed"]     
+    other = data["OtherFilesInfo"]["expectedOtherFiles"]
+
+    logger.info(f"OtherPC used : {other}")     
 
     project_path = os.path.join(project_root,project_name)
-    logger.info("Initializing BIDS conversion and upload process...")
+    logger.info("Initializing BIDS conversion and upload process")
     # Initialize BIDS object
     bids = BIDS()
     for file in processed_files:
@@ -445,7 +447,7 @@ def bids_process_and_upload(processed_files,logger):
         logger.info(f"Currently processing {subject_id}, {session_id}, {run_id} of task : {task_id}") 
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
 
-        val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, stim, logger)   
+        val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, other, logger)   
 
         if val == 1:
                 logger.info("BIDS Conversion Successful")      

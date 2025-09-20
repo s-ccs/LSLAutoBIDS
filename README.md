@@ -20,7 +20,9 @@ This package automates the conversion of EEG recordings (xdf files) to BIDS (Bra
 git clone https://github.com/s-ccs/LSLAutoBIDS.git
 ```
 ### **Step 2: Install the package**
+Go to the cloned directory and install the package using pip.
 ```
+cd LSLAutoBIDS
 pip3 install lslautobids
 ```
 It is advised to install the package in a separate environment (e.g. using `conda` or `virtualenv`).
@@ -39,13 +41,13 @@ The package requires the recorded XDF data to be organized in a specific directo
 
 
 - The `projects` root location is the root directory where all the eeg raw recordings (say `.xdf` files) are stored e.g. `projects/sub-A/ses-001/eeg/sub-A_ses-001_task-foo.xdf`.
-- The (optional) `project_stimulus` root location is the directory where the experiments (e.g `.py`, `.oxexp`) and behavioral files (e.g. eye-tracking recordings, labnotebook, participant forms, etc ) are stored.
+- The (optional) `project_other` root location is the directory where the experiments (e.g `.py`, `.oxexp`) and behavioral files (e.g. eye-tracking recordings, labnotebook, participant forms, etc ) are stored.
 - The `bids` root location is the directory where the converted BIDS data is stored, along with source data and code files which we want to version control using `Datalad`.
 
 > [!IMPORTANT]
 > Please follow the BIDS data organization guidelines for storing the neuroimaging data for running this package. The BIDS conversion guidelines are based on the recommended directory/files structure. You only can change the location of the root directories according to your preference. You must also strictly follow the naming convention for the project and subject subdirectories.
 
-Here  you will find the recommended directory structure for storing the project data (recorded, stimulus and converted data) in the [data_organization](docs/data_organization.md) file.
+Here  you will find the recommended directory structure for storing the project data (recorded, other and converted data) in the [data_organization](docs/data_organization.md) file.
 
 
 ### **Step 4: Generate the configuration files**

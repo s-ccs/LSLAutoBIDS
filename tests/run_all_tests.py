@@ -26,4 +26,4 @@ for folder in os.listdir(TESTCASES_DIR):
         print(f"Running tests in: {folder} which has folder path {folder_path}")
         subprocess.run(["pytest", folder_path])
     else:
-        print(f"Skipping: {folder} (no tests or data)\n")
+        print(f"Skipping: {folder} (no tests file or data). Recheck if the test files are in place or data folder is missing.")

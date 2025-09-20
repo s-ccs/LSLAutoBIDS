@@ -5,7 +5,7 @@
 
 LSLAutoBIDS is a Python tool series designed to automate the following tasks sequentially:
 - Convert recorded XDF files to BIDS format
-- Integrate the EEG data with non-EEG data (e.g., behavioral, stimulus) for the complete dataset 
+- Integrate the EEG data with non-EEG data (e.g., behavioral, other) for the complete dataset 
 - Datalad integration for version control for the integrated dataset
 - Upload the dataset to Dataverse 
 - Provide a command-line interface for cloning, configuring, and running the conversion process
@@ -17,7 +17,7 @@ LSLAutoBIDS is a Python tool series designed to automate the following tasks seq
 - DataLad integration for version control
 - Dataverse integration for data sharing
 - Configurable project management
-- Support for stimulus and behavioral data in addition to EEG data
+- Support for behavioral data (non eeg files) in addition to EEG data
 - Comprehensive logging and validation for BIDS compliance
 
 
@@ -55,6 +55,9 @@ LSLAutoBIDS is a Python tool series designed to automate the following tasks seq
     - [2. Logging Configuration (`config_logger.py`)](#2-logging-configuration-config_loggerpy)
     - [3. Utility Functions (`utils.py`)](#3-utility-functions-utilspy)
 
+- [Testing](#testing)
+  - [Running Tests](#running-tests)
+
 
 ## Architecture - TODO
 
@@ -84,7 +87,7 @@ The configuration system manages dataversse and project-specific settings using 
 #### 1. Dataverse and Project Root Configuration (`gen_dv_config.py`)
 
 This module generates a global configuration file for Dataverse and project root directories. This is a one-time setup per system.  This file is stored in `~/.config/lslautobids/autobids_config.yaml` and contains:
-- Paths for BIDS, projects, and stimulus directories : This allows users to specify where their eeg data, stimulus data, and converted BIDS data are stored on their system. This paths should be relative to the home/users directory of your system and string format.
+- Paths for BIDS, projects, and project_other directories : This allows users to specify where their eeg data, behavioral data, and converted BIDS data are stored on their system. This paths should be relative to the home/users directory of your system and string format.
 
 - Dataverse connection details: Base URL, API key, and parent dataverse name for uploading datasets. Base URL is the URL of the dataverse server (e.g. https://darus.uni-stuttgart.de), API key is your personal API token for authentication (found in your dataverse account settings), and parent dataverse name is the name of the dataverse under which datasets will be created (this can be found in the URL when you are in the dataverses page just after 'dataverse/'). For example, if the URL is `https://darus.uni-stuttgart.de/dataverse/simtech_pn7_computational_cognitive_science`, then the parent dataverse name is `simtech_pn7_computational_cognitive_science`.
 
@@ -189,7 +192,7 @@ The pipeline is designed to ensure:
 
 2. EEG recordings are converted to BIDS format using MNE and validated against the BIDS standard.
 
-3. Behavioral and experimental metadata (also called stimulus files in general) are included and checked against project expectations.
+3. Behavioral and experimental metadata (also called other files in general in context on this project) are included and checked against project expectations.
 
 4. Project metadata is populated (dataset_description.json). This is required as a part of BIDS standard.
 
@@ -197,7 +200,7 @@ The pipeline is designed to ensure:
 
 #### 1. Entry Point (`bids_process_and_upload()`)
 
-- Reads project configuration (<project_name>_config.toml) to check if a stimulus computer was used. (stimulusComputerUsed: true)
+- Reads project configuration (<project_name>_config.toml) to check if a other computer (non eeg files) was used. (otherFilesUsed: true)
 
 - Iterates over each processed file and extracts identifiers. For example, for a file named `sub-001_ses-001_task-Default_run-001_eeg.xdf`, it extracts:
 
@@ -246,7 +249,7 @@ This function handles the core conversion of a XDF files to BIDS format and cons
 
     - Load `.xdf` with `create_raw_xdf()`. (See section).
 
-    - Apply anonymization (daysback_min + anonymization_number from project TOML config).
+    - Apply anonymization (daysback_min + anonymizationNumber from project TOML config).
 
     - Write EEG data into BIDS folder via `write_raw_bids().`
 
@@ -261,7 +264,7 @@ This function handles the core conversion of a XDF files to BIDS format and cons
     - 0: BIDS Conversion done but validation failure
 
 #### 3. Copy Source Files (`copy_source_files_to_bids()`)
-This function ensures that the original source files (EEG and stimulus/behavioral files) are also a part our dataset. These files can't be directly converted to BIDS format but we give the user the option to include them in the BIDS directory structure in a pseudo-BIDS format for completeness.
+This function ensures that the original source files (EEG and other/behavioral files) are also a part our dataset. These files can't be directly converted to BIDS format but we give the user the option to include them in the BIDS directory structure in a pseudo-BIDS format for completeness.
 
 - Copies the .xdf into the following structure: 
 `<BIDS_ROOT>/sourcedata/sub-XXX/ses-YYY/sub-XXX_ses-YYY_task-Name_run-ZZZ_eeg.xdf`
@@ -270,13 +273,13 @@ This function ensures that the original source files (EEG and stimulus/behaviora
 
 - If a file already exists, logs a message and skips copying.
 
-If stimulusComputerUsed=True in project config file:
+If otherFilesUsed=True in project config file:
 
 1. Behavioral files are copied via `_copy_behavioral_files()`.
 
-    - Validates required files against TOML config (`ExpectedStimulusFiles`). In this config we add the the extensions of the expected stimulus files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required stimulus files. We also have mandatory labnotebook and participant info files in .tsv format.
+    - Validates required files against TOML config (`OtherFilesInfo`). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also have mandatory labnotebook and participant info files in .tsv format.
     - Renames files to include sub-XXX_ses-YYY_ prefix if missing.
-    - Deletes the other files in the stimulus directory that are not listed in `ExpectedStimulusFiles` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
+    - Deletes the other files in the project_other directory that are not listed in `OtherFilesInfo` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
 
 2. Experimental files are copied via `_copy_experiment_files().`
 
@@ -285,7 +288,7 @@ If stimulusComputerUsed=True in project config file:
     - Compresses into experiment.tar.gz.
     - Removes the uncompressed folder.
 
-There is a flag in the `lslautobids run` command called `--redo_stim_pc` which when specified, forces overwriting of existing stimulus and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the stimulus/behavioral data that need to be reflected in the BIDS dataset.
+There is a flag in the `lslautobids run` command called `--redo_other_pc` which when specified, forces overwriting of existing other and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the other/behavioral data that need to be reflected in the BIDS dataset.
 
 #### 4. Create Raw XDF (`create_raw_xdf()`)
 This function reads the XDF file and creates an MNE Raw object. It performs the following steps:
@@ -364,7 +367,7 @@ This module handles the creation of a new dataset in Dataverse using the `pyData
 #### 2. Linking DataLad to Dataverse (`link_datalad_dataverse.py`)
 This module links the local DataLad dataset to the remote Dataverse dataset as a sibling. The function performs the following steps:
 1. It first checks if the Dataverse is already created in the previous runs or it is just created in the current run (flag==0). If flag==0, it proceeds to link the DataLad dataset to Dataverse.
-2. It runs the command `datalad add-sibling-dataverse dataverse_base_url doi_id`. This command adds the Dataverse as a sibling to the local DataLad dataset, allowing for synchronization and data management between the two. For lslautobids, we currently only allow to deposit data to Dataverse. In future version, we shall also add user controlled options for adding other siblings like github, gitlab, etc.
+2. It runs the command `datalad add-sibling-dataverse dataverse_base_url doi_id`. This command adds the Dataverse as a sibling to the local DataLad dataset, allowing for synchronization and data management between the two. For lslautobids, we currently only allow to deposit data to Dataverse. In future version, we shall also add user controlled options for adding other siblings like github, gitlab, OpenNeuro, AWS etc.
 
 We chose Dataverse as it serves as both a repository and a data sharing platform, making it suitable for our needs. It also integrates well with DataLad and allows sharing datasets with collaborators or the public.
 
@@ -401,4 +404,28 @@ This module contains various utility functions used across the application.
 2. `read_toml_file` : Reads and parses a TOML file, returning its contents as a dictionary.
 3. `write_toml_file` : Writes a dictionary to a TOML file.
 
+
+## Testing
+
+The testing framework uses `pytest` to validate the functionality of the core components.
+
+- The tests are located in the `tests/` directory and cover various modules including configuration generation, file processing, BIDS conversion, DataLad integration, and Dataverse interaction. (Work in progress)
+
+- The test directory contains :
+    - `test_utils` : Directory containing utility functions needed across multiple test files.
+    - `testcases` : Directory containing all the tests in a in a directory structure - `test_<test_name>`.
+    - Each `test_<test_name>` directory contains a `data` folder with sample data for that test and a `test_<test_name>.py` file with the actual test cases.
+    - `run_all_tests.py` : A script to run all the tests in the `testcases` directory sequentially.
+
+Tests will be added continuously as new features are added and existing features are updated.
+
+### Running Tests
+
+To run the tests, navigate to the `tests/` directory and execute:
+`python tests/run_all_tests.py`
+
+These tests ensure that each component functions as expected and that the overall pipeline works seamlessly. This tests will also be triggered automatically on each push or PR to the main repository using GitHub Actions.
+
+## Miscellianeous Points
+- To the current date, only EEG data is supported for BIDS conversion. Support for other modalities like Eye-tracking, etc,. in the BIDS format is not yet supported. Hence, LSLAutoBIDS relies on semi-BIDS data structures for those data and use user-definable regular expressions to match expected data-files. A future planned feature is to provide users more flexibility, especially in naming / sorting non-standard files. Currently, the user can only specify the expected file extensions for other/behavioral data and is automatically renamed to include sub-XXX_ses-YYY_ prefix if missing and also copied to pseudo-BIDS folder structure like `<BIDS_ROOT>/sourcedata/sub-XXX/ses-YYY/`, `<BIDS_ROOT>/misc/experiment.tar.gz` etc,.
 

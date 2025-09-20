@@ -21,7 +21,7 @@ class DummyCLIArgs:
         self.project_name = "test-project"
         self.yes = True
         self.redo_bids_conversion = False 
-        self.redo_stim_pc = False   
+        self.redo_other_pc = False   
     def init(self, args):
         # you can store the args or ignore
         pass
@@ -48,7 +48,7 @@ def setup_project(monkeypatch):
     config_data = {
         "PROJECT_ROOT": paths["project_root"],
         "BIDS_ROOT": paths["bids_root"],
-        "PROJECT_STIM_ROOT": paths["project_stim_root"],
+        "PROJECT_OTHER_ROOT": paths["project_other_root"],
     }
     
     with open(config_file_test, "w") as f:
@@ -59,7 +59,7 @@ def setup_project(monkeypatch):
     # Patch global paths and CLI args
     monkeypatch.setattr("lslautobids.config_globals.project_root", paths["project_root"])
     monkeypatch.setattr("lslautobids.config_globals.bids_root", paths["bids_root"])
-    monkeypatch.setattr("lslautobids.config_globals.project_stim_root", paths["project_stim_root"])
+    monkeypatch.setattr("lslautobids.config_globals.project_other_root", paths["project_other_root"])
     monkeypatch.setattr("lslautobids.config_globals.cli_args", dummy_cli_args)
     monkeypatch.setattr("lslautobids.config_globals.config_file", config_file_test)
 

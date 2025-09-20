@@ -7,37 +7,30 @@ import yaml
 toml_content = """
   # This is the project configuration file - This configuration can be customized for each project
   
-  [Authors]
-    authors = "John Doe, Lina Doe"
-    affiliation = "University of Stuttgart, Germany"
+  [AuthorsInfo]
+    authors = "John Doe, Lina Doe" # List of authors separated by commas
+    affiliation = "University of Stuttgart, University of Stuttgart" # Affiliation of the authors in the same order as authors
+    email = "john@gmail.com" # Contact email of the authors in the same order as authors
   
-  [AuthorsContact]
-    email = "john@gmail.com"
+  [DataverseDataset]
+    title = "Convert XDF to BIDS" # Title of the  Dataverse dataset. This gets updated automatically by the project name.
+    datasetDescription = "This is a test project to set up the pipeline to convert XDF to BIDS." # Description of the dataset. This description will appear in the dataset.json file which then eventually gets displayed in the dataverse metadata
+    license = "MIT License" # License for the dataset, e.g. "CC0", "CC-BY-4.0", "ODC-By-1.0", "PDDL-1.0", "ODC-PDDL-1.0", "MIT License"
+    subject = ["Medicine, Health and Life Sciences","Engineering"] # List of subjects related to the dataset required for dataverse metadata
+    pid = '' # Persistent identifier for the dataset, e.g. DOI or Handle. This will be updated automatically after creating the dataset in dataverse.
+
+  [OtherFilesInfo]
+    otherFilesUsed = true # Set to true if you want to include other (non-eeg-files) files (experiment files, other modalities like eye tracking) in the dataset, else false
+    expectedOtherFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"] # List of expected other file extensions. Only the expected files will be copied to the beh folder in BIDS dataset. Give an empty list [] if you don't want any other files to be in the dataset. In this case only experiment files will be zipeed and copied to the misc folder in BIDS dataset.
   
-  [Dataset]
-    title = "Convert XDF to BIDS"
-    dataset_description = "This is a test project to set up the pipeline to convert XDF to BIDS."
-    License = "MIT License"
+  [FileSelection]
+    ignoreSubjects = ['sub-777'] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.
+    excludeTasks = ['sampletask'] # List of tasks to exclude from the conversion for all subjects - Leave empty to include all tasks. Changing this value will not delete already existing tasks.
+    
+  [BidsConfig]
+    anonymizationNumber = 123 # This is an anomization number that will be added to the recording date of all subjects.
 
-  [Computers]
-    stimulusComputerUsed = true
-
-  [ExpectedStimulusFiles]
-    expectedFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
-
-  [IgnoreSubjects]
-    ignore_subjects = [] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.
-
-  [Subject]
-    subject = ["Medicine, Health and Life Sciences","Engineering"]
-    anonymization_number = 123
-
-  [Tasks]
-    exclude_tasks = [] # List of tasks to exclude from the conversion
-  
-  [Dataverse]
-    pid = '12345'
-  """
+   """
 
 
 

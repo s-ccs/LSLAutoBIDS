@@ -22,10 +22,10 @@ datalad-installer git-annex
 
 3. Download the dummy dataset for testing in the LSLAutoBIDS root directory - ([tutorial_sample_dataset](https://files.de-1.osf.io/v1/resources/wz7g9/providers/osfstorage/68c3c636e33eca3b0feffa2c/?zip=))
 
-The dataset has a sample project called "test-project" which contains an EEG recording file in the projects directory, a sample eyetracking recording in the `project_stimulus/data` directory, and a dummy experimental code file in the `project_stimulus/experiment` directory.
+The dataset has a sample project called "test-project" which contains an EEG recording file in the projects directory, a sample eyetracking recording in the `project_other/data` directory, and a dummy experimental code file in the `project_other/experiment` directory.
 ```
 sample_data
-└── project_stimulus 
+└── project_other
   └── test-project
     ├── data
       └── sub-999
@@ -61,7 +61,7 @@ Configuration file template:
 ```yaml
     "BIDS_ROOT": "# relative to home/users directory: LSLAutoBIDS/sample_data/bids/",       
     "PROJECT_ROOT" : "# relative to home/users: LSLAutoBIDS/sample_data/projects/", 
-    "PROJECT_STIM_ROOT" : "# path relative to home/users: LSLAutoBIDS/sample_data/project_stimulus/", 
+    "PROJECT_OTHER_ROOT" : "# path relative to home/users: LSLAutoBIDS/sample_data/project_other/", 
     "BASE_URL": "https://darus.uni-stuttgart.de",  # The base URL for the service.
     "API_KEY": "# Paste your dataverse API token here", # Your API token for authentication.
     "PARENT_DATAVERSE_NAME": "simtech_pn7_computational_cognitive_science" # The name of the dataverse to which datasets will be uploaded. When you in the dataverses page , you can see this name in the URL after 'dataverse/'.
@@ -77,7 +77,7 @@ lslautobids gen-proj-config --project test-project
 
 This will create a test-project_config.toml file in the project root directory. 
 
-> [!NOTE]: _For the rest of the tutorial, we are assuming that we place the downloaded sample_data in the root of the cloned LSLAutoBIDS repository and `LSLAutoBIDS` is cloned in the `home/users/` folder. In this case, the projects root will be `LSLAutoBIDS/sample_data/projects/` and so on for project_stimulus and bids._
+> [!NOTE]: _For the rest of the tutorial, we are assuming that we place the downloaded sample_data in the root of the cloned LSLAutoBIDS repository and `LSLAutoBIDS` is cloned in the `home/users/` folder. In this case, the projects root will be `LSLAutoBIDS/sample_data/projects/` and so on for project_other and bids._
 
 
 Fill in the details in the configuration file `LSLAutoBIDS/sample_data/projects/test-project/test-project_config.toml` file.
@@ -95,13 +95,15 @@ In this example, we will see how to use the LSLAutoBIDS package to:
 4. Upload the dataset to a Dataverse repository for public access.
 
 ### How to run the example?
-1. Check if the toml configuration file `LSLAutoBIDS/sample_data/projects/test-project/test-project_config.toml` is filled in with the correct details, specially the stimulusComputerUsed and expectedFiles fields. For this example, we are using eye tracking data as a behavioral file, thus the stimulusComputerUsed field should be set to true and the expectedFiles field should contain the expected stimulus file extensions.
-```toml
-  [Computers]
-    stimulusComputerUsed = true
 
-  [ExpectedStimulusFiles]
-    expectedFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
+1. Check if the toml configuration file `LSLAutoBIDS/data/projects/test-project/test-project_config.toml` is filled in with the correct details, specially the `otherFilesUsed` and `expectedOtherFiles` fields. For this example we are using eye tracking data as a behavioral file, thus the otherFilesUsed field should be set to true and the `expectedOtherFiles` field should contain the expected other files (non-eeg files) extensions.
+1. Check if the toml configuration file `LSLAutoBIDS/sample_data/projects/test-project/test-project_config.toml` is filled in with the correct details, specially the OtherFilesUsed and expectedOtherFiles fields. For this example, we are using eye tracking data as a behavioral file, thus the otherFilesUsed field should be set to true and the expectedFiles field should contain the expected other file extensions.
+```toml
+  [OtherFilesInfo]
+    otherFilesUsed = true
+
+  [OtherFilesInfo]
+    expectedOtherFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
 ```
 2. Run the conversion and upload command to convert the `xdf` files to BIDS format and upload the data to the dataverse.
 ```
@@ -110,18 +112,18 @@ lslautobids run -p test-project
 
   1. This will convert the xdf file in the `LSLAutoBIDS/sample_data/projects/test-project/sub-999/ses-001/eeg/` directory to BIDS format and store it in the `LSLAutoBIDS/sample_data/bids/test-project/sub-999/ses-001/` directory. 
   2. You can check the logs in the log file `LSLAutoBIDS/sample_data/bids/test-project/code/test-project.log` file. 
-  3. The source data i.e., the raw `xdf` file, behavioral data (e.g. eye-tracking recording) and the experimental code files in `PROJECT_STIM_ROOT/test-project/experiment` (all files e.g., `.py`, `.oxexp` will be compressed to a `tar.gz` archive) will be copied to the `LSLAutoBIDS/sample_data/bids/test-project/source_data/`, `LSLAutoBIDS/sample_data/bids/test-project/beh/` and `LSLAutoBIDS/sample_data/bids/test-project/misc/` directories respectively.
+  3. The source data i.e., the raw `xdf` file, behavioral data (e.g. eye-tracking recording) and the experimental code files in `PROJECT_OTHER_ROOT/test-project/experiment` (all files e.g., `.py`, `.oxexp` will be compressed to a `tar.gz` archive) will be copied to the `LSLAutoBIDS/sample_data/bids/test-project/source_data/`, `LSLAutoBIDS/sample_data/bids/test-project/beh/` and `LSLAutoBIDS/sample_data/bids/test-project/misc/` directories respectively.
 
 ## Example Case 2
-In this case, the experimenter wants to publish **only the raw EEG recordings and the converted EEG files**, but wants to **exclude the stimulus files and experiment code**.
+In this case, the experimenter wants to publish **only the raw EEG recordings and the converted EEG files**, but wants to **exclude the other files and experiment code**.
 
 ### How to run the example?
-1. The workflow is almost identical to Example Case 1, except **stimulus and experiment files are excluded**.
+1. The workflow is almost identical to Example Case 1, except **other and experiment files are excluded**.
 2. Check if the toml configuration file `LSLAutoBIDS/sample_data/projects/test-project/test-project_config.toml` is filled in with the correct details.
 
 ```toml
-  [Computers]
-    stimulusComputerUsed = False
+  [otherFilesInfo]
+    expectedOtherFiles = False
 ```
 3. Run the conversion and upload command to convert the `xdf` files to BIDS format and upload the data to the dataverse.
 ```

@@ -63,7 +63,7 @@ def create_dataverse(project_name):
     toml_path = os.path.join(project_root,project_name,project_name+'_config.toml')
    
     data = read_toml_file(toml_path)
-    pid = data['Dataverse']['pid']
+    pid = data['DataverseDataset']['pid']
 
     if pid.lower() in pids_resp1:
         flag=1
@@ -72,11 +72,12 @@ def create_dataverse(project_name):
     else:
         logger.info('Creating the dataset........')
         resp = api.create_dataset(parent_dataverse_name, ds.json())
+        logger.info(f"Full response: {resp.json()}")
         logger.info(f"Dataset created with PID: {resp.json()['data']['persistentId']}")
-   
+        
         # Modify field
-        data['Dataset']['title']=ds_title 
-        data['Dataverse']['pid']= resp.json()['data']['persistentId']
+        data['DataverseDataset']['title']=ds_title 
+        data['DataverseDataset']['pid']= resp.json()['data']['persistentId']
         #data['Dataverse']['dataset_id']= resp.json()['data']['id']
 
         # To use the dump function, you need to open the file in 'write' mode
