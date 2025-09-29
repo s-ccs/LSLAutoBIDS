@@ -14,7 +14,7 @@ def get_root_paths(test_file: str):
     return {
         "project_root": os.path.join(base_dir, "projects"),
         "bids_root": os.path.join(base_dir, "bids"),
-        "project_stim_root": os.path.join(base_dir, "project_stimulus"),
+        "project_other_root": os.path.join(base_dir, "project_other"),
     }
 
 
