@@ -1,0 +1,48 @@
+site_name: LSLAutoBIDS - Developers Documentation
+site_description: Automated BIDS conversion and processing framework
+site_url: https://s-ccs.github.io/LSLAutoBIDS
+repo_url: https://github.com/s-ccs/LSLAutoBIDS
+docs_dir: docs
+theme:
+  name: material
+  features:
+    - navigation.instants
+    - navigation.top
+    - search.highlight
+    - search.suggest
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - Core Components:
+    - CLI Module : cli.md
+    - Configuration System : configuration.md
+    - File Processing : file_processing.md
+    - BIDS Conversion : bids_convert_and_upload.md
+    - Datalad Integration : datalad_integration.md
+    - Dataverse Integration : dataverse_integration.md
+    - Other Utility Functions: other_utils.md
+    - Tests: testing.md
+  - FAQ: faq.md
+  - Development:
+    - Contributing: contributions.md
+  - Group's website: https://www.s-ccs.de/
+markdown_extensions:
+  - pymdownx.arithmatex
+  - pymdownx.magiclink
+  - pymdownx.details # Allowing hidden expandable regions denoted by ???
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences # Seems to enable syntax highlighting when used with the Material theme.
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      check_paths: true
+  - toc:
+      permalink: "¤" # Adds a clickable permalink to each section heading
+      toc_depth: 4
+  - admonition
+  - codehilite
+  - tables
+  - footnotes

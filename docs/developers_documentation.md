@@ -59,11 +59,6 @@ LSLAutoBIDS is a Python tool series designed to automate the following tasks seq
   - [Running Tests](#running-tests)
 
 
-## Architecture - TODO
-
-The system follows a modular architecture with clear separation of concerns:
-<TODO: Add architecture diagram here>
-
 ## Core Components
 
 ### 1. CLI Module (`cli.py`)

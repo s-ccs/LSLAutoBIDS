@@ -1,7 +1,4 @@
-### FAQ questions
-### FAQ questions
 
-These are some frequently asked questions regarding the LSLAutoBIDS tool and workflow.
 These are some frequently asked questions regarding the LSLAutoBIDS tool and workflow.
 
 __1. What would be the process a user goes through if they collect additional data and wants to add them to the existing dataset? How automatic will this be?__
