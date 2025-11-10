@@ -1,6 +1,6 @@
 ### 1. CLI Module (`cli.py`)
 
-The command-line interface provides the main entry point for the application:
+The `lslautobids` command-line interface provides the main entry point for the application:
 
 - **Commands**: `gen-proj-config`, `run`, `gen-dv-config`, `help`
 - **Module mapping**: Maps commands to their respective modules
