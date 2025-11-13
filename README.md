@@ -84,7 +84,7 @@ For more information on how to use the package, please refer to the [documentati
 
 The documentation includes:
 - [Data Organization](docs/data_organization.md): Guidelines for organizing the data in a BIDS compliant manner.
-- [Developer Documentation](docs/developer_documentation.md): Information about the internal functionality of the tool, how to contribute, and how to extend the package. (Will be there soon.)
+- [Developer Documentation]([docs/developer_documentation.md](https://www.s-ccs.de/LSLAutoBIDS/)): Information about the internal functionality of the tool, how to contribute, and how to extend the package. (Will be there soon.)
 
 
 ## Disclaimer
