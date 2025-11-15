@@ -1,4 +1,4 @@
-### 1. CLI Module (`cli.py`)
+## CLI Module (`cli.py`)
 
 The `lslautobids` command-line interface provides the main entry point for the application:
 

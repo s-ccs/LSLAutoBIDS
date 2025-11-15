@@ -1,4 +1,4 @@
-### 4. BIDS Conversion and Upload Pipeline ⚙️ (`convert_to_bids_and_upload.py`)
+## BIDS Conversion and Upload Pipeline ⚙️ (`convert_to_bids_and_upload.py`)
 
 The pipeline is designed to ensure:
 
@@ -12,7 +12,7 @@ The pipeline is designed to ensure:
 
 5. The dataset is registered in Dataverse and optionally pushed/uploaded automatically.
 
-#### 1. Entry Point (`bids_process_and_upload()`)
+#### Entry Point (`bids_process_and_upload()`)
 
 - Reads project configuration (<project_name>_config.toml) to check if a other computer (non eeg files) was used. (otherFilesUsed: true)
 
@@ -42,7 +42,7 @@ The pipeline is designed to ensure:
 
     - Pushes data to Dataverse automatically (--yes) or via user confirmation.
 
-#### 2. Convert to BIDS (`convert_to_bids()`)
+#### Convert to BIDS (`convert_to_bids()`)
 This function handles the core conversion of a XDF files to BIDS format and constructs the dataset structure. It performs the following steps:
 
 1. Copy raw/behavioral/experiment files via `copy_source_files_to_bids()` (See section).
@@ -77,7 +77,7 @@ This function handles the core conversion of a XDF files to BIDS format and cons
 
     - 0: BIDS Conversion done but validation failure
 
-#### 3. Copy Source Files (`copy_source_files_to_bids()`)
+#### Copy Source Files (`copy_source_files_to_bids()`)
 This function ensures that the original source files (EEG and other/behavioral files) are also a part our dataset. These files can't be directly converted to BIDS format but we give the user the option to include them in the BIDS directory structure in a pseudo-BIDS format for completeness.
 
 - Copies the .xdf into the following structure: 
@@ -104,7 +104,7 @@ If otherFilesUsed=True in project config file:
 
 There is a flag in the `lslautobids run` command called `--redo_other_pc` which when specified, forces overwriting of existing other and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the other/behavioral data that need to be reflected in the BIDS dataset.
 
-#### 4. Create Raw XDF (`create_raw_xdf()`)
+#### Create Raw XDF (`create_raw_xdf()`)
 This function reads the XDF file and creates an MNE Raw object. It performs the following steps:
 - Select EEG stream using match_streaminfos(type="EEG").
 
@@ -118,20 +118,20 @@ This function reads the XDF file and creates an MNE Raw object. It performs the 
 
 This produces a clean, memory-efficient Raw object ready for BIDS conversion.
 
-#### 5. BIDS Validation (`validate_bids()`)
+#### BIDS Validation (`validate_bids()`)
 This function validates the generated BIDS files using the `bids-validator` package. It performs the following steps:
 - Walks through the BIDS directory.
 - Skips irrelevant files: (`.xdf`, `.tar.gz`, behavioral files, hidden/system files.)
 - Uses `BIDSValidator` to validate relative paths. 
 - If any file fails validation, logs an error and returns 0 ; Otherwise, logs success and returns 1.
 
-#### 6. Populate dataset_description.json (`populate_dataset_description_json()`)
+#### Populate dataset_description.json (`populate_dataset_description_json()`)
 This function generates the `dataset_description.json` file required by the BIDS standard. It performs the following steps:
 - Gathers metadata from the project configuration file (title, authors, license, etc.) from the project TOML config file.
 - Calls make_dataset_description() from mne_bids.
 - Overwrites existing file with updated values.
 
-#### 7. Datalad and Dataverse Integration
+#### Datalad and Dataverse Integration
 This part of the pipeline manages version control and data sharing using DataLad and Dataverse. After conversion, the following steps occur:
 
 - `generate_json_file()` → Generates supplementary metadata JSONs.

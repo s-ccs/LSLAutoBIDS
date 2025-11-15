@@ -1,4 +1,4 @@
-### 4. DataLad Integration (`datalad_create.py`)
+## DataLad Integration (`datalad_create.py`)
 
 The DataLad integration module manages the creation and updating of DataLad datasets for version control of the BIDS dataset. This function initializes a DataLad dataset at a given project path.
 The function performs the following steps:

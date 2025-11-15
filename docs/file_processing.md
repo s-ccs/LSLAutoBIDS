@@ -1,4 +1,4 @@
-### 3. File Processing Pipeline (`processing_new_files.py`)
+### File Processing Pipeline (`processing_new_files.py`)
 
 The file processing part of the pipeline handles finding and processing new XDF files in the specified project directory:
 

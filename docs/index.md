@@ -12,7 +12,7 @@ Get started with LSLAutoBIDS by installing the package and its dependencies.
 This package automates the conversion of EEG recordings (xdf files) to BIDS (Brain Imaging Data Structure) format, integrates Datalad and uploads the data to  Dataverse. `lslautobids` is an open-source package written in `python` and  available as a pip package. 
 
 
-## Overview
+## 🗒 Overview 🗒
 
 LSLAutoBIDS is a Python tool series designed to automate the following tasks sequentially:
 - Convert recorded XDF files to BIDS format

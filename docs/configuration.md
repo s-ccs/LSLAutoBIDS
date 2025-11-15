@@ -1,8 +1,8 @@
-### 2. Configuration System
+## Configuration System
 
 The configuration system manages dataversse and project-specific settings using YAML and TOML files.
 
-#### 1. Dataverse and Project Root Configuration (`gen_dv_config.py`)
+#### Dataverse and Project Root Configuration (`gen_dv_config.py`)
 
 This module generates a global configuration file for Dataverse and project root directories. This is a one-time setup per system.  This file is stored in `~/.config/lslautobids/autobids_config.yaml` and contains:
 - Paths for BIDS, projects, and project_other directories : This allows users to specify where their eeg data, behavioral data, and converted BIDS data are stored on their system. This paths should be relative to the home/users directory of your system and string format.
@@ -19,7 +19,7 @@ _Currently, the package doesn't allow you to have multiple dataverse configurati
 
 However for testing purposes, we create a separate test configuration file `~/.config/lslautobids/test-autobids_config.yaml` which is used when running the tests.
 
-#### 2. Project Configuration (`gen_project_config.py`)
+#### Project Configuration (`gen_project_config.py`)
 This module generates a project-specific configuration file in TOML format. This file is stored in the `projects/<PROJECT_NAME>/<PROJECT_NAME>_config.toml` file and contains:
 - Project metadata: Title, description, license, and authors, etc.
 

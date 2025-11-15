@@ -1,3 +1,4 @@
+# Frequently Asked Questions (FAQ)
 
 These are some frequently asked questions regarding the LSLAutoBIDS tool and workflow.
 

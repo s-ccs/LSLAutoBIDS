@@ -1,4 +1,4 @@
-### 5. Dataverse Integration
+### Dataverse Integration
 
 #### 1. Dataverse Dataset Creation (`dataverse_dataset_create.py`)
 This module handles the creation of a new dataset in Dataverse using the `pyDataverse` library. The function performs the following steps:
