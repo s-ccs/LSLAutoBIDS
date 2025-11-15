@@ -21,11 +21,13 @@ nav:
     - Datalad Integration : datalad_integration.md
     - Dataverse Integration : dataverse_integration.md
     - Other Utility Functions: other_utils.md
+    - Data Organization: data_organization.md
     - Tests: testing.md
   - FAQ: faq.md
   - Development:
     - Contributing: contributions.md
   - Group's website: https://www.s-ccs.de/
+  - Getting Started Tutorial: tutorial.md
 markdown_extensions:
   - pymdownx.arithmatex
   - pymdownx.magiclink
