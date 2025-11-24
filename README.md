@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/View%20Full%20Documentation-%230072C6?style=for-the-badge&logo=readthedocs&logoColor=white" alt="View Full Documentation">
   </a>
 </p>
-ss
+
 ## 🚀 Getting Started
 
 Get started with LSLAutoBIDS by installing the package and its dependencies.
