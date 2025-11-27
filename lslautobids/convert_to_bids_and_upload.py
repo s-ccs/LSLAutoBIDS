@@ -347,13 +347,13 @@ class BIDS:
         if not os.path.exists(bidsignore_path):
             with open(bidsignore_path, 'w') as f:
                 # ignore the sourcedata folder (.xdf files)s
-                f.write('sourcedata/\n')
+                f.write('sourcedata\n')
                 # ignore the code folder - containing log files
-                f.write('code/\n')
+                f.write('code\n')
                 # ignore the beh folder in each sub-xxx/ses-yyys
-                f.write('**/beh/\n')
+                f.write('**/beh\n')
                 # ignore the misc folder in each sub-xxx/ses-yyy
-                f.write('**/misc/\n')
+                f.write('**/misc\n')
                 # ignore hidden files
                 f.write('.*\n')
             logger.info(".bidsignore file created.")
