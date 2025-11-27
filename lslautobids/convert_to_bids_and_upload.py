@@ -342,6 +342,23 @@ class BIDS:
         logger.info("Writing EEG-SET file")
         write_raw_bids(raw, bids_path, overwrite=cli_args.redo_bids_conversion, verbose=False,symlink=False, format= "EEGLAB",allow_preload=True, anonymize = dict(daysback=daysback_min + anonymization_number,keep_his=True))
 
+        # create a .bidsignore file in the project bids folder
+        bidsignore_path = os.path.join(bids_root, project_name, '.bidsignore')
+        if not os.path.exists(bidsignore_path):
+            with open(bidsignore_path, 'w') as f:
+                # ignore the sourcedata folder (.xdf files)s
+                f.write('sourcedata/\n')
+                # ignore the code folder - containing log files
+                f.write('code/\n')
+                # ignore the beh folder in each sub-xxx/ses-yyys
+                f.write('**/beh/\n')
+                # ignore the misc folder in each sub-xxx/ses-yyy
+                f.write('**/misc/\n')
+                # ignore hidden files
+                f.write('.*\n')
+            logger.info(".bidsignore file created.")
+        else:
+            logger.info(".bidsignore file already exists.")
 
         logger.info("Conversion to BIDS complete.")
         # Validate BIDS data
