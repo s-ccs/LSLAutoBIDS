@@ -1,0 +1,17 @@
+{
+    "Name": "test-project",
+    "BIDSVersion": "1.7.0",
+    "DatasetType": "raw",
+    "License": "MIT License",
+    "Authors": [
+        "John Doe",
+        "Lina Doe"
+    ],
+    "GeneratedBy": [
+        {
+            "Name": "MNE-BIDS",
+            "Version": "0.17.0",
+            "CodeURL": "https://mne.tools/mne-bids/"
+        }
+    ]
+}
