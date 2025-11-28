@@ -2,7 +2,7 @@ import os
 import sys
 import pytest
 import yaml
-
+import shutil
 
 # Compute project root (two levels up from current test.py)
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -92,6 +92,11 @@ def test_process_new_files_with_old_suffix(setup_project, monkeypatch):
     # Import and run main pipeline, expect a RuntimeError
     from lslautobids.main import main as runlslautobids
     #with pytest.raises(SystemExit, match="Duplicate file detected. Please check the file manually."):
+    runlslautobids()
+    
+    # add a subject
+    shutil.copytree(os.path.join(paths["project_root"], "copy_later","sub-100"), os.path.join(paths["project_root"], project_name,"sub-100"))
+    
     runlslautobids()
 
 
