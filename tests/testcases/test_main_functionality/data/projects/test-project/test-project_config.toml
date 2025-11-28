@@ -1,0 +1,22 @@
+[AuthorsInfo]
+authors = "John Doe, Lina Doe"
+affiliation = "University of Stuttgart, University of Stuttgart"
+email = "john@gmail.com"
+
+[DataverseDataset]
+title = "test-project"
+datasetDescription = "This is a test project to set up the pipeline to convert XDF to BIDS."
+license = "MIT License"
+subject = [ "Medicine, Health and Life Sciences", "Engineering",]
+pid = ""
+
+[OtherFilesInfo]
+otherFilesUsed = true
+expectedOtherFiles = [ ".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv",]
+
+[FileSelection]
+ignoreSubjects = [ "sub-777",]
+excludeTasks = [ "sampletask",]
+
+[BidsConfig]
+anonymizationNumber = 123

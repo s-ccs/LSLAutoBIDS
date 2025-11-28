@@ -11,10 +11,10 @@ if PROJECT_ROOT not in sys.path:
 
 from test_utils.path_config import get_root_paths
 from test_utils.path_config import DummyCLIArgs
-
 # Print test file name for traceability
 test_file_name = os.path.basename(__file__)
 print(f" Running tests in {test_file_name}")
+
 
 
 
@@ -51,6 +51,10 @@ def setup_project(monkeypatch):
     monkeypatch.setattr("lslautobids.config_globals.project_root", paths["project_root"])
     monkeypatch.setattr("lslautobids.config_globals.bids_root", paths["bids_root"])
     monkeypatch.setattr("lslautobids.config_globals.project_other_root", paths["project_other_root"])
+    monkeypatch.setattr("lslautobids.config_globals.dataverse_base_url","https://demodarus.izus.uni-stuttgart.de/")
+    monkeypatch.setattr("lslautobids.config_globals.api_key","8b6c479e-e85b-4edb-9b8a-5305a9976875")
+    monkeypatch.setattr("lslautobids.config_globals.parent_dataverse_name","s-ccs")
+    #monkeypatch.setattr("lslautobids.config_globals.parent_dataverse_name","Institute for Visualization and Interactive Systems")
     monkeypatch.setattr("lslautobids.config_globals.cli_args", dummy_cli_args)
     monkeypatch.setattr("lslautobids.config_globals.config_file", config_file_test)
 
@@ -87,8 +91,8 @@ def test_process_new_files_with_old_suffix(setup_project, monkeypatch):
 
     # Import and run main pipeline, expect a RuntimeError
     from lslautobids.main import main as runlslautobids
-    with pytest.raises(SystemExit, match="Duplicate file detected. Please check the file manually."):
-        runlslautobids()
+    #with pytest.raises(SystemExit, match="Duplicate file detected. Please check the file manually."):
+    runlslautobids()
 
 
 

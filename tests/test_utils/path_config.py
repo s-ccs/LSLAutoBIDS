@@ -18,3 +18,16 @@ def get_root_paths(test_file: str):
     }
 
 
+
+
+# Dummy CLI argument simulation
+class DummyCLIArgs:
+    def __init__(self):
+        self.project_name = "test-project"
+        self.yes = True
+        self.redo_bids_conversion = False 
+        self.redo_other_pc = False   
+        self.push_to_dataverse = False
+    def init(self, args):
+        # you can store the args or ignore
+        pass

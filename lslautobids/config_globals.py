@@ -13,6 +13,7 @@ class CLIArgs:
             "redo_bids_conversion": False,
             "reupload": False,
             "redo_other_pc": False,
+            "push_to_dataverse": True,
         }
 
     def init(self, args):
