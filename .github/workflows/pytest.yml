@@ -22,6 +22,8 @@ jobs:
         
       - name: Install dependencies with uv
         run: uv sync --all-extras --dev
+      - name: install local
+        run: uv pip install --editable ./
 
       - name: Run tests with uv
         run: uv run pytest
