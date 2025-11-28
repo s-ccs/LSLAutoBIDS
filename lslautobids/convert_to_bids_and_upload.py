@@ -311,7 +311,7 @@ class BIDS:
                             session=session_id[-3:], 
                             task=task_id, 
                             run=int(run_id[-3:]) ,
-                            root=bids_root+project_name, 
+                            root=os.path.join(bids_root,project_name), 
                             datatype='eeg', 
                             suffix='eeg', 
                             extension='.set')
