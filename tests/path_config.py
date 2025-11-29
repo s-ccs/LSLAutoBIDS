@@ -18,3 +18,18 @@ def get_root_paths(test_file: str):
     }
 
 
+
+def monkeypatch_paths(monkeypatch,paths):
+    monkeypatch.setattr("lslautobids.config_globals.project_root", paths["project_root"])
+    monkeypatch.setattr("lslautobids.convert_to_bids_and_upload.project_root", paths["project_root"])
+    monkeypatch.setattr("lslautobids.generate_dataset_json.project_root", paths["project_root"])
+    monkeypatch.setattr("lslautobids.main.project_root", paths["project_root"])
+    monkeypatch.setattr("lslautobids.processing_new_files.project_root", paths["project_root"])
+
+    monkeypatch.setattr("lslautobids.config_globals.bids_root", paths["bids_root"])
+    monkeypatch.setattr("lslautobids.convert_to_bids_and_upload.bids_root", paths["bids_root"])
+    monkeypatch.setattr("lslautobids.main.bids_root", paths["bids_root"])
+    
+    monkeypatch.setattr("lslautobids.config_logger.bids_root", paths["bids_root"])
+    monkeypatch.setattr("lslautobids.config_globals.project_other_root", paths["project_other_root"])
+    monkeypatch.setattr("lslautobids.convert_to_bids_and_upload.project_other_root", paths["project_other_root"])
