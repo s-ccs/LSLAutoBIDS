@@ -8,7 +8,7 @@ jsonschema
 empty_log_process_temp.py
 
 tests/**/bids/
-tests/testcases/test_main_functionality/data/projects/test-project/sub-100
+tests/test_main_functionality/data/projects/test-project/sub-100
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
