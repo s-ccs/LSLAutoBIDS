@@ -36,7 +36,6 @@ def setup_project(monkeypatch):
     from lslautobids.gen_project_config import main as gen_project_config_main
 
     # Create dummy user config for the test
-    #config_file_test = os.path.join(os.path.expanduser("~"),'.config/lslautobids/test-autobids_config.yaml')
     config_file_test = ("tests/pytest-autobids_config.yaml")
     
     #os.makedirs(os.path.dirname(config_file_test), exist_ok=True)

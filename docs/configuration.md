@@ -17,8 +17,6 @@ lslautobids gen-dv-config
 ```
 _Currently, the package doesn't allow you to have multiple dataverse configurations. This will be added in future versions and can be easily adapted_
 
-However for testing purposes, we create a separate test configuration file `~/.config/lslautobids/test-autobids_config.yaml` which is used when running the tests.
-
 #### Project Configuration (`gen_project_config.py`)
 This module generates a project-specific configuration file in TOML format. This file is stored in the `projects/<PROJECT_NAME>/<PROJECT_NAME>_config.toml` file and contains:
 - Project metadata: Title, description, license, and authors, etc.
