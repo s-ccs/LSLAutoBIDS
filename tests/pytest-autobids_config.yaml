@@ -1,0 +1,3 @@
+BIDS_ROOT: /home/behinger/projects/LSLAutoBIDS/tests/data/bids
+PROJECT_OTHER_ROOT: /home/behinger/projects/LSLAutoBIDS/tests/data/project_other
+PROJECT_ROOT: /home/behinger/projects/LSLAutoBIDS/tests/data/projects

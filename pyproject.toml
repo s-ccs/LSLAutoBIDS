@@ -6,5 +6,11 @@ build-backend = "setuptools.build_meta"
 # Ref: https://github.com/codespell-project/codespell#using-a-config-file
 skip = '.git*,*.svg,*.bib'
 check-hidden = true
+
+[dependency-groups]
+dev = [
+    "git-annex>=10.20251114",
+    "pytest>=9.0.1",
+]
 # ignore-regex = ''
 # ignore-words-list = ''

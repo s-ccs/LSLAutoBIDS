@@ -364,7 +364,7 @@ class BIDS:
         # Validate BIDS data
         logger.info("Validating BIDS data...")
         # Validate the BIDS data
-        val = self.validate_bids(bids_root+project_name,subject_id,session_id, logger)
+        val = self.validate_bids(os.path.join(bids_root,project_name),subject_id,session_id, logger)
         return val
     
     def validate_bids(self,bids_path,subject_id,session_id, logger):
@@ -482,22 +482,23 @@ def bids_process_and_upload(processed_files,logger):
     bids.populate_dataset_description_json(project_name, logger)
     logger.info('Generating metadatafiles........')   
     generate_json_file(project_name, logger)
-    logger.info('Generating dataverse dataset........')
     
-    doi, status = create_dataverse(project_name)
     
-    logger.info("Creating and adding files to Dataverse dataset...")
-    create_and_add_files_to_datalad_dataset(bids_root+project_name,status, logger)
+    logger.info("Creating and adding files to Datalad dataset...")
+    create_and_add_files_to_datalad_dataset(os.path.join(bids_root,project_name),logger)
     
-    if status == 0:
-        logger.info('Linking dataverse dataset with datalad')
-        add_sibling_dataverse_in_folder(doi, logger)
+    if cli_args.push_to_dataverse:
+        logger.info('Generating dataverse dataset........')
+        doi, status = create_dataverse(project_name, logger)
+        if status == 0: # run only if a new dataverse was created
+            logger.info('Linking dataverse dataset with datalad')
+            add_sibling_dataverse_in_folder(doi, logger)
 
-    if cli_args.yes:
-        logger.info('Pushing files to dataverse........')
-        push_files_to_dataverse(project_name, logger)
-    else:
-        user_input = get_user_input("Do you want to push the files to Dataverse? ",logger)
+        if cli_args.yes:
+            user_input = "y"
+        else:
+            user_input = get_user_input("Do you want to push the files to Dataverse? ",logger)
+        
         if user_input == "y":
             logger.info('Pushing files to dataverse........')
             push_files_to_dataverse(project_name, logger)
@@ -505,3 +506,5 @@ def bids_process_and_upload(processed_files,logger):
             logger.info("Program aborted.")
         else:
             logger.error("Invalid Input.")
+    else:
+        logger.info('cli.push_to_dataverse was false, not pushing.')

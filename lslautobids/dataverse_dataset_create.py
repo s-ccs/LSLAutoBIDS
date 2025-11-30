@@ -12,7 +12,7 @@ from lslautobids.utils import read_toml_file, write_toml_file
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-def create_dataverse(project_name):
+def create_dataverse(project_name, logger):
     """
     Creates a Dataverse dataset and returns the PID and dataset ID.
     
