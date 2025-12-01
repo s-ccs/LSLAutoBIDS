@@ -24,4 +24,4 @@ anonymizationNumber = 123
 ".*.edf" = "beh/{prefix}_physio.edf"
 ".*.csv" = "beh/{prefix}_beh.tsv"
 ".*_labnotebook.tsv" = "misc/{prefix}_labnotebook.tsv"
-".*_participantform.tsv" = "misc/{prefix}_participantform.tsv"
+".*participantform.tsv" = "misc/{prefix}_participantform.tsv"

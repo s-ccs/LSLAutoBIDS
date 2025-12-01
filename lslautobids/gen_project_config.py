@@ -21,7 +21,19 @@ toml_content = """
 
   [OtherFilesInfo]
     otherFilesUsed = true # Set to true if you want to include other (non-eeg-files) files (experiment files, other modalities like eye tracking) in the dataset, else false
-    expectedOtherFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"] # List of expected other file extensions. Only the expected files will be copied to the beh folder in BIDS dataset. Give an empty list [] if you don't want any other files to be in the dataset. In this case only experiment files will be zipeed and copied to the misc folder in BIDS dataset.
+    
+  # expectedOtherFiles: Dictionary format with regex patterns
+  # - The key is a regular expression to match source filenames in the project_other/.../beh/ folder
+  # - The value is a template path that includes {prefix} (e.g. sub-003_ses-002) and the target folder (beh/ or misc/)
+  # - Only files matching these patterns will be copied to the BIDS dataset
+  # the following is a sample configuration, you could also write it in short-hand notation: expectedOtherFiles={ ".*.edf"= "beh/{prefix}_physio.edf", ...}
+  
+  [OtherFilesInfo.expectedOtherFiles]
+    ".*.edf" = "beh/{prefix}_physio.edf"
+    ".*.csv" = "beh/{prefix}_beh.tsv"
+    ".*_labnotebook.tsv" = "misc/{prefix}_labnotebook.tsv"
+    ".*_participantform.tsv" = "misc/{prefix}_participantform.tsv"
+
   
   [FileSelection]
     ignoreSubjects = ['sub-777'] # List of subjects to ignore during the conversion - Leave empty to include all subjects. Changing this value will not delete already existing subjects.

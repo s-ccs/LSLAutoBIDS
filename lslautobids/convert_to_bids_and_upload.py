@@ -2,6 +2,7 @@
 import os
 import shutil
 import sys
+import re
 
 from pyxdf import match_streaminfos, resolve_streams
 from mnelab.io.xdf import read_raw_xdf
@@ -92,101 +93,89 @@ class BIDS:
 
     def _copy_behavioral_files(self, file_base, subject_id, session_id, logger):
         """
-        Copy behavioral files to the BIDS structure.
+        Copy behavioral files to the BIDS structure based on regex patterns.
+        Iterates through patterns and matches files, copying them directly to target locations.
 
         Args:
             file_base (str): Base name of the file (without extension).
             subject_id (str): Subject ID.
             session_id (str): Session ID.
+            logger: Logger instance.
         """
+        
         project_name = cli_args.project_name
         logger.info("Copying the behavioral files to BIDS...")
+        
+        # Get the TOML configuration
+        toml_path = os.path.join(project_root, cli_args.project_name, cli_args.project_name + '_config.toml')
+        data = read_toml_file(toml_path)
+        _expectedotherfiles = data["OtherFilesInfo"]["expectedOtherFiles"]
+        
+        if not isinstance(_expectedotherfiles, dict):
+            raise ValueError("expectedOtherFiles must be a dictionary with regex patterns. List format is no longer supported since v0.2.0 .")
+        
         # get the source path
-        behavioural_path = os.path.join(project_other_root,project_name,'data', subject_id,session_id,'beh')
-        # get the destination path
-        dest_dir = os.path.join(bids_root , project_name,  subject_id , session_id , 'beh')
-        #check if the directory exists
-        os.makedirs(dest_dir, exist_ok=True)
-
-        processed_files = []
+        behavioural_path = os.path.join(project_other_root, project_name, 'data', subject_id, session_id, 'beh')
+        
+        if not os.path.exists(behavioural_path):
+            raise FileNotFoundError(f"Behavioral path does not exist: {behavioural_path} - did you forget to mount?")
+            return
+        
         # Extract the sub-xxx_ses-yyy part
         def extract_prefix(filename):
             parts = filename.split("_")
             sub = next((p for p in parts if p.startswith("sub-")), None)
             ses = next((p for p in parts if p.startswith("ses-")), None)
             if sub and ses:
-                return f"{sub}_{ses}_"
+                return f"{sub}_{ses}"
             return None
         
         prefix = extract_prefix(file_base)
-
-        for file in os.listdir(behavioural_path):
-            # Skip non-files (like directories)
-            original_path = os.path.join(behavioural_path, file)
-            if not os.path.isfile(original_path):
-                continue
+        processed_files = []
+        
+        # Get all files in source directory once
+        source_files = [f for f in os.listdir(behavioural_path) 
+                       if os.path.isfile(os.path.join(behavioural_path, f))]
+        
+        # Iterate through patterns (not files)
+        for pattern, target_template in _expectedotherfiles.items():
+            compiled_regex = re.compile(pattern)
             
-            if not file.startswith(prefix):
-                logger.info(f"Renaming {file} to include prefix {prefix}")
-                renamed_file = prefix + file
-            else:
-                renamed_file = file
-        
-            processed_files.append(renamed_file)
-            dest_file = os.path.join(dest_dir, renamed_file)
-        
+            # Find matching files for this pattern
+            matched_files = [f for f in source_files if compiled_regex.match(f)]
+            
+            if not matched_files:
+                raise FileExistsError(f"No files matched pattern '{pattern}' in {behavioural_path}")
+            
+            if len(matched_files) > 1:
+                raise ValueError(f"Multiple files matched pattern '{pattern}': {matched_files}. Only one file per pattern is supported - manuall intervention required")
+            
+            # Process the first matching file
+            file = matched_files[0]
+            original_path = os.path.join(behavioural_path, file)
+            
+            # Format the target path with prefix
+            target_path = target_template.format(prefix=prefix)
+            dest_file = os.path.join(bids_root, project_name, subject_id, session_id, target_path)
+            
+            # Ensure destination directory exists
+            os.makedirs(os.path.dirname(dest_file), exist_ok=True)
+            
+            # Track the relative path for checking
+            processed_files.append(target_path)
+            
             if cli_args.redo_other_pc:
-                logger.info(f"Copying (overwriting if needed) {file} to {dest_file}")
+                logger.info(f"Copying (overwriting) {file} to {target_path}")
                 shutil.copy(original_path, dest_file)
             else:
                 if os.path.exists(dest_file):
-                    logger.info(f"Behavioural file {file} already exists in BIDS. Skipping.")
+                    logger.info(f"Behavioural file {target_path} already exists in BIDS. Skipping.")
                 else:
-                    logger.info(f"Copying new file {file} to {dest_file}")
+                    logger.info(f"Copying {file} to {target_path}")
                     shutil.copy(original_path, dest_file)
-
-
-
-        unnecessary_files = self._check_required_behavioral_files(processed_files, prefix, logger)
-
-        # remove the unnecessary files
-        for file in unnecessary_files:
-            file_path = os.path.join(dest_dir, file)
-            if os.path.exists(file_path):
-                logger.info(f"Removing unnecessary file: {file_path}")
-                os.remove(file_path)
-            else:
-                logger.warning(f"File to remove does not exist: {file_path}")
-
-
-    
-    def _check_required_behavioral_files(self, files, prefix, logger):
-        """
-        Check for required behavioral files after copying.
-
-        Args:
-            files (list): List of copied file names.
-            prefix (str): Expected prefix (e.g., "sub-001_ses-002_").
-        """
-        logger.info("Checking for required behavioral files...")
-
-        # Get the expected file names from the toml file
-        toml_path = os.path.join(project_root, cli_args.project_name, cli_args.project_name + '_config.toml')
-        data = read_toml_file(toml_path)
-
-        required_files = data["OtherFilesInfo"]["expectedOtherFiles"]
-
-
-        for required_file in required_files:
-            if not any(f.startswith(prefix) and f.endswith(required_file) for f in files):
-                raise FileNotFoundError(f"Missing required behavioral file: {required_file}")
         
-        unnecessary_files = []
-        # remove everything except the required files
-        for file in files:
-            if not any(file.endswith(required_file) for required_file in required_files):
-                unnecessary_files.append(file)
-        return unnecessary_files
+        logger.info(f"Successfully processed {len(processed_files)} behavioral files")
+
 
 
     def _copy_experiment_files(self, subject_id, session_id, logger):
