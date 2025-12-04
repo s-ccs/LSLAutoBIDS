@@ -157,6 +157,18 @@
 	keywords = {{BrainLife}, Canadian Open Neuroscience Platform, {DataLad}, Interoperability, {OpenNeuro}},
 }
 
+@software{noauthor_labstreaminglayerapp-labrecorder_2025,
+	title = {labstreaminglayer/App-{LabRecorder}},
+	rights = {{MIT}},
+	url = {https://github.com/labstreaminglayer/App-LabRecorder},
+	abstract = {An application for streaming one or more {LSL} streams to disk in {XDF} file format.},
+	publisher = {{LabStreamingLayer} interfaces and applications},
+	urldate = {2025-11-21},
+	date = {2025-11-20},
+	note = {original-date: 2018-02-28T12:17:09Z},
+	keywords = {labrecorder, lsl, xdf},
+}
+
 @software{noauthor_labstreaminglayerpylsl_2025,
 	title = {labstreaminglayer/pylsl},
 	rights = {{MIT}},
@@ -350,6 +362,7 @@
 	author = {Dobson, J. and Sackett, T. and Kodiweera, Chandana and Haxby, J. and Goncalves, M. and Ghosh, Satrajit S. and Halchenko, Y.},
 	urldate = {2025-05-08},
 	date = {2018},
+	keywords = {⛔ No {DOI} found},
 }
 
 @article{hanke_research_2022,
@@ -374,6 +387,18 @@
 	journaltitle = {{ResearchGate}},
 	urldate = {2025-05-01},
 	langid = {english},
+}
+
+@misc{yorguin-jose_sovabids_2025,
+	title = {{SOVABIDS}: {EEG}-to-{BIDS} conversion software focused on automation, reproducibility and interoperability},
+	url = {https://zenodo.org/records/15056451},
+	shorttitle = {{SOVABIDS}},
+	abstract = {This document presents {SOVABIDS}, an innovative software designed to address the complexity of converting raw {EEG} data into the standardized Brain Imaging Data Structure ({BIDS}) format. It enables user-friendly, reproducible, and semi-automatic conversion, facilitating broader accessibility and compliance with {BIDS}, even for non-technical users. By integrating tools like {MNE} and {MNE}-{BIDS}, {SOVABIDS} ensures robust data conversion and is equipped with automated testing and documentation for continuous improvement. This software significantly contributes to the neuroimaging community by streamlining data standardization, supporting collaborative research, and promoting data sharing.},
+	publisher = {Zenodo},
+	author = {Yorguin-Jose, Mantilla-Ramos and Brayan-Andres, Hoyos-Madera and Steffen, Bollmann and Aswin, Narayanan and David, White and Oren, Civier and Tom, Johnstone},
+	urldate = {2025-09-12},
+	date = {2025-03-20},
+	keywords = {Automation, {BIDS}, Conversion, {EEG}, Python},
 }
 
 @article{nastase_narratives_2021,
@@ -417,6 +442,7 @@
 @article{crosas_dataverse_2011,
 	title = {The Dataverse Network: An Open-source Application for Sharing, Discovering and Preserving Data},
 	volume = {Volume 17},
+	doi = {10.1045/january2011-crosas},
 	shorttitle = {The Dataverse Network},
 	journaltitle = {D-Lib Magazine},
 	author = {Crosas, Merce},
@@ -454,6 +480,49 @@
 	langid = {english},
 	note = {Pages: 2024.02.13.580071
 Section: New Results},
+}
+
+@article{kothe_lab_2025,
+	title = {The lab streaming layer for synchronized multimodal recording},
+	volume = {3},
+	issn = {2837-6056},
+	url = {https://doi.org/10.1162/IMAG.a.136},
+	doi = {10.1162/IMAG.a.136},
+	abstract = {Accurately recording the interactions of humans or other organisms with their
+environment and other agents requires synchronized data access via multiple
+instruments, often running independently using different clocks. Active,
+hardware-mediated solutions are often infeasible or prohibitively costly to
+build and run across arbitrary collections of input systems. The Lab Streaming
+Layer ({LSL}) framework offers a software-based approach to synchronizing data
+streams based on per-sample time stamps and time synchronization across a common
+local area network ({LAN}). Built from the ground up for neurophysiological
+applications and designed for reliability, {LSL} offers zero-configuration
+functionality and accounts for network delays and jitters, making connection
+recovery, offset correction, and jitter compensation possible. These features
+can ensure continuous, millisecond-precise data recording, even in the face of
+interruptions. In this paper, we present an overview of {LSL} architecture, core
+features, and performance in common experimental contexts. We also highlight
+practical considerations and known pitfalls when using {LSL}, including the need
+to take into account input device throughput delays that {LSL} cannot itself
+measure or correct. The {LSL} ecosystem has grown to support over 150 data
+acquisition device classes and to establish interoperability between client
+software written in several programming languages, including
+C/C++, Python, {MATLAB}, Java, C\#, {JavaScript}, Rust, and Julia. The
+resilience and versatility of {LSL} have made it a major data synchronization
+platform for multimodal human neurobehavioral recording, now supported by a wide
+range of software packages, including major stimulus presentation tools,
+real-time analysis environments, and brain-computer interface applications.
+Beyond basic science, research, and development, {LSL} has been used as a
+resilient and transparent back-end in deployment scenarios, including
+interactive art installations, stage performances, and commercial products. In
+neurobehavioral studies and other neuroscience applications, {LSL} facilitates the
+complex task of capturing organismal dynamics and environmental changes
+occurring within and across multiple data streams on a common timeline.},
+	pages = {IMAG.a.136},
+	journaltitle = {Imaging Neuroscience},
+	author = {Kothe, Christian and Shirazi, Seyed Yahya and Stenner, Tristan and Medine, David and Boulay, Chadwick and Grivich, Matthew I. and Artoni, Fiorenzo and Mullen, Tim and Delorme, Arnaud and Makeig, Scott},
+	urldate = {2025-11-21},
+	date = {2025-09-12},
 }
 
 @article{poldrack_past_2024,
