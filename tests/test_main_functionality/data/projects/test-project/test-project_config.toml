@@ -21,7 +21,7 @@ excludeTasks = [ "sampletask",]
 anonymizationNumber = 123
 
 [OtherFilesInfo.expectedOtherFiles]
-".*.edf" = "beh/{prefix}_physio.edf"
-".*.csv" = "beh/{prefix}_beh.tsv"
+".*.edf" = "misc/{prefix}_physio.edf"
+".*.csv" = "misc/{prefix}_beh.csv"
 ".*_labnotebook.tsv" = "misc/{prefix}_labnotebook.tsv"
 ".*_participantform.tsv" = "misc/{prefix}_participantform.tsv"

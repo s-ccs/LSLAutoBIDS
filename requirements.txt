@@ -1,10 +1,10 @@
 pyxdf
 mne
 mne-bids
-bids_validator==1.13.1
-datalad-dataverse==1.0.1
-datalad-installer==1.0.3
-pyDataverse==0.3.1
+bids_validator>=1.13.1
+datalad-dataverse>=1.0.1
+datalad-installer>=1.0.3
+pyDataverse>=0.3.1
 requests>=2.12.0
 jsonschema>=3.2.0
 AnnexRemote@git+https://github.com/Lykos153/AnnexRemote.git@master#egg=AnnexRemote

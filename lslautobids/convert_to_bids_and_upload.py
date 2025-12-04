@@ -339,8 +339,6 @@ class BIDS:
                 f.write('sourcedata\n')
                 # ignore the code folder - containing log files
                 f.write('code\n')
-                # ignore the beh folder in each sub-xxx/ses-yyys
-                f.write('**/beh\n')
                 # ignore the misc folder in each sub-xxx/ses-yyy
                 f.write('**/misc\n')
                 # ignore hidden files
@@ -376,19 +374,19 @@ class BIDS:
                 file_path = os.path.join(root, file)
                 
                 # Skip non-relevant files
-                if file_path.endswith(".xdf") or file_path.endswith(".tar.gz") or 'beh' in file_path or file.startswith('.') or '.git' in file_path or os.path.basename(root).startswith('.'):
+                if 'misc' in file_path or file.startswith('.') or '.git' in file_path or os.path.basename(root).startswith('.'):
                     continue
 
                 if root == root_directory:
                     # Validate BIDS for files in the root directory
-                    res = BIDSValidator().is_bids(file)           
+                    res = BIDSValidator().is_bids('/'+file)           
                 else:
                     # Modify file path to be relative to the root directory
                     relative_path = os.path.relpath(file_path, root_directory)
                     res = BIDSValidator().is_bids('/'+relative_path)
     
                 if not res:
-                    print(f"Validation failed for {file_path}")
+                    logger.info(f"Validation failed for {file_path}")
         
                 
                 file_paths.append(res)  
