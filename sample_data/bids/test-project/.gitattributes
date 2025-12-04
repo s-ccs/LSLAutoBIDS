@@ -1,0 +1,6 @@
+* annex.largefiles=largerthan=100kb
+*.csv annex.largefiles=nothing
+*.log annex.largefiles=nothing
+*.tsv annex.largefiles=nothing
+*.md annex.largefiles=nothing
+*.json annex.largefiles=nothing

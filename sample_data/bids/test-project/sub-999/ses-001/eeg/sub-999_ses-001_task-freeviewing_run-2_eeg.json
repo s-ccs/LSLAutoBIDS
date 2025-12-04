@@ -1,0 +1,18 @@
+{
+    "TaskName": "freeviewing",
+    "Manufacturer": "n/a",
+    "PowerLineFrequency": "n/a",
+    "SamplingFrequency": 1000.0,
+    "SoftwareFilters": "n/a",
+    "RecordingDuration": 4.008,
+    "RecordingType": "continuous",
+    "EEGReference": "n/a",
+    "EEGGround": "n/a",
+    "EEGPlacementScheme": "based on the extended 10/20 system",
+    "EEGChannelCount": 124,
+    "EOGChannelCount": 4,
+    "ECGChannelCount": 0,
+    "EMGChannelCount": 0,
+    "MiscChannelCount": 1,
+    "TriggerChannelCount": 0
+}

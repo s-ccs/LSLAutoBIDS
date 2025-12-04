@@ -1,0 +1,9 @@
+{
+    "Name": "test-project",
+    "BIDSVersion": "1.7.0",
+    "DatasetType": "raw",
+    "License": "MIT License",
+    "Authors": [
+        "Yanhong Xu"
+    ]
+}
