@@ -148,7 +148,7 @@ class BIDS:
                 raise FileExistsError(f"No files matched pattern '{pattern}' in {behavioural_path}")
             
             if len(matched_files) > 1:
-                raise ValueError(f"Multiple files matched pattern '{pattern}': {matched_files}. Only one file per pattern is supported - manuall intervention required")
+                raise ValueError(f"Multiple files matched pattern '{pattern}': {matched_files}. Only one file per pattern is supported - manually intervention required")
             
             # Process the first matching file
             file = matched_files[0]
