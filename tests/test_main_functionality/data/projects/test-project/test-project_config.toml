@@ -15,7 +15,7 @@ otherFilesUsed = true
 
 [FileSelection]
 ignoreSubjects = [ "sub-777",]
-excludeTasks = [ "sampletask",]
+excludeTasks = [ "ignore-me",]
 
 [BidsConfig]
 anonymizationNumber = 123
