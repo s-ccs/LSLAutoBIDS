@@ -270,9 +270,8 @@ If otherFilesUsed=True in project config file:
 
 1. Behavioral files are copied via `_copy_behavioral_files()`.
 
-    - Validates required files against TOML config (`OtherFilesInfo`). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also have mandatory labnotebook and participant info files in .tsv format.
-    - Renames files to include sub-XXX_ses-YYY_ prefix if missing.
-    - Deletes the other files in the project_other directory that are not listed in `OtherFilesInfo` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
+    - Validates required files against TOML config (`OtherFilesInfo`). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also typically use a mandatory labnotebook and participant info files in .tsv format. Currently it is not possible to convert files in this step, but should maybe become possible for e.g. `EDF` files and `CSV=>TSV` files
+    - follows the src=target regexp syntax to copy files over
 
 2. Experimental files are copied via `_copy_experiment_files().`
 
@@ -300,7 +299,7 @@ This produces a clean, memory-efficient Raw object ready for BIDS conversion.
 #### 5. BIDS Validation (`validate_bids()`)
 This function validates the generated BIDS files using the `bids-validator` package. It performs the following steps:
 - Walks through the BIDS directory.
-- Skips irrelevant files: (`.xdf`, `.tar.gz`, behavioral files, hidden/system files.)
+- Skips irrelevant files: (`misc`-folder, hidden/system files.)
 - Uses `BIDSValidator` to validate relative paths. 
 - If any file fails validation, logs an error and returns 0 ; Otherwise, logs success and returns 1.
 

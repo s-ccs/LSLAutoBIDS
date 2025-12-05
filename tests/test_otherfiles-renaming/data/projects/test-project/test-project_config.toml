@@ -15,13 +15,13 @@ otherFilesUsed = true
 
 [FileSelection]
 ignoreSubjects = [ "sub-777",]
-excludeTasks = [ "ignore-me",]
+excludeTasks = [ "sampletask",]
 
 [BidsConfig]
 anonymizationNumber = 123
 
 [OtherFilesInfo.expectedOtherFiles]
 ".*.edf" = "misc/{prefix}_physio.edf"
-".*.csv" = "misc/{prefix}_beh.csv"
+".*.csv" = "misc/{prefix}_beh.tsv"
 ".*_labnotebook.tsv" = "misc/{prefix}_labnotebook.tsv"
-".*_participantform.tsv" = "misc/{prefix}_participantform.tsv"
+".*participantform.tsv" = "misc/{prefix}_participantform.tsv"

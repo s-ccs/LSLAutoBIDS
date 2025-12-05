@@ -91,15 +91,15 @@ If otherFilesUsed=True in project config file:
 
 1. Behavioral files are copied via `_copy_behavioral_files()`.
 
-    - Validates required files against TOML config (`OtherFilesInfo`). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also have mandatory labnotebook and participant info files in .tsv format.
-    - Renames files to include sub-XXX_ses-YYY_ prefix if missing.
-    - Deletes the other files in the project_other directory that are not listed in `OtherFilesInfo` in the project config file. It doesn"t delete from the source directory, only from out BIDS dataset.
+    - Validates required files against TOML config (`OtherFilesInfo`). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also typically have mandatory labnotebook and participant info files in .tsv format.
+    - The `"*.src"="beh/{prefix}_target"` allows users to easily add BIDS-compatible custom data from the experiments. Note that `json` sidecars are not automatically generated yet.
+    
 
 2. Experimental files are copied via `_copy_experiment_files().`
 
-    - Gathers files from the experiment folder.
+    - Gathers files from the `<PROJECTS_OTHER>/experiment/` folder.
     - Copies into BIDS `misc/` directory i.e. `<BIDS_ROOT>/misc/`
-    - Compresses into experiment.tar.gz.
+    - Compresses into `experiment.tar.gz`.
     - Removes the uncompressed folder.
 
 There is a flag in the `lslautobids run` command called `--redo_other_pc` which when specified, forces overwriting of existing other and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the other/behavioral data that need to be reflected in the BIDS dataset.
@@ -121,7 +121,7 @@ This produces a clean, memory-efficient Raw object ready for BIDS conversion.
 #### BIDS Validation (`validate_bids()`)
 This function validates the generated BIDS files using the `bids-validator` package. It performs the following steps:
 - Walks through the BIDS directory.
-- Skips irrelevant files: (`.xdf`, `.tar.gz`, behavioral files, hidden/system files.)
+- Skips irrelevant files already ignored in `.bidsignore` (`misc` folder, some hidden files)
 - Uses `BIDSValidator` to validate relative paths. 
 - If any file fails validation, logs an error and returns 0 ; Otherwise, logs success and returns 1.
 

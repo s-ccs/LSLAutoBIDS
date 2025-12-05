@@ -54,7 +54,7 @@ Filename Convention for the raw data files :
 
 ## Project Other Folder
 
-This folder contains the experimental and behavioral files which we also store in the dataverse. The folder structure is should as follows:
+This folder contains the experimental and behavioral files which we also store in the dataverse. The folder structure has to be as follows:
 
         projectname/
         └── experiment
@@ -65,6 +65,7 @@ This folder contains the experimental and behavioral files which we also store i
                     └── beh
                         └── behavioral_files((lab notebook, CSV, EDF file, etc))
 
+It is possible to modify the `src=target` syntax to "skip" folders via `..` (maybe we should simply allow `{prefix}` in the src as well => not yet implemented)
 - **projectname** - any descriptive name for the project
 - **experiment** - contains the experimental files for the project. Eg: showOther.m, showOther.py
 - **data** - contains the behavioral files for the corresponding subject. Eg: experimentalParameters.csv, eyetrackingdata.edf, results.tsv. 
@@ -91,8 +92,9 @@ This folder contains the converted BIDS data files and other files we want to ve
                     .........
             └── beh
                 └──behavioral files (other files)
-            └── misc
+            └── misc (added to .bidsignore)
                 └── experimental files (This needs to stored in zip format)
+                └── labnotebook, subjectform etc. 
     └── sourcedata
         └── raw xdf files
     └── dataset_description.json
