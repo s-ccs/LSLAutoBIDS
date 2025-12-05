@@ -33,3 +33,6 @@ def monkeypatch_paths(monkeypatch,paths):
     monkeypatch.setattr("lslautobids.config_logger.bids_root", paths["bids_root"])
     monkeypatch.setattr("lslautobids.config_globals.project_other_root", paths["project_other_root"])
     monkeypatch.setattr("lslautobids.convert_to_bids_and_upload.project_other_root", paths["project_other_root"])
+    #monkeypatch.setattr("lslautobids.config_logger._logger",None)
+    
+    

@@ -28,6 +28,8 @@ def test_process_new_files_with_old_suffix(setup_project, monkeypatch):
     paths = get_root_paths(__file__)
 
     monkeypatch_paths(monkeypatch,paths)
+    #import lslautobids
+    #lslautobids.config_logger.get_logger(project_name)
 
     # Reset sys.argv to something that lslautobids.main.main() expects
     sys.argv = [
