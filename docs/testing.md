@@ -14,6 +14,6 @@ Tests will be added continuously as new features are added and existing features
 
 ### Running Tests
 
-To run the tests, we recommend to use `uv run pytest` (caveat, for some reason sometimes tests fail if they are all run at the same time. you can then run them via `uv run pytest tests/testcase/test_main_functionality` and they will work).
+Before running the tests with `uv`, install the project in editable mode using `uv pip install --editable ./`. Then run the tests with `uv run pytest` (caveat, sometimes running all tests at once fails; in that case, you can run only the main functionality tests via `uv run pytest tests/test_main_functionality`).
 
 These tests ensure that each component functions as expected and that the overall pipeline works seamlessly. This tests will also be triggered automatically on each push or PR to the main repository using GitHub Actions.
