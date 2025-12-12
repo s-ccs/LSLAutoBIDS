@@ -29,8 +29,8 @@ toml_content = """
   # the following is a sample configuration, you could also write it in short-hand notation: expectedOtherFiles={ ".*.edf"= "beh/{prefix}_physio.edf", ...}
   
   [OtherFilesInfo.expectedOtherFiles]
-    ".*.edf" = "beh/{prefix}_physio.edf"
-    ".*.csv" = "beh/{prefix}_beh.tsv"
+    ".*.edf" = "misc/{prefix}_task-Default_physio.edf"
+    ".*.csv" = "misc/{prefix}_task-Default_beh.tsv"
     ".*_labnotebook.tsv" = "misc/{prefix}_labnotebook.tsv"
     ".*_participantform.tsv" = "misc/{prefix}_participantform.tsv"
 
