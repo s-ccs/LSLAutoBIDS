@@ -1,10 +1,10 @@
 import os
 import sys
 import pytest
-import yaml
+#import yaml
 import shutil
 #import lslautobids
-import importlib
+#import importlib
 #import lslautobids.main
 # Compute project root (two levels up from current test.py)
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -24,7 +24,7 @@ print(f" Running tests in {test_file_name}")
 @pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_process_main_functionality(setup_project, monkeypatch):
     """
-    Expect the main pipeline to raise RuntimeError when duplicate files are found.
+    This should not raise any errors at all!
     """
     project_name = setup_project # fixture via pytest
     paths = get_root_paths(__file__)
@@ -43,14 +43,26 @@ def test_process_main_functionality(setup_project, monkeypatch):
     # run once
     import lslautobids.main
     lslautobids.main.main()
-    
+
+    # sub-099 exists, but not sub-100
+    fixture_path = os.path.join(paths["bids_root"],project_name,"sub-099","ses-001","eeg","sub-099_ses-001_task-freeviewing_run-2_eeg.set")
+    assert os.path.exists(fixture_path)
+
+    fixture_path = os.path.join(paths["bids_root"],project_name,"sub-100","ses-001","eeg","sub-100_ses-001_task-freeviewing_run-2_eeg.set")
+    assert not os.path.exists(fixture_path)
     # add a subject
     shutil.copytree(os.path.join(paths["project_root"], "copy_later","sub-100"), os.path.join(paths["project_root"], project_name,"sub-100"))
     
     lslautobids.main.main()
 
+    # test that bids/sub-100 folder exists
+    # test that both subjects have experiment.tar.gz with identical content
+
+    fixture_path = os.path.join(paths["bids_root"],project_name,"sub-100","ses-001","eeg","sub-100_ses-001_task-freeviewing_run-2_eeg.set")
+    assert os.path.exists(fixture_path)
+
     # cleanup
     shutil.rmtree(os.path.join(paths["project_root"], project_name,"sub-100"))
-    shutil.rmtree(paths["bids_root"])
+    #shutil.rmtree(paths["bids_root"])
 
 

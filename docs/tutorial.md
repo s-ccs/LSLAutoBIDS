@@ -103,7 +103,7 @@ In this example, we will see how to use the LSLAutoBIDS package to:
     otherFilesUsed = true
 
   [OtherFilesInfo]
-    expectedOtherFiles = [".edf", ".csv", "_labnotebook.tsv", "_participantform.tsv"]
+    expectedOtherFiles = ["*.edf"="misc/{prefix}_et.edf", "*.csv"="misc/{prefix}_beh.csv", "*_labnotebook.tsv"="misc/{prefix}_labnotebook.tsv", "*_participantform.tsv"="{prefix}_participantform.tsv"]
 ```
 2. Run the conversion and upload command to convert the `xdf` files to BIDS format and upload the data to the dataverse.
 ```
