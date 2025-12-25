@@ -1,8 +1,11 @@
 import subprocess
 import os
 import time
-from lslautobids.config_globals import project_root
+from lslautobids.config_globals import cli_args,project_root
+from lslautobids.config_globals import bids_root
+from pathlib import Path
 import logging
+import sys
 
 def push_files_to_dataverse(project_name, logger):
         """     
@@ -20,11 +23,14 @@ def push_files_to_dataverse(project_name, logger):
         FileNotFoundError: If the target directory or files are not found.
         Exception: For any other unexpected errors during the process.
     """
-        try:
+
+        try:    
+                project_name = cli_args.project_name
+                dataset_path = os.path.join(bids_root, project_name) 
                 # Define the bash command as a list of strings
                 command = ['datalad', 'push', '--to' , 'dataverse']
                 # Call the bash command using subprocess.run()
-                subprocess.run(command, check=True)
+                subprocess.run(command, check=True, cwd=dataset_path)
                 logger.info("Uploaded to dataverse successfully!")
 
                 # Save the current time as the last run time in the log file

@@ -5,13 +5,10 @@ import os
 def create_and_add_files_to_datalad_dataset(dataset_path,logger):
     message = "LSL Auto BIDS: new files found and added"
     #if flag==0:
-    
-    try:
-        dl.Dataset(dataset_path)
-    except:
+    ds = dl.Dataset(dataset_path)
+    if not ds.is_installed():
         message ="LSL Auto BIDS: new datalad dataset created"
-        # Create a new dataset
-        logger.info('Creating a new datalad dataset........')
+        logger.info("Creating a new datalad dataset........")
         try:
             dl.create(dataset_path, force=True) # files already exist, so we eforce it
 
@@ -24,7 +21,7 @@ def create_and_add_files_to_datalad_dataset(dataset_path,logger):
                 f.write("\n*.md annex.largefiles=nothing")
                 f.write("\n*.json annex.largefiles=nothing")
 
-        except:
+        except Exception:
             logger.info("Could not create a new dataset, maybe it exists already?")
 
 
