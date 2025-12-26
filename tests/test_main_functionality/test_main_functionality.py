@@ -31,6 +31,9 @@ def test_process_main_functionality(setup_project, monkeypatch):
 
     monkeypatch_paths(monkeypatch,paths)
     
+    from lslautobids.config_logger import get_logger
+    logger = get_logger(project_name)
+    logger.debug(f" Starting test_process_main_functionality in {project_name} ") 
     
     # Reset sys.argv to something that lslautobids.main.main() expects
     # this effectively removes the -c from setup_project
