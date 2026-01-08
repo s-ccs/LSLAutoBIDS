@@ -7,7 +7,7 @@ def create_and_add_files_to_datalad_dataset(dataset_path,logger):
     #if flag==0:
     
     try:
-        dl.Dataset(dataset_path)
+        dl.Dataset(dataset_path).status()
     except:
         message ="LSL Auto BIDS: new datalad dataset created"
         # Create a new dataset
@@ -30,5 +30,6 @@ def create_and_add_files_to_datalad_dataset(dataset_path,logger):
 
     # commit current files
     logger.info('Committing current changes........')
+    os.chdir(dataset_path) # bug in datalad that requires to be in the same folder to save the datalad thingy
     dl.save(path = dataset_path, message=message)
     
