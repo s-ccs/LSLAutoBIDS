@@ -7,7 +7,13 @@
   <a href="https://s-ccs.github.io/LSLAutoBIDS/" target="_blank">
     <img src="https://img.shields.io/badge/View%20Full%20Documentation-%230072C6?style=for-the-badge&logo=readthedocs&logoColor=white" alt="View Full Documentation">
   </a>
+  <a href="https://osf.io/preprints/osf/26eh3_v1" target="_blank">
+    <img src="https://img.shields.io/badge/Preprint-%23C67200?style=for-the-badge&logo=osf&logoColor=white" alt="View Full Documentation">
+  </a>
 </p>
+
+
+
 
 ## 🚀 Getting Started
 
