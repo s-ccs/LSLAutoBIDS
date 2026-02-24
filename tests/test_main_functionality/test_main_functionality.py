@@ -67,7 +67,7 @@ def test_process_main_functionality(setup_project, monkeypatch):
     # cleanup 
     shutil.rmtree(os.path.join(paths["project_root"], project_name,"sub-100"))
 
-    # # doesnt work for some reason with git-annex, needs sudo
+    # # does not work for some reason with git-annex, needs sudo
     #shutil.rmtree(paths["bids_root"])
 
 

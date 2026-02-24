@@ -44,7 +44,7 @@ def test_process_otherfiles_renaming(setup_project, monkeypatch):
     import lslautobids.main
     lslautobids.main.main()
 
-    # cleanup # doesnt work for some reason with git-annex, needs sudo
+    # cleanup # does not work for some reason with git-annex, needs sudo
     #shutil.rmtree(paths["bids_root"])
 
 
