@@ -63,6 +63,6 @@ def test_process_main_functionality(setup_project, monkeypatch):
 
     # cleanup
     shutil.rmtree(os.path.join(paths["project_root"], project_name,"sub-100"))
-    #shutil.rmtree(paths["bids_root"])
+    shutil.rmtree(paths["bids_root"])
 
 
