@@ -64,8 +64,10 @@ def test_process_main_functionality(setup_project, monkeypatch):
     fixture_path = os.path.join(paths["bids_root"],project_name,"sub-100","ses-001","eeg","sub-100_ses-001_task-freeviewing_run-2_eeg.set")
     assert os.path.exists(fixture_path)
 
-    # cleanup
+    # cleanup 
     shutil.rmtree(os.path.join(paths["project_root"], project_name,"sub-100"))
-    shutil.rmtree(paths["bids_root"])
+
+    # # doesnt work for some reason with git-annex, needs sudo
+    #shutil.rmtree(paths["bids_root"])
 
 
