@@ -33,6 +33,7 @@ def test_process_new_files_with_old_suffix(setup_project, monkeypatch):
     logger = get_logger(project_name)
     logger.debug(f" Starting test_process_new_files_with_old_suffix in {project_name} ")
 
+
     # Reset sys.argv to something that lslautobids.main.main() expects
     sys.argv = [
         "lslautobids.main",
