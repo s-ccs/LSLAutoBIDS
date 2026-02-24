@@ -45,6 +45,6 @@ def test_process_otherfiles_renaming(setup_project, monkeypatch):
     lslautobids.main.main()
 
     # cleanup
-    shutil.rmtree(paths["bids_root"])
+    #shutil.rmtree(paths["bids_root"])
 
 
