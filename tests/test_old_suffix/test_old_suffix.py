@@ -28,7 +28,12 @@ def test_process_new_files_with_old_suffix(setup_project, monkeypatch):
     paths = get_root_paths(__file__)
 
     monkeypatch_paths(monkeypatch,paths)
-    print("XXXXXXXXXXXXXXXXXXXX")
+    
+    from lslautobids.config_logger import get_logger
+    logger = get_logger(project_name)
+    logger.debug(f" Starting test_process_new_files_with_old_suffix in {project_name} ")
+
+
     # Reset sys.argv to something that lslautobids.main.main() expects
     sys.argv = [
         "lslautobids.main",
