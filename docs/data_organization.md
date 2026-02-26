@@ -90,8 +90,6 @@ This folder contains the converted BIDS data files and other files we want to ve
                     ├── sub-001_ses-001_task-Duration_run-001_eeg.vmrk
                     ├── sub-001_ses-001_task-Duration_run-001_eeg.eeg
                     .........
-            └── beh
-                └──behavioral files (other files)
             └── misc (added to .bidsignore)
                 └── experimental files (This needs to stored in zip format)
                 └── labnotebook, subjectform etc. 
