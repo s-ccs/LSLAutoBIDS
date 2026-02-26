@@ -1,0 +1,1804 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automated BIDS conversion and processing framework">
+      
+      
+      
+        <link rel="canonical" href="https://s-ccs.github.io/LSLAutoBIDS/developers_documentation/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>LSLAutoBIDS Developer's Documentation - LSLAutoBIDS - Developers Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lslautobids-developers-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="LSLAutoBIDS - Developers Documentation" class="md-header__button md-logo" aria-label="LSLAutoBIDS - Developers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LSLAutoBIDS - Developers Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LSLAutoBIDS Developer's Documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/s-ccs/LSLAutoBIDS" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="LSLAutoBIDS - Developers Documentation" class="md-nav__button md-logo" aria-label="LSLAutoBIDS - Developers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LSLAutoBIDS - Developers Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/s-ccs/LSLAutoBIDS" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../file_processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Processing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bids_convert_and_upload/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BIDS Conversion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datalad_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalad Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataverse_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataverse Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other_utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Other Utility Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_organization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Organization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://www.s-ccs.de/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Group's website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started Tutorial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Features
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Components
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cli-module-clipy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. CLI Module (cli.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. CLI Module (cli.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configuration-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Configuration System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Configuration System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dataverse-and-project-root-configuration-gen_dv_configpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Dataverse and Project Root Configuration (gen_dv_config.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-project-configuration-gen_project_configpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Project Configuration (gen_project_config.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-file-processing-pipeline-processing_new_filespy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. File Processing Pipeline (processing_new_files.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. File Processing Pipeline (processing_new_files.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-detection-of-new-files-check_for_new_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Detection of New Files (check_for_new_data())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-filtering-check_for_new_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Filtering (check_for_new_files())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-validation-and-preparation-process_new_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validation and Preparation – (process_new_files())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-user-prompt-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. User Prompt &amp; Conversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-bids-conversion-and-upload-bids_process_and_upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. BIDS Conversion and Upload (bids_process_and_upload())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-supporting-utility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Supporting Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. BIDS Conversion and Upload Pipeline ⚙️ (convert_to_bids_and_upload.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. BIDS Conversion and Upload Pipeline ⚙️ (convert_to_bids_and_upload.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-entry-point-bids_process_and_upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Entry Point (bids_process_and_upload())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-convert-to-bids-convert_to_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Convert to BIDS (convert_to_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-copy-source-files-copy_source_files_to_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Copy Source Files (copy_source_files_to_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-create-raw-xdf-create_raw_xdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Create Raw XDF (create_raw_xdf())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-bids-validation-validate_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. BIDS Validation (validate_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-populate-dataset_descriptionjson-populate_dataset_description_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Populate dataset_description.json (populate_dataset_description_json())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-datalad-and-dataverse-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Datalad and Dataverse Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-datalad-integration-datalad_createpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. DataLad Integration (datalad_create.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-dataverse-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Dataverse Integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Dataverse Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dataverse-dataset-creation-dataverse_dataset_createpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Dataverse Dataset Creation (dataverse_dataset_create.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-linking-datalad-to-dataverse-link_datalad_dataversepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Linking DataLad to Dataverse (link_datalad_dataverse.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-generating-dataset-json-metadata-generate_dataset_jsonpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Generating dataset JSON Metadata (generate_dataset_json.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-upload-to-dataverse-upload_to_dataversepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Upload to Dataverse (upload_to_dataverse.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-utility-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Utility Modules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Utility Modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-global-configuration-management-config_globalspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Global Configuration Management (config_globals.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-logging-configuration-config_loggerpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Logging Configuration (config_logger.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-utility-functions-utilspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Utility Functions (utils.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#running-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miscellianeous-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Miscellianeous Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="lslautobids-developers-documentation">LSLAutoBIDS Developer's Documentation<a class="headerlink" href="#lslautobids-developers-documentation" title="Permanent link">¤</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h2>
+<p>LSLAutoBIDS is a Python tool series designed to automate the following tasks sequentially:
+- Convert recorded XDF files to BIDS format
+- Integrate the EEG data with non-EEG data (e.g., behavioral, other) for the complete dataset 
+- Datalad integration for version control for the integrated dataset
+- Upload the dataset to Dataverse 
+- Provide a command-line interface for cloning, configuring, and running the conversion process</p>
+<h3 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">¤</a></h3>
+<ul>
+<li>Automatic XDF to BIDS conversion</li>
+<li>DataLad integration for version control</li>
+<li>Dataverse integration for data sharing</li>
+<li>Configurable project management</li>
+<li>Support for behavioral data (non eeg files) in addition to EEG data</li>
+<li>Comprehensive logging and validation for BIDS compliance</li>
+</ul>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">¤</a></h2>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#core-components">Core Components</a></li>
+<li><a href="#1-cli-module-clipy">1. CLI Module (<code>cli.py</code>)</a></li>
+<li><a href="#2-configuration-system">2. Configuration System</a><ul>
+<li><a href="#1-dataverse-and-project-root-configuration-gen_dv_configpy">1. Dataverse and Project Root Configuration (<code>gen_dv_config.py</code>)</a></li>
+<li><a href="#2-project-configuration-gen_project_configpy">2. Project Configuration (<code>gen_project_config.py</code>)</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#3-file-processing-pipeline-processing_new_filespy">3. File Processing Pipeline (<code>processing_new_files.py</code>)</a></p>
+<ul>
+<li><a href="#1-detection-of-new-files-check_for_new_data">1. Detection of New Files (<code>check_for_new_data()</code>)</a></li>
+<li><a href="#2-filtering-check_for_new_files">2. Filtering (<code>check_for_new_files()</code>)</a></li>
+<li><a href="#3-validation-and-preparation--process_new_files">3. Validation and Preparation – (<code>process_new_files()</code>)</a></li>
+<li><a href="#4-user-prompt--conversion">4. User Prompt &amp; Conversion</a></li>
+<li><a href="#5-bids-conversion-and-upload-bids_process_and_upload">5. BIDS Conversion and Upload (<code>bids_process_and_upload()</code>)</a></li>
+<li><a href="#6-supporting-utility">6. Supporting Utility</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#4-bids-conversion-and-upload-pipeline-️-convert_to_bids_and_uploadpy">4. BIDS Conversion and Upload Pipeline ⚙️ (<code>convert_to_bids_and_upload.py</code>)</a></p>
+<ul>
+<li><a href="#1-entry-point-bids_process_and_upload">1. Entry Point (<code>bids_process_and_upload()</code>)</a></li>
+<li><a href="#2-convert-to-bids-convert_to_bids">2. Convert to BIDS (<code>convert_to_bids()</code>)</a></li>
+<li><a href="#3-copy-source-files-copy_source_files_to_bids">3. Copy Source Files (<code>copy_source_files_to_bids()</code>)</a></li>
+<li><a href="#4-create-raw-xdf-create_raw_xdf">4. Create Raw XDF (<code>create_raw_xdf()</code>)</a></li>
+<li><a href="#5-bids-validation-validate_bids">5. BIDS Validation (<code>validate_bids()</code>)</a></li>
+<li><a href="#6-populate-dataset_descriptionjson-populate_dataset_description_json">6. Populate dataset_description.json (<code>populate_dataset_description_json()</code>)</a></li>
+<li><a href="#7-datalad-and-dataverse-integration">7. Datalad and Dataverse Integration</a></li>
+</ul>
+</li>
+<li><a href="#4-datalad-integration-datalad_createpy">5. DataLad Integration (<code>datalad_create.py</code>)</a></li>
+<li><a href="#5-dataverse-integration">6. Dataverse Integration</a><ul>
+<li><a href="#1-dataverse-dataset-creation-dataverse_dataset_createpy">1. Dataverse Dataset Creation (<code>dataverse_dataset_create.py</code>)</a></li>
+<li><a href="#2-linking-datalad-to-dataverse-link_datalad_dataversepy">2. Linking DataLad to Dataverse (<code>link_datalad_dataverse.py</code>)</a></li>
+<li><a href="#4-generating-dataset-json-metadata-generate_dataset_jsonpy">3. Generating dataset JSON Metadata (<code>generate_dataset_json.py</code>)</a></li>
+<li><a href="#5-upload-to-dataverse-upload_to_dataversepy">4. Upload to Dataverse (<code>upload_to_dataverse.py</code>)</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#other-utility-modules">Other Utility Modules</a></p>
+<ul>
+<li><a href="#1-global-configuration-management-config_globalspy">1. Global Configuration Management (<code>config_globals.py</code>)</a></li>
+<li><a href="#2-logging-configuration-config_loggerpy">2. Logging Configuration (<code>config_logger.py</code>)</a></li>
+<li><a href="#3-utility-functions-utilspy">3. Utility Functions (<code>utils.py</code>)</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#testing">Testing</a></p>
+</li>
+<li><a href="#running-tests">Running Tests</a></li>
+</ul>
+<h2 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Permanent link">¤</a></h2>
+<h3 id="1-cli-module-clipy">1. CLI Module (<code>cli.py</code>)<a class="headerlink" href="#1-cli-module-clipy" title="Permanent link">¤</a></h3>
+<p>The command-line interface provides the main entry point for the application:</p>
+<ul>
+<li><strong>Commands</strong>: <code>gen-proj-config</code>, <code>run</code>, <code>gen-dv-config</code>, <code>help</code></li>
+<li><strong>Module mapping</strong>: Maps commands to their respective modules</li>
+<li><strong>Argument handling</strong>: Processes and forwards command-line arguments</li>
+</ul>
+<h4 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">¤</a></h4>
+<ol>
+<li><code>lslautobids en-proj-config</code> and <code>lslautobids gen-dv-config</code> commands generate configuration files for the project and Dataverse, respectively. This allows users to set up their project and Dataverse connection details easily before running the conversion and upload process</li>
+<li>The <code>lslautobids run</code> command executes the main conversion and upload process, using the configurations generated earlier. This command runs the entire pipeline from reading XDF files, converting them to BIDS format, integrating with DataLad, and uploading to Dataverse.</li>
+<li>The <code>lslautobids help</code> command provides usage information for the CLI, listing available commands and their descriptions.</li>
+</ol>
+<h3 id="2-configuration-system">2. Configuration System<a class="headerlink" href="#2-configuration-system" title="Permanent link">¤</a></h3>
+<p>The configuration system manages dataversse and project-specific settings using YAML and TOML files.</p>
+<h4 id="1-dataverse-and-project-root-configuration-gen_dv_configpy">1. Dataverse and Project Root Configuration (<code>gen_dv_config.py</code>)<a class="headerlink" href="#1-dataverse-and-project-root-configuration-gen_dv_configpy" title="Permanent link">¤</a></h4>
+<p>This module generates a global configuration file for Dataverse and project root directories. This is a one-time setup per system.  This file is stored in <code>~/.config/lslautobids/autobids_config.yaml</code> and contains:
+- Paths for BIDS, projects, and project_other directories : This allows users to specify where their eeg data, behavioral data, and converted BIDS data are stored on their system. This paths should be relative to the home/users directory of your system and string format.</p>
+<ul>
+<li>Dataverse connection details: Base URL, API key, and parent dataverse name for uploading datasets. Base URL is the URL of the dataverse server (e.g. <a href="https://darus.uni-stuttgart.de">https://darus.uni-stuttgart.de</a>), API key is your personal API token for authentication (found in your dataverse account settings), and parent dataverse name is the name of the dataverse under which datasets will be created (this can be found in the URL when you are in the dataverses page just after 'dataverse/'). For example, if the URL is <code>https://darus.uni-stuttgart.de/dataverse/simtech_pn7_computational_cognitive_science</code>, then the parent dataverse name is <code>simtech_pn7_computational_cognitive_science</code>.</li>
+</ul>
+<p><strong>Commands and arguments</strong></p>
+<p>The command to generate the dataverse configuration file is:
+<div class="highlight"><pre><span></span><code>lslautobids gen-dv-config
+</code></pre></div>
+_Currently, the package doesn't allow you to have multiple dataverse configurations. This will be added in future versions.</p>
+<h4 id="2-project-configuration-gen_project_configpy">2. Project Configuration (<code>gen_project_config.py</code>)<a class="headerlink" href="#2-project-configuration-gen_project_configpy" title="Permanent link">¤</a></h4>
+<p>This module generates a project-specific configuration file in TOML format. This file is stored in the <code>projects/&lt;PROJECT_NAME&gt;/&lt;PROJECT_NAME&gt;_config.toml</code> file and contains:
+- Project metadata: Title, description, license, and authors, etc.
+<Change the configuration file details as per new edits></p>
+<p><strong>Commands and arguments</strong></p>
+<p>The command to generate the project configuration file is:
+<div class="highlight"><pre><span></span><code>lslautobids gen-proj-config --project &lt;projectname&gt;  
+</code></pre></div>
+- <code>--project &lt;projectname&gt;</code>: Specifies the name of the project for which the configuration file is to be generated. This argument is <em>required</em>.
+- <code>--standalone_toml</code> : (Optional) If provided, the generated configuration file will be a standalone TOML file in the current directory, without being placed in the project directory.
+- <code>--custom_dv_config</code> : (Optional) Path to a custom YAML configuration file (dataverse and project root configuration) for Dataverse and project root directories. If not provided, the default path <code>~/.config/lslautobids/autobids_config.yaml</code> will be used. This is specified to allow flexibility in using different configurations for different projects or testing purposes.</p>
+<h3 id="3-file-processing-pipeline-processing_new_filespy">3. File Processing Pipeline (<code>processing_new_files.py</code>)<a class="headerlink" href="#3-file-processing-pipeline-processing_new_filespy" title="Permanent link">¤</a></h3>
+<p>The file processing part of the pipeline handles finding and processing new XDF files in the specified project directory:</p>
+<p>The pipeline ensures that all newly added data files are:</p>
+<ol>
+<li>
+<p>Detected since the last run.</p>
+</li>
+<li>
+<p>Filtered based on ignored subjects and tasks (these are specified in the project configuration file).</p>
+</li>
+<li>
+<p>Validated against duplicate or malformed filenames.</p>
+</li>
+<li>
+<p>Registered in the project configuration file (e.g., tasks ,etc.).</p>
+</li>
+<li>
+<p>Converted to BIDS format and uploaded, based on user confirmation or auto-run flags.</p>
+</li>
+</ol>
+<h4 id="1-detection-of-new-files-check_for_new_data">1. Detection of New Files (<code>check_for_new_data()</code>)<a class="headerlink" href="#1-detection-of-new-files-check_for_new_data" title="Permanent link">¤</a></h4>
+<ul>
+<li>
+<p>Entry point of the script (from <code>main.py</code>).</p>
+</li>
+<li>
+<p>Reads project configuration (<project_name>_config.toml) to identify ignored subjects and excluded tasks (which we don't want to process and include in the BIDS dataset).</p>
+</li>
+<li>
+<p>Calls <code>check_for_new_files()</code> to scan the project directory for files modified after the last recorded run.</p>
+</li>
+</ul>
+<h4 id="2-filtering-check_for_new_files">2. Filtering (<code>check_for_new_files()</code>)<a class="headerlink" href="#2-filtering-check_for_new_files" title="Permanent link">¤</a></h4>
+<ul>
+<li>
+<p>Uses <code>last_run_log.txt</code> to determine which files are new since the last check.</p>
+</li>
+<li>
+<p>Excludes:</p>
+<ul>
+<li>
+<p>Ignored subjects (defined in the project TOML config).</p>
+</li>
+<li>
+<p>Ignored tasks (tasks explicitly excluded in the project TOML config).</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Returns a list of candidate <code>.xdf</code> files to process or outputs a message if no new files are found and exits.</p>
+</li>
+</ul>
+<h4 id="3-validation-and-preparation-process_new_files">3. Validation and Preparation – (<code>process_new_files()</code>)<a class="headerlink" href="#3-validation-and-preparation-process_new_files" title="Permanent link">¤</a></h4>
+<p>For each new file:</p>
+<ul>
+<li>
+<p>File type check: Only .xdf files are considered.</p>
+</li>
+<li>
+<p>Duplicate prevention: Files with a _old suffix (e.g., sub-001_ses-01_task-Default_old.xdf) are flagged as duplicates. The pipeline logs an error and halts execution to avoid accidental overwrites. This is currently a specific duplicate check for LSL recordings. We shall extend this in future versions.</p>
+</li>
+<li>
+<p>Task extraction: Task names are parsed from filenames (e.g., sub-888_ses-001_task-Default_run-001_eeg.xdf → task = Default).</p>
+</li>
+<li>
+<p>Configuration update: Newly discovered tasks are appended to the TOML config under [Tasks.tasks].</p>
+</li>
+</ul>
+<h4 id="4-user-prompt-conversion">4. User Prompt &amp; Conversion<a class="headerlink" href="#4-user-prompt-conversion" title="Permanent link">¤</a></h4>
+<ul>
+<li>If cli_args.yes is set (as a flag while running <code>lslautobids run</code>), the pipeline skips user interaction and proceeds directly to conversion. In general, this flag sets all the user prompts throughout the pipeline to 'yes', allowing for fully automated runs. </li>
+<li>
+<p>Otherwise, the user is prompted to confirm whether BIDS conversion should start.</p>
+</li>
+<li>
+<p>If declined, the process halts with a warning.</p>
+</li>
+</ul>
+<h4 id="5-bids-conversion-and-upload-bids_process_and_upload">5. BIDS Conversion and Upload (<code>bids_process_and_upload()</code>)<a class="headerlink" href="#5-bids-conversion-and-upload-bids_process_and_upload" title="Permanent link">¤</a></h4>
+<ul>
+<li>
+<p>Invoked only if the user confirms (or auto-run flag is set).</p>
+</li>
+<li>
+<p>Handles BIDS formatting and uploading of the processed files.</p>
+</li>
+</ul>
+<h4 id="6-supporting-utility">6. Supporting Utility<a class="headerlink" href="#6-supporting-utility" title="Permanent link">¤</a></h4>
+<ul>
+<li><code>_clear_last_run_log()</code> :Clears the last run timestamp (last_run_log.txt) when --redo_bids_conversion is specified (as a flag in <code>lslautobids run</code>), forcing reprocessing of all files.</li>
+</ul>
+<h3 id="4-bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy">4. BIDS Conversion and Upload Pipeline ⚙️ (<code>convert_to_bids_and_upload.py</code>)<a class="headerlink" href="#4-bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy" title="Permanent link">¤</a></h3>
+<p>The pipeline is designed to ensure:</p>
+<ol>
+<li>
+<p>Source files (EEG only) are preserved in a BIDS-compatible structure.</p>
+</li>
+<li>
+<p>EEG recordings are converted to BIDS format using MNE and validated against the BIDS standard.</p>
+</li>
+<li>
+<p>Behavioral and experimental metadata (also called other files in general in context on this project) are included and checked against project expectations.</p>
+</li>
+<li>
+<p>Project metadata is populated (dataset_description.json). This is required as a part of BIDS standard.</p>
+</li>
+<li>
+<p>The dataset is registered in Dataverse and optionally pushed/uploaded automatically.</p>
+</li>
+</ol>
+<h4 id="1-entry-point-bids_process_and_upload">1. Entry Point (<code>bids_process_and_upload()</code>)<a class="headerlink" href="#1-entry-point-bids_process_and_upload" title="Permanent link">¤</a></h4>
+<ul>
+<li>
+<p>Reads project configuration (<project_name>_config.toml) to check if a other computer (non eeg files) was used. (otherFilesUsed: true)</p>
+</li>
+<li>
+<p>Iterates over each processed file and extracts identifiers. For example, for a file named <code>sub-001_ses-001_task-Default_run-001_eeg.xdf</code>, it extracts:</p>
+<ul>
+<li>
+<p>Subject ID (sub-XXX) - 001 (<code>str</code> is accepted)</p>
+</li>
+<li>
+<p>Session ID (ses-YYY) - 001 (<code>str</code> is accepted)</p>
+</li>
+<li>
+<p>Run number (run-ZZZ) - 001 (<code>int</code> is accepted)</p>
+</li>
+<li>
+<p>Task name (task-Name) - Default (<code>str</code> is accepted)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Constructs the absolute path to the .xdf file from the project root.</p>
+</li>
+<li>
+<p>Calls BIDS.convert_to_bids() to handle conversion and validation.</p>
+</li>
+<li>
+<p>After all files are processed:</p>
+</li>
+<li>
+<p>Populates dataset_description.json.</p>
+<ul>
+<li>
+<p>Generates JSON metadata (<code>generate_json_file.py</code>).</p>
+</li>
+<li>
+<p>Creates/links a Dataverse dataset (<code>create_dataverse.py</code>).</p>
+</li>
+<li>
+<p>Initializes a DataLad dataset and links with Dataverse (<code>create_and_add_files_to_datalad_dataset.py</code>, <code>add_sibling_dataverse_in_folder.py</code>).</p>
+</li>
+<li>
+<p>Pushes data to Dataverse automatically (--yes) or via user confirmation.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-convert-to-bids-convert_to_bids">2. Convert to BIDS (<code>convert_to_bids()</code>)<a class="headerlink" href="#2-convert-to-bids-convert_to_bids" title="Permanent link">¤</a></h4>
+<p>This function handles the core conversion of a XDF files to BIDS format and constructs the dataset structure. It performs the following steps:</p>
+<ol>
+<li>
+<p>Copy raw/behavioral/experiment files via <code>copy_source_files_to_bids()</code> (See section).</p>
+</li>
+<li>
+<p>Build a <code>BIDSPath</code> for the EEG recording:</p>
+<ul>
+<li>
+<p>Subject, session, run, task extracted from filename.</p>
+</li>
+<li>
+<p>File format: EEGLAB (.set) chosen to avoid BrainVision memory issues.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>The function checks if the BIDS file already exists:</p>
+<ul>
+<li>
+<p>If it does, it logs and doesn"t reconvert.</p>
+</li>
+<li>
+<p>If --redo_bids_conversion is specified, it overwrites existing files. This flag is passed from the command line while running <code>lslautobids run</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>If the file doesn't exist or is to be overwritten, it proceeds with conversion:</p>
+<ul>
+<li>
+<p>Load <code>.xdf</code> with <code>create_raw_xdf()</code>. (See section).</p>
+</li>
+<li>
+<p>Apply anonymization (daysback_min + anonymizationNumber from project TOML config).</p>
+</li>
+<li>
+<p>Write EEG data into BIDS folder via <code>write_raw_bids().</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Validate results with <code>validate_bids()</code>. The function raises an error if validation fails and returns 0; otherwise returns 1 for success. (See section).</p>
+</li>
+<li>
+<p>The convertt_to_bids() function returns a status code indicating the result of the conversion:</p>
+<ul>
+<li>
+<p>1: Successful BIDS conversion and validation</p>
+</li>
+<li>
+<p>2: BIDS conversion already done i.e. file already existed, skipped conversion and validation</p>
+</li>
+<li>
+<p>0: BIDS Conversion done but validation failure</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="3-copy-source-files-copy_source_files_to_bids">3. Copy Source Files (<code>copy_source_files_to_bids()</code>)<a class="headerlink" href="#3-copy-source-files-copy_source_files_to_bids" title="Permanent link">¤</a></h4>
+<p>This function ensures that the original source files (EEG and other/behavioral files) are also a part our dataset. These files can't be directly converted to BIDS format but we give the user the option to include them in the BIDS directory structure in a pseudo-BIDS format for completeness.</p>
+<ul>
+<li>
+<p>Copies the .xdf into the following structure: 
+<code>&lt;BIDS_ROOT&gt;/sourcedata/sub-XXX/ses-YYY/sub-XXX_ses-YYY_task-Name_run-ZZZ_eeg.xdf</code></p>
+</li>
+<li>
+<p>Adds <code>_raw</code> suffix to distinguish original files.</p>
+</li>
+<li>
+<p>If a file already exists, logs a message and skips copying.</p>
+</li>
+</ul>
+<p>If otherFilesUsed=True in project config file:</p>
+<ol>
+<li>
+<p>Behavioral files are copied via <code>_copy_behavioral_files()</code>.</p>
+<ul>
+<li>Validates required files against TOML config (<code>OtherFilesInfo</code>). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also typically use a mandatory labnotebook and participant info files in .tsv format. Currently it is not possible to convert files in this step, but should maybe become possible for e.g. <code>EDF</code> files and <code>CSV=&gt;TSV</code> files</li>
+<li>follows the src=target regexp syntax to copy files over</li>
+</ul>
+</li>
+<li>
+<p>Experimental files are copied via <code>_copy_experiment_files().</code></p>
+<ul>
+<li>Gathers files from the experiment folder.</li>
+<li>Copies into BIDS <code>misc/</code> directory i.e. <code>&lt;BIDS_ROOT&gt;/misc/</code></li>
+<li>Compresses into experiment.tar.gz.</li>
+<li>Removes the uncompressed folder.</li>
+</ul>
+</li>
+</ol>
+<p>There is a flag in the <code>lslautobids run</code> command called <code>--redo_other_pc</code> which when specified, forces overwriting of existing other and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the other/behavioral data that need to be reflected in the BIDS dataset.</p>
+<h4 id="4-create-raw-xdf-create_raw_xdf">4. Create Raw XDF (<code>create_raw_xdf()</code>)<a class="headerlink" href="#4-create-raw-xdf-create_raw_xdf" title="Permanent link">¤</a></h4>
+<p>This function reads the XDF file and creates an MNE Raw object. It performs the following steps:
+- Select EEG stream using match_streaminfos(type="EEG").</p>
+<ul>
+<li>
+<p>Resample to the highest nominal sampling rate across streams (fs_new).</p>
+</li>
+<li>
+<p>Read .xdf with <code>read_raw_xdf()</code>, enabling interpolation and marker prefixing.</p>
+</li>
+<li>
+<p>Annotate missing values (annotate_nan) and clean invalid annotations (negative onset).</p>
+</li>
+<li>
+<p>Map known channel labels to MNE channel types (e.g., heog → eog, bipoc → misc). This is done using a predefined dictionary of channel mappings for our lab setup. This can be extended in future versions to include user-defined mappings.</p>
+</li>
+</ul>
+<p>This produces a clean, memory-efficient Raw object ready for BIDS conversion.</p>
+<h4 id="5-bids-validation-validate_bids">5. BIDS Validation (<code>validate_bids()</code>)<a class="headerlink" href="#5-bids-validation-validate_bids" title="Permanent link">¤</a></h4>
+<p>This function validates the generated BIDS files using the <code>bids-validator</code> package. It performs the following steps:
+- Walks through the BIDS directory.
+- Skips irrelevant files: (<code>misc</code>-folder, hidden/system files.)
+- Uses <code>BIDSValidator</code> to validate relative paths. 
+- If any file fails validation, logs an error and returns 0 ; Otherwise, logs success and returns 1.</p>
+<h4 id="6-populate-dataset_descriptionjson-populate_dataset_description_json">6. Populate dataset_description.json (<code>populate_dataset_description_json()</code>)<a class="headerlink" href="#6-populate-dataset_descriptionjson-populate_dataset_description_json" title="Permanent link">¤</a></h4>
+<p>This function generates the <code>dataset_description.json</code> file required by the BIDS standard. It performs the following steps:
+- Gathers metadata from the project configuration file (title, authors, license, etc.) from the project TOML config file.
+- Calls make_dataset_description() from mne_bids.
+- Overwrites existing file with updated values.</p>
+<h4 id="7-datalad-and-dataverse-integration">7. Datalad and Dataverse Integration<a class="headerlink" href="#7-datalad-and-dataverse-integration" title="Permanent link">¤</a></h4>
+<p>This part of the pipeline manages version control and data sharing using DataLad and Dataverse. After conversion, the following steps occur:</p>
+<ul>
+<li><code>generate_json_file()</code> → Generates supplementary metadata JSONs.</li>
+<li><code>create_dataverse()</code> → Creates a new dataset in Dataverse. Returns DOI + status.</li>
+<li><code>create_and_add_files_to_datalad_dataset()</code> → Initializes DataLad repo, adds files.</li>
+<li><code>add_sibling_dataverse_in_folder()</code> → Links DataLad dataset to Dataverse (if new dataset).</li>
+<li>push_files_to_dataverse() uploads files to Dataverse. It automatically uploads if --yes is set (This flag is set in <code>lslautobids run</code>), otherwise the function prompts user (y/n).</li>
+</ul>
+<h3 id="4-datalad-integration-datalad_createpy">4. DataLad Integration (<code>datalad_create.py</code>)<a class="headerlink" href="#4-datalad-integration-datalad_createpy" title="Permanent link">¤</a></h3>
+<p>The DataLad integration module manages the creation and updating of DataLad datasets for version control of the BIDS dataset. This function initializes a DataLad dataset at a given project path.
+The function performs the following steps:
+1. Initialize commit message. It first sets a initialization message : "LSL Auto BIDS: new files found and added".
+2. If flag == 0 (new dataset), the message is overwritten with "LSL Auto BIDS: new datalad dataset created".
+3. Further, if flag == 0 we try to create a new DataLad dataset in the specified path (dataset_path) using <code>dl.create()</code>. This is similar to running <code>datalad create</code> from the command line for datalad CLI or <code>git init</code> for git CLI. This function is executed using :</p>
+<p><code>dl.create(dataset_path, force=True)</code></p>
+<p>Here, since the directory may already contain files (BIDS directory in our case), we use force=True to allow creation of the dataset even if files already exist and it is not an empty directory.</p>
+<ol>
+<li>
+<p>If it raises an exception (e.g., if the path is not a directory or if DataLad already exists ), it logs an error and exits the program.</p>
+</li>
+<li>
+<p>This function also changes the current working directory to the dataset_path using <code>os.chdir(dataset_path)</code> so subsequent DataLad operations (like <code>datalad save</code>, <code>datalad push</code>) run in the context of this dataset.</p>
+</li>
+<li>
+<p>This function also manages the .gitattributes file to ensure that large files are handled by git-annex and small text/metadata files are handled by git. This is done by appending specific patterns to the .gitattributes file. For example:
+<code>*.csv annex.largefiles=nothing</code> means .csv files are treated as small files and stored directly in git. Similarly, *    annex.largefiles=largerthan=100kb` means files larger than 100kb are managed by git-annex.</p>
+</li>
+<li>
+<p>Finally, it saves the changes to the DataLad dataset using <code>dl.save()</code> with the appropriate commit message. This save command stages all changes (new files, modified files) and commits them to the DataLad dataset.</p>
+</li>
+<li>
+<p>If flag!=0 (existing dataset), it skips the initialization step and directly saves any new changes to the existing DataLad dataset.</p>
+</li>
+</ol>
+<h3 id="5-dataverse-integration">5. Dataverse Integration<a class="headerlink" href="#5-dataverse-integration" title="Permanent link">¤</a></h3>
+<h4 id="1-dataverse-dataset-creation-dataverse_dataset_createpy">1. Dataverse Dataset Creation (<code>dataverse_dataset_create.py</code>)<a class="headerlink" href="#1-dataverse-dataset-creation-dataverse_dataset_createpy" title="Permanent link">¤</a></h4>
+<p>This module handles the creation of a new dataset in Dataverse using the <code>pyDataverse</code> library. The function performs the following steps:</p>
+<ol>
+<li>Initialize <code>dataset.json</code> file path and read the JSON content. (See section)</li>
+<li>Sets up a Dataverse API connection using the base URL and API key from the global configuration file (<code>autobids_config.yaml</code>). This dataset then loads the  <code>dataset.json</code> into the Dataset. This json metadata populates the dataset metadata in Dataverse (title, authors, description, etc.), where we will eventually upload our datalad compatible BIDS dataset.</li>
+<li>The dataset JSON is validated using <code>ds.validate_json()</code>. If the validation passes only then we proceed to create the dataset in Dataverse using <code>dv.create_dataset()</code>.</li>
+<li>The function also checks if that dataset already exists in Dataverse (based on title) to avoid duplicates. For example, one dataverse dataset can contain data from multiple participants/subjects and we usually create a single dataset for the entire project but run the conversion for each subject separately. So we check if a dataset with the same title already exists in Dataverse.<ul>
+<li>Get all the datasets (pids) in the specified parent dataverse using <code>api.get_dataverse(parent_dataverse_name)</code>.</li>
+<li>Check if that the PID specified in the response matches the Dataverse PID specified in the project config file. If it does, we log a message and skip creation.</li>
+</ul>
+</li>
+<li>If no existing dataset is found, we create a new dataset using <code>api.create_dataset(parent_dataverse_name, ds.json())</code>. We then populate the returned dataset ID and DOI in the project configuration file (<project_name>_config.toml) for using in future runs.</li>
+<li>This function returns the dataset DOI and status code ( 1= dataverse dataset exists, 0= new dataset created)</li>
+</ol>
+<h4 id="2-linking-datalad-to-dataverse-link_datalad_dataversepy">2. Linking DataLad to Dataverse (<code>link_datalad_dataverse.py</code>)<a class="headerlink" href="#2-linking-datalad-to-dataverse-link_datalad_dataversepy" title="Permanent link">¤</a></h4>
+<p>This module links the local DataLad dataset to the remote Dataverse dataset as a sibling. The function performs the following steps:
+1. It first checks if the Dataverse is already created in the previous runs or it is just created in the current run (flag==0). If flag==0, it proceeds to link the DataLad dataset to Dataverse.
+2. It runs the command <code>datalad add-sibling-dataverse dataverse_base_url doi_id</code>. This command adds the Dataverse as a sibling to the local DataLad dataset, allowing for synchronization and data management between the two. For lslautobids, we currently only allow to deposit data to Dataverse. In future version, we shall also add user controlled options for adding other siblings like github, gitlab, OpenNeuro, AWS etc.</p>
+<p>We chose Dataverse as it serves as both a repository and a data sharing platform, making it suitable for our needs. It also integrates well with DataLad and allows sharing datasets with collaborators or the public.</p>
+<p>Dataverse also provides features like versioning, but only after we publish the dataset. In our case, we keep the dataset in draft mode until we are ready to publish it (i.e. until all the participants/subjects data is uploaded). So we use DataLad for version control during the development and conversion phase to assure complete provenance of the dataset.</p>
+<h4 id="4-generating-dataset-json-metadata-generate_dataset_jsonpy">4 Generating dataset JSON Metadata (<code>generate_dataset_json.py</code>)<a class="headerlink" href="#4-generating-dataset-json-metadata-generate_dataset_jsonpy" title="Permanent link">¤</a></h4>
+<p>This module generates the <code>dataset.json</code> file required for creating a dataset in Dataverse. The function performs the following steps:</p>
+<ol>
+<li>Gathers metadata from the project configuration file (<project_name>_config.toml) such as title, authors, description, license, etc.</li>
+<li>Constructs a JSON structure that conforms to the Dataverse dataset metadata schema. This includes fields like title, author list, description, keywords, license, etc.</li>
+<li>Writes the constructed JSON to a file named <code>dataset.json</code> in the project directory. This file is then used when creating the dataset in Dataverse.</li>
+</ol>
+<h4 id="5-upload-to-dataverse-upload_to_dataversepy">5. Upload to Dataverse (<code>upload_to_dataverse.py</code>)<a class="headerlink" href="#5-upload-to-dataverse-upload_to_dataversepy" title="Permanent link">¤</a></h4>
+<p>This module handles the uploading of files from the local DataLad dataset to the remote Dataverse dataset. The function performs the following steps:
+1. It runs the command <code>datalad push --to dataverse</code> to push the files from the local DataLad dataset to the linked Dataverse dataset. This command uploads all changes (new files, modified files) to Dataverse.
+2. If the <code>--yes</code> flag is set (in <code>lslautobids run</code>), it automatically pushes the files without user confirmation. Otherwise, it prompts the user for confirmation before proceeding with the upload.</p>
+<h3 id="other-utility-modules">Other Utility Modules<a class="headerlink" href="#other-utility-modules" title="Permanent link">¤</a></h3>
+<h4 id="1-global-configuration-management-config_globalspy">1. Global Configuration Management (<code>config_globals.py</code>)<a class="headerlink" href="#1-global-configuration-management-config_globalspy" title="Permanent link">¤</a></h4>
+<p>This module manages global configuration settings and command-line arguments using a singleton pattern. The <code>CLIArgs</code> class ensures that there is only one instance of the configuration throughout the application. It provides methods to parse and retrieve command-line arguments and global configuration settings (lslautobids_config.yaml), which are then used across various modules.</p>
+<h4 id="2-logging-configuration-config_loggerpy">2. Logging Configuration (<code>config_logger.py</code>)<a class="headerlink" href="#2-logging-configuration-config_loggerpy" title="Permanent link">¤</a></h4>
+<p>This module sets up a global logger for the application. The <code>get_logger()</code> function creates and configures a logger instance with a specified project name. It ensures that all log messages are formatted consistently and that log levels are set appropriately. The final log file is stored in the <code>&lt;BIDS_ROOT&gt;/&lt;project-name&gt;/code/</code> folder of the BIDS dataset.</p>
+<p>The log file is also available as a part of the created dataset.</p>
+<h4 id="3-utility-functions-utilspy">3. Utility Functions (<code>utils.py</code>)<a class="headerlink" href="#3-utility-functions-utilspy" title="Permanent link">¤</a></h4>
+<p>This module contains various utility functions used across the application. 
+1. <code>get_user_input</code> : Handles user prompts and input validation. This function allows five attempts for valid input before exiting. The function takes the user prompt message as an argument and returns the user input.
+2. <code>read_toml_file</code> : Reads and parses a TOML file, returning its contents as a dictionary.
+3. <code>write_toml_file</code> : Writes a dictionary to a TOML file.</p>
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">¤</a></h2>
+<p>The testing framework uses <code>pytest</code> to validate the functionality of the core components.</p>
+<ul>
+<li>
+<p>The tests are located in the <code>tests/</code> directory and cover various modules including configuration generation, file processing, BIDS conversion, DataLad integration, and Dataverse interaction. (Work in progress)</p>
+</li>
+<li>
+<p>The test directory contains :</p>
+<ul>
+<li><code>test_utils</code> : Directory containing utility functions needed across multiple test files.</li>
+<li><code>testcases</code> : Directory containing all the tests in a in a directory structure - <code>test_&lt;test_name&gt;</code>.</li>
+<li>Each <code>test_&lt;test_name&gt;</code> directory contains a <code>data</code> folder with sample data for that test and a <code>test_&lt;test_name&gt;.py</code> file with the actual test cases.</li>
+<li><code>run_all_tests.py</code> : A script to run all the tests in the <code>testcases</code> directory sequentially.</li>
+</ul>
+</li>
+</ul>
+<p>Tests will be added continuously as new features are added and existing features are updated.</p>
+<h3 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">¤</a></h3>
+<p>To run the tests, navigate to the <code>tests/</code> directory and execute:
+<code>python tests/run_all_tests.py</code></p>
+<p>These tests ensure that each component functions as expected and that the overall pipeline works seamlessly. This tests will also be triggered automatically on each push or PR to the main repository using GitHub Actions.</p>
+<h2 id="miscellianeous-points">Miscellianeous Points<a class="headerlink" href="#miscellianeous-points" title="Permanent link">¤</a></h2>
+<ul>
+<li>To the current date, only EEG data is supported for BIDS conversion. Support for other modalities like Eye-tracking, etc,. in the BIDS format is not yet supported. Hence, LSLAutoBIDS relies on semi-BIDS data structures for those data and use user-definable regular expressions to match expected data-files. A future planned feature is to provide users more flexibility, especially in naming / sorting non-standard files. Currently, the user can only specify the expected file extensions for other/behavioral data and is automatically renamed to include sub-XXX_ses-YYY_ prefix if missing and also copied to pseudo-BIDS folder structure like <code>&lt;BIDS_ROOT&gt;/sourcedata/sub-XXX/ses-YYY/</code>, <code>&lt;BIDS_ROOT&gt;/misc/experiment.tar.gz</code> etc,.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instants", "navigation.top", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

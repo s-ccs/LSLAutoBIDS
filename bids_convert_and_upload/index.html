@@ -1,0 +1,1286 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automated BIDS conversion and processing framework">
+      
+      
+      
+        <link rel="canonical" href="https://s-ccs.github.io/LSLAutoBIDS/bids_convert_and_upload/">
+      
+      
+        <link rel="prev" href="../file_processing/">
+      
+      
+        <link rel="next" href="../datalad_integration/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>BIDS Conversion - LSLAutoBIDS - Developers Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="LSLAutoBIDS - Developers Documentation" class="md-header__button md-logo" aria-label="LSLAutoBIDS - Developers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LSLAutoBIDS - Developers Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              BIDS Conversion
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/s-ccs/LSLAutoBIDS" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="LSLAutoBIDS - Developers Documentation" class="md-nav__button md-logo" aria-label="LSLAutoBIDS - Developers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LSLAutoBIDS - Developers Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/s-ccs/LSLAutoBIDS" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../file_processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Processing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BIDS Conversion
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BIDS Conversion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BIDS Conversion and Upload Pipeline ⚙️ (convert_to_bids_and_upload.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BIDS Conversion and Upload Pipeline ⚙️ (convert_to_bids_and_upload.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entry-point-bids_process_and_upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entry Point (bids_process_and_upload())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert-to-bids-convert_to_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convert to BIDS (convert_to_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copy-source-files-copy_source_files_to_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copy Source Files (copy_source_files_to_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-raw-xdf-create_raw_xdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Raw XDF (create_raw_xdf())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bids-validation-validate_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BIDS Validation (validate_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populate-dataset_descriptionjson-populate_dataset_description_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Populate dataset_description.json (populate_dataset_description_json())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datalad-and-dataverse-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datalad and Dataverse Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datalad_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalad Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataverse_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataverse Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other_utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Other Utility Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_organization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Organization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://www.s-ccs.de/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Group's website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started Tutorial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BIDS Conversion and Upload Pipeline ⚙️ (convert_to_bids_and_upload.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BIDS Conversion and Upload Pipeline ⚙️ (convert_to_bids_and_upload.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entry-point-bids_process_and_upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entry Point (bids_process_and_upload())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert-to-bids-convert_to_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convert to BIDS (convert_to_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copy-source-files-copy_source_files_to_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copy Source Files (copy_source_files_to_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-raw-xdf-create_raw_xdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Raw XDF (create_raw_xdf())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bids-validation-validate_bids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BIDS Validation (validate_bids())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populate-dataset_descriptionjson-populate_dataset_description_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Populate dataset_description.json (populate_dataset_description_json())
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datalad-and-dataverse-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datalad and Dataverse Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>BIDS Conversion</h1>
+
+<h2 id="bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy">BIDS Conversion and Upload Pipeline ⚙️ (<code>convert_to_bids_and_upload.py</code>)<a class="headerlink" href="#bids-conversion-and-upload-pipeline-convert_to_bids_and_uploadpy" title="Permanent link">¤</a></h2>
+<p>The pipeline is designed to ensure:</p>
+<ol>
+<li>
+<p>Source files (EEG only) are preserved in a BIDS-compatible structure.</p>
+</li>
+<li>
+<p>EEG recordings are converted to BIDS format using MNE and validated against the BIDS standard.</p>
+</li>
+<li>
+<p>Behavioral and experimental metadata (also called other files in general in context on this project) are included and checked against project expectations.</p>
+</li>
+<li>
+<p>Project metadata is populated (dataset_description.json). This is required as a part of BIDS standard.</p>
+</li>
+<li>
+<p>The dataset is registered in Dataverse and optionally pushed/uploaded automatically.</p>
+</li>
+</ol>
+<h4 id="entry-point-bids_process_and_upload">Entry Point (<code>bids_process_and_upload()</code>)<a class="headerlink" href="#entry-point-bids_process_and_upload" title="Permanent link">¤</a></h4>
+<ul>
+<li>
+<p>Reads project configuration (<project_name>_config.toml) to check if a other computer (non eeg files) was used. (otherFilesUsed: true)</p>
+</li>
+<li>
+<p>Iterates over each processed file and extracts identifiers. For example, for a file named <code>sub-001_ses-001_task-Default_run-001_eeg.xdf</code>, it extracts:</p>
+<ul>
+<li>
+<p>Subject ID (sub-XXX) - 001 (<code>str</code> is accepted)</p>
+</li>
+<li>
+<p>Session ID (ses-YYY) - 001 (<code>str</code> is accepted)</p>
+</li>
+<li>
+<p>Run number (run-ZZZ) - 001 (<code>int</code> is accepted)</p>
+</li>
+<li>
+<p>Task name (task-Name) - Default (<code>str</code> is accepted)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Constructs the absolute path to the .xdf file from the project root.</p>
+</li>
+<li>
+<p>Calls BIDS.convert_to_bids() to handle conversion and validation.</p>
+</li>
+<li>
+<p>After all files are processed:</p>
+</li>
+<li>
+<p>Populates dataset_description.json.</p>
+<ul>
+<li>
+<p>Generates JSON metadata (<code>generate_json_file.py</code>).</p>
+</li>
+<li>
+<p>Creates/links a Dataverse dataset (<code>create_dataverse.py</code>).</p>
+</li>
+<li>
+<p>Initializes a DataLad dataset and links with Dataverse (<code>create_and_add_files_to_datalad_dataset.py</code>, <code>add_sibling_dataverse_in_folder.py</code>).</p>
+</li>
+<li>
+<p>Pushes data to Dataverse automatically (--yes) or via user confirmation.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="convert-to-bids-convert_to_bids">Convert to BIDS (<code>convert_to_bids()</code>)<a class="headerlink" href="#convert-to-bids-convert_to_bids" title="Permanent link">¤</a></h4>
+<p>This function handles the core conversion of a XDF files to BIDS format and constructs the dataset structure. It performs the following steps:</p>
+<ol>
+<li>
+<p>Copy raw/behavioral/experiment files via <code>copy_source_files_to_bids()</code> (See section).</p>
+</li>
+<li>
+<p>Build a <code>BIDSPath</code> for the EEG recording:</p>
+<ul>
+<li>
+<p>Subject, session, run, task extracted from filename.</p>
+</li>
+<li>
+<p>File format: EEGLAB (.set) chosen to avoid BrainVision memory issues.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>The function checks if the BIDS file already exists:</p>
+<ul>
+<li>
+<p>If it does, it logs and doesn"t reconvert.</p>
+</li>
+<li>
+<p>If --redo_bids_conversion is specified, it overwrites existing files. This flag is passed from the command line while running <code>lslautobids run</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>If the file doesn't exist or is to be overwritten, it proceeds with conversion:</p>
+<ul>
+<li>
+<p>Load <code>.xdf</code> with <code>create_raw_xdf()</code>. (See section).</p>
+</li>
+<li>
+<p>Apply anonymization (daysback_min + anonymizationNumber from project TOML config).</p>
+</li>
+<li>
+<p>Write EEG data into BIDS folder via <code>write_raw_bids().</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Validate results with <code>validate_bids()</code>. The function raises an error if validation fails and returns 0; otherwise returns 1 for success. (See section).</p>
+</li>
+<li>
+<p>The convertt_to_bids() function returns a status code indicating the result of the conversion:</p>
+<ul>
+<li>
+<p>1: Successful BIDS conversion and validation</p>
+</li>
+<li>
+<p>2: BIDS conversion already done i.e. file already existed, skipped conversion and validation</p>
+</li>
+<li>
+<p>0: BIDS Conversion done but validation failure</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="copy-source-files-copy_source_files_to_bids">Copy Source Files (<code>copy_source_files_to_bids()</code>)<a class="headerlink" href="#copy-source-files-copy_source_files_to_bids" title="Permanent link">¤</a></h4>
+<p>This function ensures that the original source files (EEG and other/behavioral files) are also a part our dataset. These files can't be directly converted to BIDS format but we give the user the option to include them in the BIDS directory structure in a pseudo-BIDS format for completeness.</p>
+<ul>
+<li>
+<p>Copies the .xdf into the following structure: 
+<code>&lt;BIDS_ROOT&gt;/sourcedata/sub-XXX/ses-YYY/sub-XXX_ses-YYY_task-Name_run-ZZZ_eeg.xdf</code></p>
+</li>
+<li>
+<p>Adds <code>_raw</code> suffix to distinguish original files.</p>
+</li>
+<li>
+<p>If a file already exists, logs a message and skips copying.</p>
+</li>
+</ul>
+<p>If otherFilesUsed=True in project config file:</p>
+<ol>
+<li>
+<p>Behavioral files are copied via <code>_copy_behavioral_files()</code>.</p>
+<ul>
+<li>Validates required files against TOML config (<code>OtherFilesInfo</code>). In this config we add the the extensions of the expected other files. For example, in our testproject we use EyeList 1000 Plus eye tracker which generates .edf and .csv files. So we add these extensions as required other files. We also typically have mandatory labnotebook and participant info files in .tsv format.</li>
+<li>The <code>"*.src"="beh/{prefix}_target"</code> allows users to easily add BIDS-compatible custom data from the experiments. Note that <code>json</code> sidecars are not automatically generated yet.</li>
+</ul>
+</li>
+<li>
+<p>Experimental files are copied via <code>_copy_experiment_files().</code></p>
+<ul>
+<li>Gathers files from the <code>&lt;PROJECTS_OTHER&gt;/experiment/</code> folder.</li>
+<li>Copies into BIDS <code>misc/</code> directory i.e. <code>&lt;BIDS_ROOT&gt;/misc/</code></li>
+<li>Compresses into <code>experiment.tar.gz</code>.</li>
+<li>Removes the uncompressed folder.</li>
+</ul>
+</li>
+</ol>
+<p>There is a flag in the <code>lslautobids run</code> command called <code>--redo_other_pc</code> which when specified, forces overwriting of existing other and experiment files in the BIDS dataset. This is useful if there are updates or corrections to the other/behavioral data that need to be reflected in the BIDS dataset.</p>
+<h4 id="create-raw-xdf-create_raw_xdf">Create Raw XDF (<code>create_raw_xdf()</code>)<a class="headerlink" href="#create-raw-xdf-create_raw_xdf" title="Permanent link">¤</a></h4>
+<p>This function reads the XDF file and creates an MNE Raw object. It performs the following steps:
+- Select EEG stream using match_streaminfos(type="EEG").</p>
+<ul>
+<li>
+<p>Resample to the highest nominal sampling rate across streams (fs_new).</p>
+</li>
+<li>
+<p>Read .xdf with <code>read_raw_xdf()</code>, enabling interpolation and marker prefixing.</p>
+</li>
+<li>
+<p>Annotate missing values (annotate_nan) and clean invalid annotations (negative onset).</p>
+</li>
+<li>
+<p>Map known channel labels to MNE channel types (e.g., heog → eog, bipoc → misc). This is done using a predefined dictionary of channel mappings for our lab setup. This can be extended in future versions to include user-defined mappings.</p>
+</li>
+</ul>
+<p>This produces a clean, memory-efficient Raw object ready for BIDS conversion.</p>
+<h4 id="bids-validation-validate_bids">BIDS Validation (<code>validate_bids()</code>)<a class="headerlink" href="#bids-validation-validate_bids" title="Permanent link">¤</a></h4>
+<p>This function validates the generated BIDS files using the <code>bids-validator</code> package. It performs the following steps:
+- Walks through the BIDS directory.
+- Skips irrelevant files already ignored in <code>.bidsignore</code> (<code>misc</code> folder, some hidden files)
+- Uses <code>BIDSValidator</code> to validate relative paths. 
+- If any file fails validation, logs an error and returns 0 ; Otherwise, logs success and returns 1.</p>
+<h4 id="populate-dataset_descriptionjson-populate_dataset_description_json">Populate dataset_description.json (<code>populate_dataset_description_json()</code>)<a class="headerlink" href="#populate-dataset_descriptionjson-populate_dataset_description_json" title="Permanent link">¤</a></h4>
+<p>This function generates the <code>dataset_description.json</code> file required by the BIDS standard. It performs the following steps:
+- Gathers metadata from the project configuration file (title, authors, license, etc.) from the project TOML config file.
+- Calls make_dataset_description() from mne_bids.
+- Overwrites existing file with updated values.</p>
+<h4 id="datalad-and-dataverse-integration">Datalad and Dataverse Integration<a class="headerlink" href="#datalad-and-dataverse-integration" title="Permanent link">¤</a></h4>
+<p>This part of the pipeline manages version control and data sharing using DataLad and Dataverse. After conversion, the following steps occur:</p>
+<ul>
+<li><code>generate_json_file()</code> → Generates supplementary metadata JSONs.</li>
+<li><code>create_dataverse()</code> → Creates a new dataset in Dataverse. Returns DOI + status.</li>
+<li><code>create_and_add_files_to_datalad_dataset()</code> → Initializes DataLad repo, adds files.</li>
+<li><code>add_sibling_dataverse_in_folder()</code> → Links DataLad dataset to Dataverse (if new dataset).</li>
+<li>push_files_to_dataverse() uploads files to Dataverse. It automatically uploads if --yes is set (This flag is set in <code>lslautobids run</code>), otherwise the function prompts user (y/n).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instants", "navigation.top", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
