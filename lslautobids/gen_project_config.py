@@ -23,10 +23,10 @@ toml_content = """
     otherFilesUsed = true # Set to true if you want to include other (non-eeg-files) files (experiment files, other modalities like eye tracking) in the dataset, else false
     
   # expectedOtherFiles: Dictionary format with regex patterns
-  # - The key is a regular expression to match source filenames in the project_other/.../beh/ folder
-  # - The value is a template path that includes {prefix} (e.g. sub-003_ses-002) and the target folder (beh/ or misc/)
+  # - The key is a regular expression to match source filenames in the project_other/data/sub-XXX/ses-YYY/beh/ folder of the respective XXX/YYY sub/ses combinations
+  # - The value is a template path that includes {prefix} (e.g. sub-003_ses-002) and possibly a target folder (e.g. beh/ or misc/)
   # - Only files matching these patterns will be copied to the BIDS dataset
-  # the following is a sample configuration, you could also write it in short-hand notation: expectedOtherFiles={ ".*.edf"= "beh/{prefix}_physio.edf", ...}
+  # the following is a sample configuration, you could also write it in TOML-short-hand notation: expectedOtherFiles={ ".*.edf"= "beh/{prefix}_physio.edf", ...}
   
   [OtherFilesInfo.expectedOtherFiles]
     ".*.edf" = "misc/{prefix}_task-Default_physio.edf"
