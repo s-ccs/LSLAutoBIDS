@@ -33,7 +33,7 @@ git clone https://github.com/s-ccs/LSLAutoBIDS.git
 Go to the cloned directory and install the package using pip.
 ```
 cd LSLAutoBIDS
-pip3 install lslautobids
+pip3 install .
 ```
 It is advised to install the package in a separate environment (e.g. using `conda` or `virtualenv`).
 
