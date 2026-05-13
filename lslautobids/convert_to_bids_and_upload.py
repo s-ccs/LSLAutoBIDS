@@ -235,12 +235,12 @@ class BIDS:
             mne.io.Raw: Raw object ready for BIDS conversion.
         """
        
-        # Get the stream id of the EEG stream
-        stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
+        stream_ids = [s["stream_id"] for s in streams_res if s["nominal_srate"] >0.0]
+
         fs_new = max([stream["nominal_srate"] for stream in streams])
 
         logger.info("Reading xdf and resampling... if it breaks here, you need more RAM (close other programs, buy bigger RAM)")
-        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new=fs_new,prefix_markers=True,interpolate_or_resample="interpolate")
+        raw = read_raw_xdf(xdf_path,stream_ids=stream_ids,fs_new=fs_new,prefix_markers=True,interpolate_or_resample="interpolate")
         logger.info("Interpolation done! phew")
 
         nan_annotations = mne.preprocessing.annotate_nan(raw)
