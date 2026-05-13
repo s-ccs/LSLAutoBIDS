@@ -235,12 +235,12 @@ class BIDS:
             mne.io.Raw: Raw object ready for BIDS conversion.
         """
        
-        # Get the stream id of the EEG stream
-        stream_id = match_streaminfos(streams, [{"type": "EEG"}])[0]
+        stream_ids = [s["stream_id"] for s in streams if s["nominal_srate"] >0.0]
+
         fs_new = max([stream["nominal_srate"] for stream in streams])
 
         logger.info("Reading xdf and resampling... if it breaks here, you need more RAM (close other programs, buy bigger RAM)")
-        raw = read_raw_xdf(xdf_path,stream_ids=[stream_id],fs_new=fs_new,prefix_markers=True,interpolate_or_resample="interpolate")
+        raw = read_raw_xdf(xdf_path,stream_ids=stream_ids,fs_new=fs_new,prefix_markers=True,interpolate_or_resample="interpolate")
         logger.info("Interpolation done! phew")
 
         nan_annotations = mne.preprocessing.annotate_nan(raw)
@@ -434,8 +434,10 @@ def bids_process_and_upload(processed_files,logger):
     toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
     data = read_toml_file(toml_path)
-    other = data["OtherFilesInfo"]["expectedOtherFiles"]
-
+    if data["OtherFilesInfo"]["otherFilesUsed"]:
+      other = data["OtherFilesInfo"]["expectedOtherFiles"]
+    else:
+      other = None
     logger.info(f"OtherPC used : {other}")     
 
     project_path = os.path.join(project_root,project_name)
@@ -450,7 +452,6 @@ def bids_process_and_upload(processed_files,logger):
         filename = file.split(os.path.sep)[-1]
         logger.info(f"Currently processing {subject_id}, {session_id}, {run_id} of task : {task_id}") 
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
-
         val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, other, logger)   
 
         if val == 1:
