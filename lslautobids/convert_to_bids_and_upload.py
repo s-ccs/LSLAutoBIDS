@@ -434,8 +434,10 @@ def bids_process_and_upload(processed_files,logger):
     toml_path = os.path.join(project_root,project_name,project_name +'_config.toml')
 
     data = read_toml_file(toml_path)
-    other = data["OtherFilesInfo"]["expectedOtherFiles"]
-
+    if data["OtherFilesInfo"]["otherFilesUsed"]:
+      other = data["OtherFilesInfo"]["expectedOtherFiles"]
+    else:
+      other = None
     logger.info(f"OtherPC used : {other}")     
 
     project_path = os.path.join(project_root,project_name)
@@ -450,7 +452,6 @@ def bids_process_and_upload(processed_files,logger):
         filename = file.split(os.path.sep)[-1]
         logger.info(f"Currently processing {subject_id}, {session_id}, {run_id} of task : {task_id}") 
         xdf_path = os.path.join(project_path, subject_id, session_id, 'eeg',filename)
-
         val = bids.convert_to_bids(xdf_path,subject_id,session_id, run_id, task_id, other, logger)   
 
         if val == 1:
