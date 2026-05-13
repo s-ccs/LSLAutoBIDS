@@ -235,7 +235,7 @@ class BIDS:
             mne.io.Raw: Raw object ready for BIDS conversion.
         """
        
-        stream_ids = [s["stream_id"] for s in streams_res if s["nominal_srate"] >0.0]
+        stream_ids = [s["stream_id"] for s in streams if s["nominal_srate"] >0.0]
 
         fs_new = max([stream["nominal_srate"] for stream in streams])
 
